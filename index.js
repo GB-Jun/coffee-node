@@ -94,7 +94,7 @@ app.post("/try-post", bodyParser, (req, res) => {
 // router的使用
 
 // app.use('/frontPage', require(__dirname +'/routes/frontPage'))
-// app.use('/member', require(__dirname +'/routes/member'))
+app.use('/member', require(__dirname +'/routes/member/member'))
 app.use('/products', require(__dirname + '/routes/products/products'));
 app.use('/food', require(__dirname + '/routes/food/food'));
 app.use('/course', require(__dirname + '/routes/course/course'));
@@ -105,7 +105,7 @@ app.use('/sharing', require(__dirname + '/routes/sharing/sharing'));
 
 const path = require('path');
 const dir = path.join(__dirname, 'public');
-app.use(express.static(dir)); 
+app.use(express.static(dir));
 
 app.get("/", (req, res) => {
     res.render("main", { name: "001" });
