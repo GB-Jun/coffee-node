@@ -44,7 +44,17 @@ res.render()
 
 /products/:category_id/:product_id
 
+---------------.env格式--------------------
 
+EXPRESS_PORT=3500
+
+DB_HOST=192.168.24.24
+DB_PORT=3306
+DB_USER=coffee
+DB_PASS=coffee
+DB_NAME=coffee
+
+JWT_SECRET=4asd4SDF19gfFGSW5SD41adfjtr812JERDFr5d
 
 
 
