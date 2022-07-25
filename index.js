@@ -94,7 +94,7 @@ app.post("/try-post", bodyParser, (req, res) => {
 // router的使用
 
 // app.use('/frontPage', require(__dirname +'/routes/frontPage'))
-// app.use('/member', require(__dirname +'/routes/member'))
+app.use('/member', require(__dirname +'/routes/member/member'))
 app.use('/products', require(__dirname + '/routes/products/products'));
 // app.use('/food', require(__dirname +'/routes/food'))
 app.use('/coffee-food-get', require(__dirname + '/routes/food/food'));
