@@ -98,7 +98,7 @@ app.post("/try-post", bodyParser, (req, res) => {
 app.use('/products', require(__dirname +'/routes/products/products'))
 // app.use('/food', require(__dirname +'/routes/food'))
 // app.use('/course', require(__dirname +'/routes/course'))
-// app.use('/cart', require(__dirname +'/routes/cart'))
+app.use('/cart', require(__dirname +'/routes/cart/cart'))
 // app.use('/sharing', require(__dirname +'/routes/sharing'))
 // app.use('/game', require(__dirname +'/routes/game'))
 
