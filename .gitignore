@@ -1,15 +1,23 @@
 
 /node_modules
+<<<<<<< HEAD
 /data/header01.txt
 public/images
 /tmp-uploads
+=======
+>>>>>>> e113bb87c6dc8ec9f7c84773080aeb36510b6014
 public/fontawesome
 public/images
 
 .vscode
 .env
+<<<<<<< HEAD
 .env1
 .env2
 .env3
 .gitignore
 .DS_Store
+=======
+.DS_Store
+.env1
+>>>>>>> e113bb87c6dc8ec9f7c84773080aeb36510b6014
