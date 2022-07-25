@@ -43,7 +43,9 @@ res.render()
 
 
 /products/:category_id/:product_id
-------------------------------------
+
+---------------.env格式--------------------
+
 EXPRESS_PORT=3500
 
 DB_HOST=192.168.24.24
