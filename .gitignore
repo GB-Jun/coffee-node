@@ -1,9 +1,12 @@
 
 /node_modules
 /data/header01.txt
-public/imgs/404-error-page01.jpg
+public/images
 /tmp-uploads
 public/fontawesome
 
 .vscode
 .env
+.env1
+.env2
+.gitignore
