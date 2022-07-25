@@ -36,26 +36,26 @@ const getListHandler = async (req, res) => {
         `;
         [op.rows] = await db.query(sql);
 
-        // console.log(op.rows);
-        // op['rows'].forEach((v, ind, arr) => {
-        //     op.rows[ind].tags = [];
 
-        //     (async function () {
-        //         const sql = `
-        //             SELECT * FROM \`post_tag\` pt
-        //             JOIN \`tag\` t 
-        //             ON pt.tag_sid = t.sid 
-        //             WHERE \`post_sid\` = ?`;
+        for (let row of op.rows) {
+            row.tags = [];
 
-        //         const r = await db.query(sql, [v['sid']]);
+            const sql = `
+                    SELECT * FROM \`post_tag\` pt
+                    JOIN \`tag\` t 
+                    ON pt.tag_sid = t.sid 
+                    WHERE \`post_sid\` = ?
+                `;
 
-        //         if (r.data.length > 0) {
-        //             r['data'].forEach((v) => {
-        //                 arr.push(v)
-        //             })
-        //         }
-        //     })();
-        //   });
+            const [tags] = await db.query(sql, [row['sid']]);
+
+            if (tags.length > 0) {
+                tags.forEach((tag) => {
+                    row.tags.push(tag);
+                });
+            }
+        }
+
     }
 
     return op;
