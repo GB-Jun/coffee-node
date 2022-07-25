@@ -54,9 +54,6 @@ DB_USER=coffee
 DB_PASS=coffee
 DB_NAME=coffee
 
-JWT_SECRET=4asd4SDF19gfFGSW5SD41adfjtr812JERDFr5d
-
-
 
 
 
