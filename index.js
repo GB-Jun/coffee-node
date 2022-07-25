@@ -165,14 +165,14 @@ app.get("/try-session", (req, res) => {
     });
 });
 
-app.use('/frontPage', require(__dirname +'/routes/frontPage'))
-app.use('/member', require(__dirname +'/routes/member'))
-app.use('/product', require(__dirname +'/routes/product'))
-app.use('/food', require(__dirname +'/routes/food'))
-app.use('/course', require(__dirname +'/routes/course'))
-app.use('/cart', require(__dirname +'/routes/cart'))
-app.use('/sharing', require(__dirname +'/routes/sharing'))
-app.use('/game', require(__dirname +'/routes/game'))
+// app.use('/frontPage', require(__dirname +'/routes/frontPage'))
+// app.use('/member', require(__dirname +'/routes/member'))
+// app.use('/product', require(__dirname +'/routes/product'))
+// app.use('/food', require(__dirname +'/routes/food'))
+// app.use('/course', require(__dirname +'/routes/course'))
+// app.use('/cart', require(__dirname +'/routes/cart'))
+// app.use('/sharing', require(__dirname +'/routes/sharing'))
+// app.use('/game', require(__dirname +'/routes/game'))
 
 // 從後端直接爬資料
 app.get("/yahoo", async (req, res) => {
