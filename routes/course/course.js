@@ -23,22 +23,6 @@ router.get('/FK-get', async (req, res) => {
 });
 
 // ------------ 跟LINE PAY 串接的 API -----------
-
-router.get('/checkout/:id', (req, res) => {
-    const { id } = req.params;
-    const order = sampleData[id];
-    order.orderId = uuid.v4();
-    orders[order.orderId] = order;
-    // res.send(`
-    //         <div>價格: ${order.amount}</div>
-    //         <div>產品ID: ${order.packages[0].id}</div>              
-    //         <div>ID: ${order.orderId}</div>   
-    //         <form action="/createOrder/${order.orderId}" method="post">
-    //         <button type="submit">送出</button>  
-    //         </form>                         
-    // ` );
-    res.send(console.log(order));
-});
 router.post('/createOrder/:orderId', async (req, res) => {
     console.log(req);
     const { orderId } = req.params;
