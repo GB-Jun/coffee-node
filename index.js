@@ -95,9 +95,9 @@ app.post("/try-post", bodyParser, (req, res) => {
 
 // app.use('/frontPage', require(__dirname +'/routes/frontPage'))
 // app.use('/member', require(__dirname +'/routes/member'))
-app.use('/products', require(__dirname +'/routes/products/products'))
+app.use('/products', require(__dirname + '/routes/products/products'));
 // app.use('/food', require(__dirname +'/routes/food'))
-// app.use('/course', require(__dirname +'/routes/course'))
+app.use('/coffee-course-get', require(__dirname + '/routes/course/course'));
 // app.use('/cart', require(__dirname +'/routes/cart'))
 // app.use('/sharing', require(__dirname +'/routes/sharing'))
 // app.use('/game', require(__dirname +'/routes/game'))
