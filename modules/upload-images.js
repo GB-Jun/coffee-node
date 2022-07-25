@@ -13,7 +13,7 @@ function fileFilter(req, file, cb) {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, __dirname + "/../public/imgs");
+        cb(null, __dirname + "/../public/avatar");
     },
     filename: (req, file, cb) => {
         const filename = uuidv4() + extMap[file.mimetype];
