@@ -5,7 +5,7 @@ const db = require(__dirname + "/../../modules/mysql-connect");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
-router.post('/login',(req, res)=>{
+router.post('/login', (req, res) => {
 
     const output = {
         success: false,
@@ -15,20 +15,20 @@ router.post('/login',(req, res)=>{
     const sql = "SELECT * FROM member WHERE member_account=?";
     const [result] = db.query(sql, [req.body.member_account]);
 
-    if(! result.length){
+    if (!result.length) {
         // 沒有陣列長度代表比對不到資料庫裡的帳號，帳號錯誤
         output.code = 401;
-        output.error = '帳密錯誤'
+        output.error = '帳密錯誤';
         return res.json(output);
     }
 
     output.success = bcrypt.compare(req.body.member_password, result[0].pass_hash);
-    console.log( bcrypt.compare(req.body.member_password, result[0].pass_hash));
-    if(! output.success){
+    console.log(bcrypt.compare(req.body.member_password, result[0].pass_hash));
+    if (!output.success) {
         // 密碼錯誤
         output.code = 402;
-        output.error = '帳密錯誤'
-    }else {
+        output.error = '帳密錯誤';
+    } else {
         // 成功登入
         const token = jwt.sign({
             sid: result[0].member_sid,
@@ -47,8 +47,8 @@ router.post('/login',(req, res)=>{
 });
 
 // ------------------ 頭貼上傳 ------------------ 
-router.post('/upload', upload.single('avatar'),(req,res)=>{
-    res.json(req.file);
-})
+// router.post('/upload', upload.single('avatar'),(req,res)=>{
+//     res.json(req.file);
+// })
 
 module.exports = router;
