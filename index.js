@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: __dirname + '/.env' });
 const express = require("express");
 const app = express();
 const multer = require("multer");
@@ -97,11 +97,14 @@ app.post("/try-post", bodyParser, (req, res) => {
 // app.use('/member', require(__dirname +'/routes/member'))
 app.use('/products', require(__dirname + '/routes/products/products'));
 // app.use('/food', require(__dirname +'/routes/food'))
+app.use('/coffee-food-get', require(__dirname + '/routes/food/food'));
 app.use('/coffee-course-get', require(__dirname + '/routes/course/course'));
 app.use('/cart', require(__dirname + '/routes/cart/cart'));
 // app.use('/sharing', require(__dirname +'/routes/sharing'))
 // app.use('/game', require(__dirname +'/routes/game'))
-
+const path = require('path');
+const dir = path.join(__dirname, 'public');
+app.use(express.static(dir)); 
 
 app.get("/", (req, res) => {
     res.render("main", { name: "001" });
@@ -119,6 +122,7 @@ app.use((req, res) => {
 });
 
 // ------------ listen -----------
+console.log({ port: process.env.EXPRESS_PORT });
 app.listen(process.env.EXPRESS_PORT, () => {
     console.log(
         `Server started at http://localhost:${process.env.EXPRESS_PORT}`

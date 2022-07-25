@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "SET NODE_ENV=EVE && nodemon",
-    "dev": "SET NODE_ENV=ADAM && nodemon",
+    "start": "export NODE_ENV=EVE && nodemon",
+    "dev": "export NODE_ENV=ADAM && nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
