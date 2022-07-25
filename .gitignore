@@ -1,0 +1,10 @@
+
+/node_modules
+public/fontawesome
+public/images
+
+.vscode
+.env
+.DS_Store
+.env1
+.env2
