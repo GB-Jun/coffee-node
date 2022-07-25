@@ -1,0 +1,92 @@
+<%- include('../parts/html-head') %> <%- include('../parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form class="d-flex">
+                <input
+                    class="form-control me-2"
+                    type="date"
+                    name="beginDate"
+                />
+                <input
+                    class="form-control me-2"
+                    type="date"
+                    name="endDate"
+                />
+                <input class="form-control me-2" type="search"
+                placeholder="Search" name="search" value="<%= locals.query &&
+                query.search ? query.search : "" %>" />
+                <button class="btn btn-outline-success" type="submit">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li
+                        class="page-item"
+                    >
+                        <a class="page-link" href="?page=<%if(page>0){%><%= page-1%>"><% } %>
+                            Previous</a
+                        >
+                    </li>
+
+                    <% for(let i=page-5; i<=page+5; i++) if(i>=1 &&
+                    i<=totalPages){ const obj = {page: i}; 
+                    if(query.search){
+                    obj.search = query.search;}
+                    if(query.beginDate){
+                        obj.beginDate = query.beginDate;
+                    }
+                    if(query.endDate){
+                        obj.endDate = query.endDate;
+                    }
+                    const myLink =new
+                    URLSearchParams(obj).toString() %>
+                    <li class="page-item <%= page===i ? 'active' : '' %>">
+                        <a class="page-link" href="?<%= myLink %>"><%= i %></a>
+                    </li>
+                    <% } %>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">信箱</th>
+                        <th scope="col">手機</th>
+                        <th scope="col">生日</th>
+                        <th scope="col">住址</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i of rows) {%>
+                    <tr>
+                        <th scope="row"><%= i.sid %></th>
+                        <td><%= i.name %></td>
+                        <td><%= i.email %></td>
+                        <td><%= i.mobile %></td>
+                        <td><%= i.birthday2 %></td>
+                        <td><%= i.address %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include('../parts/scripts') %> <%- include('../parts/html-foot') %>

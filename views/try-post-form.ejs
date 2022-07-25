@@ -1,0 +1,38 @@
+<%- include('parts/html-head') %> <%- include('parts/navbar') %>
+<div class="container">
+    <form method="post">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+                >Email address</label
+            >
+            <input
+                type="text"
+                name="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+            />
+            <div class="form-text"><%= typeof email !=='undefined' ? email : '' %></div>
+            <!-- 用三元判斷在沒有的時候先放空字串讓他不會跳錯 -->
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+                >Password</label
+            >
+            <input
+                type="text"
+                name="password"
+                class="form-control"
+                id="exampleInputPassword1"
+            />
+            <div class="form-text"><%= locals.password ?? ''  %></div>
+            <!-- ejs一樣有??的用法, 但是需要注意是比較新的語法, 可能會有不支援的問題在 -->
+        </div>
+        <div class="mb-3 form-check">
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <pre><%- JSON.stringify(locals, null, 4) %></pre>
+    <!-- template傳進來的所有變數會放到locals裡面, 他是template的一個物件 -->
+</div>
+<%- include('parts/scripts') %> <%- include('parts/html-foot') %>

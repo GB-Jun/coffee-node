@@ -1,0 +1,60 @@
+<%- include('parts/html-head') %> <%- include('parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>管理者登入</h3>
+            <form name="form1" onsubmit="sendForm(event)">
+                <div class="mb-3">
+                    <label for="" class="form-label">帳號</label>
+                    <input type="text" class="form-control" name="account" />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">密碼</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                    />
+                    <div class="form-text"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('parts/scripts') %>
+<script>
+    // TODO: 欄位格式檢查
+
+    function sendForm(event) {
+        event.preventDefault();
+
+        // const fd = new FormData(document.form1);
+        const sendObj = {
+            account: document.form1.account.value,
+            password: document.form1.password.value,
+        };
+
+        fetch("", {
+            method: "POST",
+            body: JSON.stringify(sendObj),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((r) => r.json())
+            .then((obj) => {
+                console.log(obj);
+                if (obj.success) {
+                    //location.href = "/";
+                } else {
+                    alert(obj.error);
+                }
+            });
+    }
+</script>
+<%- include('parts/html-foot') %>

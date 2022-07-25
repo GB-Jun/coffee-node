@@ -1,0 +1,71 @@
+<%- include('parts/html-head') %> <%- include('parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="account" class="form-label"
+                >登入</label
+            >
+            <input
+                type="text"
+                name="account"
+                class="form-control"
+                id="account"
+            />
+            <div class="form-text"></div>
+
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label"
+                >密碼</label
+            >
+            <input
+                type="password"
+                name="password"
+                class="form-control"
+                id="password"
+            />
+            <div class="form-text"></div>
+        </div>
+        <div class="mb-3 form-check">
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<%- include('parts/scripts') %> 
+<script>
+
+    function setForm(event){
+        event.preventDefault();
+
+        // const fd = new FormData(document.form1);
+        const sendObj = {
+            account: document.form1.account.value,
+            password: document.form1.password.value,
+        }
+
+        fetch('', {
+            method: 'POST',
+            body: JSON.stringify(sendObj),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r=>r.json())
+        .then(obj=>{
+            console.log(obj);
+            if(obj.success){
+                location.href = '/';
+            } else {
+                alert(obj.error);
+            }
+        })
+    }
+
+
+
+
+</script>
+
+<%- include('parts/html-foot') %>

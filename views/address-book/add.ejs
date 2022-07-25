@@ -1,0 +1,132 @@
+<%- include('../parts/html-head') %> <%- include('../parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>新增資料</h3>
+            <form name="form1" onsubmit="sendForm(event)">
+                <div class="mb-3">
+                    <label for="name" class="form-label">name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        id="name"
+                    />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">email</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="email"
+                        id="email"
+                    />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="mobile" class="form-label">mobile</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="mobile"
+                        id="mobile"
+                    />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="birthday" class="form-label">birthday</label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="birthday"
+                        id="birthday"
+                    />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">address</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="address"
+                        id="address"
+                    />
+                    <div class="form-text"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../parts/scripts') %>
+<script>
+    function sendForm(event) {
+        event.preventDefault();
+
+        const fd = new FormData(document.form1);
+
+        const dataObj = {};
+        for (let i of fd.entries()) {
+            console.log(i);
+            dataObj[i[0]] = i[1];
+        }
+        console.log(dataObj);
+
+        const usp = new URLSearchParams(fd);
+        console.log(usp.toString());
+
+        // const Joi = joi;
+        // const schema = Joi.object({
+        //     name: Joi.string().min(3).max(30).required().messages({'string.empty': '姓名必填'}),
+        //     email: Joi.string()
+        //         // .email()
+        //         .required(),
+        //     mobile: Joi.string(),
+        //     birthday: Joi.any(),
+        //     // any 後面還可以設定optional()
+        //     address: Joi.string(),
+        // });
+
+        // console.log(schema.validate(dataObj, { abortEarly: false }));
+
+        // 用JSON傳送資料, 如果資料量少會適合JSON, 要注意Content-Type的設定
+        // fetch("", {
+        //     method: "POST",
+        //     body: JSON.stringify(dataObj),
+        //     headers: {
+        //         "Content-Type": application/json,
+        //     },
+        // })
+        //     .then((r) => r.json())
+        //     .then((obj) => {
+        //         console.log(obj);
+        //     });
+
+        // 用urlencoded 傳送資料, 最簡單的用法new FormData再new URLSearchParams就能用, 要注意Content-Type的設定
+        // fetch("", {
+        //     method: "POST",
+        //     body: usp.toString(),
+        //     headers:{
+        //         'Content-Type' : application/x-www-form-urlencoded
+        //     }
+        // })
+        //     .then((r) => r.json())
+        //     .then((obj) => {
+        //         console.log(obj);
+        //     });
+
+        fetch("", {
+            method: "POST",
+            body: fd,
+        })
+            .then((r) => r.json())
+            .then((obj) => {
+                console.log(obj);
+            });
+    }
+</script>
+<%- include('../parts/html-foot') %>
