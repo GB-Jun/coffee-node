@@ -97,18 +97,14 @@ app.post("/try-post", bodyParser, (req, res) => {
 // app.use('/member', require(__dirname +'/routes/member'))
 app.use('/products', require(__dirname + '/routes/products/products'));
 // app.use('/food', require(__dirname +'/routes/food'))
-<<<<<<< HEAD
 app.use('/coffee-food-get', require(__dirname + '/routes/food/food'));
-app.use('/coffee-course-get', require(__dirname + '/routes/course/course'));
-=======
 app.use('/course', require(__dirname + '/routes/course/course'));
->>>>>>> e113bb87c6dc8ec9f7c84773080aeb36510b6014
 app.use('/cart', require(__dirname + '/routes/cart/cart'));
 app.use('/sharing', require(__dirname + '/routes/sharing/sharing'));
 // app.use('/game', require(__dirname +'/routes/game'))
 const path = require('path');
 const dir = path.join(__dirname, 'public');
-app.use(express.static(dir)); 
+app.use(express.static(dir));
 
 app.get("/", (req, res) => {
     res.render("main", { name: "001" });
