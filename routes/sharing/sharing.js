@@ -28,10 +28,12 @@ const getListHandler = async (req, res) => {
 
     if (totalRows) {
         const sql = `
-            SELECT p.*,pi.img_name,pi.sort 
+            SELECT p.* ,pi.img_name ,pi.sort,m.avatar 
             FROM \`post\` p 
             JOIN \`post_img\` pi 
             ON p.sid = pi.post_sid 
+            LEFT JOIN \`member\` m
+            ON p.member_sid = m.member_sid
             WHERE pi.sort = 1 AND p.delete_state = 0
         `;
         [op.rows] = await db.query(sql);
