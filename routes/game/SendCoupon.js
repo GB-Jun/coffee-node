@@ -33,8 +33,8 @@ const getListHandler = async (req, res)=>{
         fake_user
     ]);
     output.rows2 = r2;
-
-    if(r2){
+    console.log(r2);
+    if(r2.length>0){
         output.error="今天已抽過獎項"
         output = {...output};
         return output;
