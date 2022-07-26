@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-25 10:29:57
+-- 產生時間： 2022-07-26 06:40:51
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -403,6 +403,38 @@ INSERT INTO `lastest_news` (`news_sid`, `news_img`, `news_title`, `news_class_si
 (22, 'd87e02b59b55dd00c75260dc3badc0e8.jpg', '凡購買曼巴咖啡豆，即可獲得精美好禮~', 1, '2022-06-13', '2022-06-30', '即日起凡購買曼巴咖啡豆系列任兩件，第二件即可打七折呦，分享優惠再送濾掛式咖啡一包! 贈品數量有限，要買要快喔~', '2022-06-11 17:07:22', 0),
 (23, 'eacbfa0087fb2bc6f1c57429e1349b33.jpg', '一同享受炎熱夏日的小確幸，周年慶全品項8折!', 2, '2022-07-01', '2022-07-17', '周年慶活動7/1提前開跑，\r\n本門市於7/1~7/17號，每周二 | 三，\r\n凡來店消費飲品、餐食、甜點，全面8折優惠，\r\n來拎+B陪您渡過炎炎的夏日，趕快來享受這小確幸吧!', '2022-06-11 17:20:32', 0),
 (24, 'ef23bf03408de952fea0692318738c50.jpg', '天造地設的幸福絕配 來拎+B即將推出5款經典蛋糕~', 2, '2022-06-13', '2022-12-19', '----風味聯姻 天造地設的幸福絕配---\r\n🍰 卡士達千層蛋糕領軍 來拎+B推出5款經典蛋糕 🍰\r\n以咖啡融入生活的五感，讓生活滋味妝點著咖啡的甘以及蛋糕的甜\r\n來拎+以咖啡風味聯姻概念，打造5款與咖啡絕配的經典甜點\r\n讓咖啡與甜點迷用來拎+好咖啡與經典甜點，幸福包覆著每日生活\r\n即日起到12月19日點購全新的5款「經典甜點」，再加「本日精品」咖啡，可享10元現折優惠~', '2022-06-11 18:25:27', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `member`
+--
+
+CREATE TABLE `member` (
+  `member_sid` int(11) NOT NULL,
+  `member_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_nickname` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_account` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `member_password` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_birthday` date DEFAULT NULL,
+  `member_mobile` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_mail` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_like` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_level` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 傾印資料表的資料 `member`
+--
+
+INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_like`, `member_level`, `avatar`) VALUES
+(1, '王曉明', '阿明', 'ming', 'ming', '2022-05-30', '0911222333', '台北市大安區', 'ming@test.com', '', '800', ''),
+(2, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif'),
+(4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', ''),
+(7, '123', '睡覺了', '123', '123', NULL, '123', '123456789', '123@test123', '', '', '1539960.gif'),
+(14, '123', '123', '1234', '123', NULL, '123', '123', '123@test123', '', '0', '');
 
 -- --------------------------------------------------------
 
@@ -1186,6 +1218,13 @@ ALTER TABLE `lastest_news`
   ADD PRIMARY KEY (`news_sid`);
 
 --
+-- 資料表索引 `member`
+--
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`member_sid`),
+  ADD UNIQUE KEY `member_account` (`member_account`);
+
+--
 -- 資料表索引 `member_likes`
 --
 ALTER TABLE `member_likes`
@@ -1362,6 +1401,12 @@ ALTER TABLE `food_choice`
 --
 ALTER TABLE `lastest_news`
   MODIFY `news_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `member`
+--
+ALTER TABLE `member`
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
