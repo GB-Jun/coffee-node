@@ -19,7 +19,6 @@ router.post('/login', upload.none(), async(req, res) => {
     const [result] = await db.query(sql, [req.body.member_account]);
 
 
-
     // 比對資料庫裡有沒有使用者輸入的帳密
     if (!result.length) {
         output.code = 401;
@@ -29,13 +28,15 @@ router.post('/login', upload.none(), async(req, res) => {
     }
 
     // 比對密碼
-    output.success = bcrypt.compare(req.body.member_password, result[0].member_password);
-    
+    output.success = bcrypt.compareSync(req.body.member_password,result[0].member_password);
+    console.log(bcrypt.compareSync(req.body.member_password,result[0].member_password));
     
     if (!output.success) {
         // 密碼錯誤
         output.code = 402;
         output.error = '帳密錯誤';
+        output.success = false;
+        
     } else {
         // 成功登入
         const token = jwt.sign({
