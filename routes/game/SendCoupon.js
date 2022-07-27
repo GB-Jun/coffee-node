@@ -19,13 +19,11 @@ const getListHandler = async (req, res)=>{
         rows: [],
         lotteryResult:"",
         rows2: [],
-
     };
     const sql=`SELECT sid,coupon_name FROM coupon `;
     const [r] = await db.query(sql);
     output.rows = r;
     output.code = 200;
-
 
     const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now());`;
     const {member_sid}=req.body;
@@ -33,7 +31,6 @@ const getListHandler = async (req, res)=>{
         fake_user
     ]);
     output.rows2 = r2;
-    console.log(r2);
     if(r2.length>0){
         output.error="今天已抽過獎項"
         output = {...output};
@@ -59,9 +56,7 @@ router.get('/api', async (req, res)=>{
 });
 
 router.get('/api-lottery-result', async (req, res)=>{
-    
     const output = await getListHandler(req, res);
-
     if(!(output.error)){
         const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, ?, NOW(), NOW()+365, 0)"; 
         const {member_sid,coupon_sid}=req.body;
@@ -71,8 +66,6 @@ router.get('/api-lottery-result', async (req, res)=>{
         ]);
     }
     res.json(output);
-
-
 });
 
 
