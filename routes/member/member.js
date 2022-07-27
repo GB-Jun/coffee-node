@@ -64,7 +64,6 @@ router.post('/sign-up', async (req, res) => {
     
     const {member_name, member_account, member_password} = req.body;
 
-
     const [result2] = await db.query(sqlAccount, [member_account]);
 
 
@@ -81,14 +80,13 @@ router.post('/sign-up', async (req, res) => {
         output.error = "沒有密碼";
         res.json(output);
     }else{
-        db.query(sql, [member_name, member_account, member_password]);
-        req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
+        const hashPass = await bcrypt.hash(req.body.member_password, 10);
+        db.query(sql, [member_name, member_account, hashPass]);
         output.success = true;
         return res.json(output);
     }
 
 });
-
 
 router.get('/order-history', async (req, res) => {
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
