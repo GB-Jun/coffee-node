@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
 
-
+// --------------------- 登入 ---------------------
 router.post('/login', upload.none(), async(req, res) => {
 
     const output = {
@@ -56,7 +56,7 @@ router.post('/login', upload.none(), async(req, res) => {
 });
 
 
-
+// --------------------- 註冊 ---------------------
 router.post('/sign-up', async (req, res) => {
 
     const output = {
@@ -93,6 +93,15 @@ router.post('/sign-up', async (req, res) => {
 
 });
 
+// --------------------- 讀取會員資料 ---------------------
+router.get('/api/user-list', async (req, res) => {
+    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid`=1";
+    const [results] = await db.query(sql);
+
+    res.json(results);
+});
+
+// --------------------- 歷史訂單 ---------------------
 router.get('/order-history', async (req, res) => {
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
     const [results] = await db.query(sql);
