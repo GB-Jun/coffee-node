@@ -101,11 +101,12 @@ app.use('/course', require(__dirname + '/routes/course/course'));
 app.use('/cart', require(__dirname + '/routes/cart/cart'));
 app.use('/sharing', require(__dirname + '/routes/sharing/sharing'));
 
-app.use('/Points', require(__dirname + '/routes/Game/Points'));
-app.use('/Points_formanager', require(__dirname + '/routes/Game/Points_formanager'));
-app.use('/Coupon_record_list', require(__dirname + '/routes/Game/Coupon_record_list'));
-app.use('/Coupon_foruser', require(__dirname + '/routes/Game/Coupon_foruser'));
-app.use('/SendCoupon', require(__dirname + '/routes/Game/SendCoupon'));
+app.use('/Points', require(__dirname + '/routes/game/Points'));
+app.use('/Points_formanager', require(__dirname + '/routes/game/Points_formanager'));
+app.use('/Coupon_record_list', require(__dirname + '/routes/game/Coupon_record_list'));
+app.use('/Coupon_foruser', require(__dirname + '/routes/game/Coupon_foruser'));
+app.use('/SendCoupon', require(__dirname + '/routes/game/SendCoupon'));
+app.use('/GetPoint', require(__dirname + '/routes/game/GetPoint'));
 
 const path = require('path');
 const dir = path.join(__dirname, 'public');
