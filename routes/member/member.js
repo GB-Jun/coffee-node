@@ -15,19 +15,23 @@ router.post('/login', upload.none(), async(req, res) => {
         error: '',
         code: 0,
     };
-    const sql = "SELECT * FROM `member` WHERE `member_account`=? AND `member_password`=? LIMIT 1";
-    const [result] = await db.query(sql, [req.body.member_account,req.body.member_password]);
+    const sql = "SELECT * FROM `member` WHERE `member_account`=? ";
+    const [result] = await db.query(sql, [req.body.member_account]);
+
+
 
     // 比對資料庫裡有沒有使用者輸入的帳密
     if (!result.length) {
         output.code = 401;
         output.error = '帳密錯誤';
+        
         return res.json(output);
     }
 
     // 比對密碼
     output.success = bcrypt.compare(req.body.member_password, result[0].member_password);
-
+    
+    
     if (!output.success) {
         // 密碼錯誤
         output.code = 402;
