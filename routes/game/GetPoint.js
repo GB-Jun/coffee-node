@@ -12,57 +12,47 @@ const router = express.Router();
 const fake_user = 1;
 // ====================
 
-
 const getListHandler = async (req, res)=>{
     let output = {
         code: 0, 
         error: '',
         query: {},
-        rows: [],
-        PointResult:"",
-        rows2: [],
-
+        rows: []
     };
-    const sql=`SELECT sid,coupon_name FROM coupon `;
-    const [r] = await db.query(sql);
-    output.rows = r;
-    output.code = 200;
-
-
-    const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now());`;
+    const sql=`select * from points_record where member_sid=1 AND to_days(create_at) = to_days(now());`;
     const {member_sid}=req.body;
-    const [r2] = await db.query(sql2, [
+    const [r] = await db.query(sql, [
         fake_user
     ]);
-    output.rows2 = r2;
-    console.log(r2);
-    // if(r2.length>0){
-    //     output.error="今天已抽過獎項"
-    //     output = {...output};
-    //     return output;
-    //     return
-    // }
-// ========================================================
-
-output.lotteryResult =
+    output.rows = r;
+    if(r.length>0){
+        output.error="今天已獲得積分"
+        output = {...output};
+        return output;
+        return
+    }
 output = {...output};
 return output;
 };
+
+
 // ====================
 
 router.post('/Api-point-result', upload.none(), async(req, res)=>{
-    const output = await getListHandler(req, res);
-    const sql = "INSERT INTO points_record (`member_sid`,`type`,`points_get`,`create_at`) VALUES (?, 1, ?, NOW())"; 
-    const {member_sid,ScoreResult}=req.body;
-    const [r] = await db.query(sql, [
-        fake_user,
-        ScoreResult
-    ]);
+    // if(!(output.error)){
+        const output = await getListHandler(req, res);
+        const sql = "INSERT INTO points_record (`member_sid`,`type`,`points_get`,`create_at`) VALUES (?, 1, ?, NOW())"; 
+        const {member_sid,ScoreResult}=req.body;
+        const [r] = await db.query(sql, [
+            fake_user,
+            ScoreResult
+        ]);
+    // }
     res.json(output);
-    console.log(123);
-    console.log(r);
-    console.log(ScoreResult);
 });
-
+router.get('/Api-check-point-result', async (req, res)=>{
+    const output = await getListHandler(req, res);
+    res.json(output);
+});
 
 module.exports = router;
