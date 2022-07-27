@@ -78,8 +78,6 @@ router.get("/post", async (req, res) => {
 
 const getPostHandler = async (req, res, sid) => {
     const op = {
-        perPage: 40,
-        totalRows: 0,
         code: 0,
         query: {},
         rows: []
@@ -91,6 +89,7 @@ const getPostHandler = async (req, res, sid) => {
                 `;
 
     const [rows, info] = await db.query(sql, [sid]);
+
     if (rows.length > 0) {
         op.code = 200;
     } else {
