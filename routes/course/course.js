@@ -22,6 +22,21 @@ router.get('/FK-get', async (req, res) => {
     res.json(r1);
 });
 
+// 新增的SQL語法
+// INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) VALUES (?,?,?,?,?,?,?)
+// 新增
+router.post('/add', async (req, res) => {
+    const data = req.body;
+    const { course_name, course_price, course_level, course_img_s, course_content, course_people, course_material } = req.body;
+    const sql = "INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) ";
+    // console.log(data);
+    const setSql = `VALUES (${course_name},${course_price},${course_level},${course_img_s},${course_content},${course_people},${course_material})`;
+    const insertSql = `${sql}${setSql}`;
+    const result = await db.query(insertSql);
+    // console.log(result);
+    return res.json('新增成功');
+});
+
 // ------------ 跟LINE PAY 串接的 API -----------
 router.post('/createOrder/:orderId', async (req, res) => {
     // 從URL把物件拿出來解開JSON
