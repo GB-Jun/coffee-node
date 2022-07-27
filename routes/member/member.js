@@ -66,25 +66,25 @@ router.post('/sign-up', async (req, res) => {
 
     const [result2] = await db.query(sqlAccount, [member_account]);
 
-    req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
 
     // 比對有沒有資料庫裡的帳號
-    if ( result2.length>0 ) {
+    if ( result2.length>0) {
         console.log(result2);
         output.error = "註冊失敗";
         return res.json(output);
+    }
+    else if(!member_name){
+        output.error = "沒有姓名";
+        res.json(output);
+    }else if(!member_password){
+        output.error = "沒有密碼";
+        res.json(output);
     }else{
         db.query(sql, [member_name, member_account, member_password]);
+        req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
         output.success = true;
         return res.json(output);
     }
-
-    // if (member_account!=="") {
-    //     output.success = true;
-    //     return res.json(output);
-    // }else{
-    //     output.error = '註冊失敗'
-    // }
 
 });
 
