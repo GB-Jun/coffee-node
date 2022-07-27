@@ -15,16 +15,17 @@ router.post('/login', upload.none(), async(req, res) => {
         error: '',
         code: 0,
     };
-    const sql = "SELECT * FROM `member` WHERE `member_account`=?";
-    const [result] = await db.query(sql, [req.body.member_account]);
+    const sql = "SELECT * FROM `member` WHERE `member_account`=? AND `member_password`=? LIMIT 1";
+    const [result] = await db.query(sql, [req.body.member_account,req.body.member_password]);
 
-
+    // 比對資料庫裡有沒有使用者輸入的帳密
     if (!result.length) {
         output.code = 401;
         output.error = '帳密錯誤';
         return res.json(output);
     }
 
+    // 比對密碼
     output.success = bcrypt.compare(req.body.member_password, result[0].member_password);
 
     if (!output.success) {
@@ -66,25 +67,25 @@ router.post('/sign-up', async (req, res) => {
 
     const [result2] = await db.query(sqlAccount, [member_account]);
 
-    req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
 
     // 比對有沒有資料庫裡的帳號
-    if ( result2.length>0 ) {
+    if ( result2.length>0) {
         console.log(result2);
         output.error = "註冊失敗";
         return res.json(output);
+    }
+    else if(!member_name){
+        output.error = "沒有姓名";
+        res.json(output);
+    }else if(!member_password){
+        output.error = "沒有密碼";
+        res.json(output);
     }else{
         db.query(sql, [member_name, member_account, member_password]);
+        req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
         output.success = true;
         return res.json(output);
     }
-
-    // if (member_account!=="") {
-    //     output.success = true;
-    //     return res.json(output);
-    // }else{
-    //     output.error = '註冊失敗'
-    // }
 
 });
 
