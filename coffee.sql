@@ -3,13 +3,19 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-28 04:59:20
+-- 產生時間： 2022-07-28 06:51:57
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.1.5
+-- PHP 版本： 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫: `coffee`
@@ -99,7 +105,10 @@ INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`
 (40, 2, 320, 3, 1, 27),
 (41, 4, 370, 2, 1, 27),
 (42, 1, 320, 5, 1, 28),
-(43, 4, 370, 1, 1, 28);
+(43, 4, 370, 1, 1, 28),
+(44, 1, 370, 2, 1, 0),
+(45, 2, 320, 1, 1, 0),
+(46, 3, 320, 3, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -329,8 +338,8 @@ CREATE TABLE `food_choice` (
   `food_choice_sid` int(11) NOT NULL,
   `food_id` int(11) NOT NULL,
   `food_price` int(11) NOT NULL,
-  `food_ice` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-  `food_sugar` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `food_ice` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `food_sugar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `food_quantity` int(11) NOT NULL,
   `food_member_id` int(11) NOT NULL,
   `food_order_id` int(11) NOT NULL
@@ -365,7 +374,37 @@ INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice
 (22, 6, 70, '少冰', '無糖', 4, 1, 27),
 (23, 1, 70, '正常冰', '無糖', 4, 1, 28),
 (24, 10, 60, '去冰', '半糖', 5, 1, 28),
-(25, 10, 60, '去冰', '半糖', 2, 1, 28);
+(25, 10, 60, '去冰', '半糖', 2, 1, 28),
+(26, 1, 70, NULL, NULL, 3, 1, 0),
+(27, 2, 80, NULL, NULL, 1, 1, 0),
+(28, 4, 50, '正常冰', '無糖', 5, 1, 0),
+(29, 7, 90, NULL, NULL, 1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `food_icesugar`
+--
+
+CREATE TABLE `food_icesugar` (
+  `food_icesugar_sid` int(11) NOT NULL,
+  `icesugar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `food_icesugar`
+--
+
+INSERT INTO `food_icesugar` (`food_icesugar_sid`, `icesugar`) VALUES
+(1, '正常冰'),
+(2, '少冰'),
+(3, '去冰'),
+(4, '常溫'),
+(5, '熱'),
+(6, '無糖'),
+(7, '微糖'),
+(8, '半糖'),
+(9, '全糖');
 
 -- --------------------------------------------------------
 
@@ -490,28 +529,29 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_sid`, `menu_categories`, `menu_photo`, `menu_name`, `menu_kcal`, `menu_price_m`, `menu_nutrition`, `created_at`) VALUES
-(1, '經典義式系列', 'fc033062ba74ce77a607c86eb0ae169a.jpg', '咖啡拿鐵', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
-(2, '經典義式系列', '06d9ab3a8927b95a122ccbbe921b5d11.jpg', '焦糖瑪奇朵', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
-(3, '經典義式系列', 'fce27a17509b9661faea67672060790c.jpg', '卡布奇諾', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
-(4, '經典義式系列', '2bc4ad5f136d9bddd94def6ead5051fa.jpg', '美式黑咖啡', 23.4, '50', '咖啡因含量:黃101-200mg/杯', '2022-06-13 00:00:00'),
-(5, '經典義式系列', 'c02cf3d08a79e90d5c94ddcfa38b54ff.jpg', '黑糖風味拿鐵', 375.2, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-14 00:00:00'),
-(6, '經典義式系列', '95b4eaef32ae64728737e570c5ae0625.jpg', '鴛鴦咖啡', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
-(7, '經典義式系列', '7344cd11fafd4f28e83bf91c25f13468.jpg', '香草風味拿鐵', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
-(8, '經典義式系列', 'fcab1487d7bcb7748ad656fc0c718186.jpg', '拿鐵歐蕾', 197.5, '75', '咖啡因含量:綠100mg以下/杯', '2022-06-17 00:00:00'),
-(9, '經典義式系列', 'fcb757f3fb568f15732945d69a7bcd86.png', '義式摩卡', 368, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-18 00:00:00'),
-(10, '精品咖啡', 'ef7cf4d26f30d37c21eb371b41750dc2.jpg', '莊園級美式', 15.5, '60', '咖啡因含量:紅201mg/杯', '2022-06-19 00:00:00'),
-(11, '精品咖啡', 'f5006e8c6b69456ee69937ce7907842e.jpg', '莊園級拿鐵', 267.7, '80', '咖啡因含量:紅201mg/杯', '2022-06-20 00:00:00'),
-(12, '精品咖啡', '4b283af4f7b3b5b54f14a38d351bdf22.jpg', '哥倫比亞', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-21 00:00:00'),
-(13, '精品咖啡', 'f20e6ecd30f045cc5cc6559ace330b54.jpg', '曼巴', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-22 00:00:00'),
-(14, '精品咖啡', 'd51a9066b9c546130b8d7061725bdeb9.jpg', '黃金曼特寧', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-23 00:00:00'),
-(15, '精品咖啡', 'd85d68ae5743fbfca13454474f801d50.jpg', '肯亞 精選小農', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-24 00:00:00'),
-(16, '精品咖啡', '0be476a58dd4f86a22117bd31b0ce468.jpg', '莊園老饕深焙', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-25 00:00:00'),
-(17, '精品咖啡', '7344cd11fafd4f28e83bf91c25f13468.jpg', '耶加雪菲', 4, '100', '咖啡因含量:黃101-200mg/杯', '2022-06-26 00:00:00'),
-(18, '其他飲品', '4a9510778ff1c96b4908c1a7295310e6.jpg', '義式巧克力', 378, '60', '總糖量:64.1公克', '2022-06-27 00:00:00'),
-(19, '其他飲品', '03f885f221affdaa7ecc1a2c5202fdca.jpg', '愛丁堡女王紅茶', 50, '40', '茶葉產地:印度、斯里蘭卡、尼泊爾、台灣、越南', '2022-06-28 00:00:00'),
-(20, '其他飲品', '03f885f221affdaa7ecc1a2c5202fdca.jpg', '宇治奶茶', 345, '50', '茶葉產地:日本京都府', '2022-06-29 00:00:00'),
-(21, '經典義式系列', '003.jpg', '本日精選咖啡', 425, '80', '咖啡因含量:黃101-200mg/杯	', '2022-06-13 08:55:25'),
-(22, '精品咖啡', 'coffe_dog.jpeg', '豪華的咖啡', 555, '9999', '咖啡因200MG', '2022-06-13 09:59:17');
+(1, '4', 'cake001.jpg', '蛋糕1', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
+(2, '4', 'cake002.jpg', '蛋糕2', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
+(3, '4', 'cake003.jpg', '蛋糕3', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
+(4, '4', 'cake004.jpg', '美式黑咖啡', 23.4, '50', '咖啡因含量:黃101-200mg/杯', '2022-06-13 00:00:00'),
+(5, '3', 'cake005.jpg', '黑糖風味拿鐵', 375.2, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-14 00:00:00'),
+(6, '1', 'food001.jpeg', '食物1', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
+(7, '2', 'salad001.jpeg', '沙拉1', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
+(8, '5', '9d8671c15bb0b49dee3efb42a3069ed8.jpg', '拿鐵歐蕾', 197.5, '75', '咖啡因含量:綠100mg以下/杯', '2022-06-17 00:00:00'),
+(9, '經典義式系列', 'd2d87c13394493eabdd11b103eb064f3.png', '義式摩卡', 368, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-18 00:00:00'),
+(10, '精品咖啡', 'd9a76cfe99cf192d735c9c9cb70d4448.jpg', '莊園級美式', 15.5, '60', '咖啡因含量:紅201mg/杯', '2022-06-19 00:00:00'),
+(11, '精品咖啡', 'b3d11ac20f069a07f15bd5c498335555.jpg', '莊園級拿鐵', 267.7, '80', '咖啡因含量:紅201mg/杯', '2022-06-20 00:00:00'),
+(12, '精品咖啡', '75e5cbe6cc51ad01657f623c0d099b1e.jpg', '哥倫比亞', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-21 00:00:00'),
+(13, '精品咖啡', '6e21e68eb8f62bcc4246bc62dcd0d4ae.jpg', '曼巴', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-22 00:00:00'),
+(14, '精品咖啡', '4131a52558bd761115c72d8bf080fe27.jpg', '黃金曼特寧', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-23 00:00:00'),
+(15, '精品咖啡', '733bae90259eeca1be4e770face3928d.jpg', '肯亞 精選小農', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-24 00:00:00'),
+(16, '精品咖啡', 'd70f655a4d141c7f8d350dfdab6a149d.jpg', '莊園老饕深焙', 4, '95', '咖啡因含量:黃101-200mg/杯', '2022-06-25 00:00:00'),
+(17, '精品咖啡', '5c12bdc581899e387e4b30759fef309a.jpg', '耶加雪菲', 4, '100', '咖啡因含量:黃101-200mg/杯', '2022-06-26 00:00:00'),
+(18, '其他飲品', 'b1c356819ea30ce2ab7cce65ada72a0d.png', '義式巧克力', 378, '60', '總糖量:64.1公克', '2022-06-27 00:00:00'),
+(19, '其他飲品', 'aed82eb7f25076a5759aba638a9ef9cd.jpg', '愛丁堡女王紅茶', 50, '40', '茶葉產地:印度、斯里蘭卡、尼泊爾、台灣、越南', '2022-06-28 00:00:00'),
+(20, '其他飲品', '2cd478061562819a23f4e0b50c8a1950.jpg', '宇治奶茶', 345, '50', '茶葉產地:日本京都府', '2022-06-29 00:00:00'),
+(33, '其他飲品', '20210217_025217.jpeg', '英國百年茶莊紅茶冰沙', 475, '50', '紅茶產地：英國', '2022-06-12 00:04:21'),
+(34, '精品咖啡', '0be476a58dd4f86a22117bd31b0ce468.jpg', '咖啡拿鐵', 4324, '55', '咖啡因含量:黃101-200mg/杯', '2022-06-12 12:03:34'),
+(35, '精品咖啡', '2bc4ad5f136d9bddd94def6ead5051fa.jpg', '咖啡拿鐵 (冰)', 381.41, '4324', '423', '2022-06-12 17:40:39');
 
 -- --------------------------------------------------------
 
@@ -931,7 +971,7 @@ CREATE TABLE `products` (
   `products_forsale` int(255) NOT NULL,
   `products_onsale` int(255) NOT NULL,
   `products_stack` int(255) NOT NULL,
-  `products_with_products_categroies_sid` int(255) NOT NULL,
+  `products_with_products_categories_sid` int(255) NOT NULL,
   `products_pic` varchar(255) DEFAULT NULL,
   `products_picMuti` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -940,7 +980,7 @@ CREATE TABLE `products` (
 -- 傾印資料表的資料 `products`
 --
 
-INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `products_info`, `products_intro`, `products_spec`, `products_price`, `products_forsale`, `products_onsale`, `products_stack`, `products_with_products_categroies_sid`, `products_pic`, `products_picMuti`) VALUES
+INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `products_info`, `products_intro`, `products_spec`, `products_price`, `products_forsale`, `products_onsale`, `products_stack`, `products_with_products_categories_sid`, `products_pic`, `products_picMuti`) VALUES
 (1, '1658890257', '肯亞AA TOP(十包一入)', 'AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '產地:非洲\r\n處理法:水洗\r\n風味:黑梅/李子/葡萄\r\nAA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 370, 1, 0, 3000, 1, 'bag1-1.jpg', 'bag1-1.jpg,bag1-2.jpg,bag1-3.jpg'),
 (2, '1658890306', '模範生(十包一入)', '具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '產地:哥倫比亞\r\n處理法:水洗\r\n風味:柑橘/可可/奶油\r\n具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 320, 1, 0, 5000, 1, 'bag2-1.jpg', 'bag2-1.jpg,bag2-2.jpg,bag2-3.jpg'),
 (3, '1658890354', '征服者(十包一入)', '征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '產地:哥斯大黎加\r\n處理法:水洗\r\n風味:黑巧克力/可可/奶油\r\n征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 320, 1, 0, 4000, 1, 'bag3-1.jpg', 'bag3-1.jpg,bag3-2.jpg,bag3-3.jpg'),
@@ -1020,7 +1060,7 @@ CREATE TABLE `productsold` (
   `products_forsale` int(11) DEFAULT NULL,
   `products_onsale` int(11) DEFAULT NULL,
   `products_stocks` int(11) DEFAULT NULL,
-  `products_with_products_categroies_sid` int(11) DEFAULT NULL,
+  `products_with_products_categories_sid` int(11) DEFAULT NULL,
   `products_with_products_style_filter_sid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1028,7 +1068,7 @@ CREATE TABLE `productsold` (
 -- 傾印資料表的資料 `productsold`
 --
 
-INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `products_introduction`, `products_detail_introduction`, `products_price`, `products_forsale`, `products_onsale`, `products_stocks`, `products_with_products_categroies_sid`, `products_with_products_style_filter_sid`) VALUES
+INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `products_introduction`, `products_detail_introduction`, `products_price`, `products_forsale`, `products_onsale`, `products_stocks`, `products_with_products_categories_sid`, `products_with_products_style_filter_sid`) VALUES
 (1, '1655026660', '曼巴咖啡(一包十入)', '濾掛式曼巴咖啡, 一包十入', '捨去曼特寧的濃烈與巴西的酸味，將曼特寧圓潤厚重的苦味與巴西微甜融合成溫順的曼巴，散發出自然甘甜的清香，集優雅的清爽與強勁香醇於一杯。', 320, 0, 1, 3500, 2, 2),
 (2, '1655027037', '瓜地馬拉花神(一包十入)', '瓜地馬拉花神(十包一入)', '花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', 320, 0, 1, 5000, 2, 1),
 (3, '1655027132', '耶加雪菲(一包十入)', '耶加雪菲(一包十入)', '日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩', 320, 1, 1, 5000, 2, 1),
@@ -1046,19 +1086,19 @@ INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `products_categroies`
+-- 資料表結構 `products_categories`
 --
 
-CREATE TABLE `products_categroies` (
-  `products_categroies_sid` int(11) NOT NULL,
-  `products_categroies_name` varchar(255) NOT NULL
+CREATE TABLE `products_categories` (
+  `products_categories_sid` int(11) NOT NULL,
+  `products_categories_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `products_categroies`
+-- 傾印資料表的資料 `products_categories`
 --
 
-INSERT INTO `products_categroies` (`products_categroies_sid`, `products_categroies_name`) VALUES
+INSERT INTO `products_categories` (`products_categories_sid`, `products_categories_name`) VALUES
 (1, '濾掛式咖啡'),
 (2, '咖啡豆'),
 (3, '咖啡周邊器具'),
@@ -1119,14 +1159,14 @@ INSERT INTO `products_pic` (`products_pic_sid`, `products_pic_one`, `products_pi
 
 CREATE TABLE `products_style_filter` (
   `products_style_filter_sid` int(11) NOT NULL,
-  `products_style_filter_categroies` varchar(255) NOT NULL
+  `products_style_filter_categories` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `products_style_filter`
 --
 
-INSERT INTO `products_style_filter` (`products_style_filter_sid`, `products_style_filter_categroies`) VALUES
+INSERT INTO `products_style_filter` (`products_style_filter_sid`, `products_style_filter_categories`) VALUES
 (1, '偏酸'),
 (2, '偏苦'),
 (3, '器材'),
@@ -1301,6 +1341,12 @@ ALTER TABLE `food_choice`
   ADD PRIMARY KEY (`food_choice_sid`);
 
 --
+-- 資料表索引 `food_icesugar`
+--
+ALTER TABLE `food_icesugar`
+  ADD PRIMARY KEY (`food_icesugar_sid`);
+
+--
 -- 資料表索引 `lastest_news`
 --
 ALTER TABLE `lastest_news`
@@ -1380,10 +1426,10 @@ ALTER TABLE `productsold`
   ADD PRIMARY KEY (`products_sid`);
 
 --
--- 資料表索引 `products_categroies`
+-- 資料表索引 `products_categories`
 --
-ALTER TABLE `products_categroies`
-  ADD PRIMARY KEY (`products_categroies_sid`);
+ALTER TABLE `products_categories`
+  ADD PRIMARY KEY (`products_categories_sid`);
 
 --
 -- 資料表索引 `products_pic`
@@ -1441,7 +1487,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1489,7 +1535,13 @@ ALTER TABLE `course_related`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
 --
 ALTER TABLE `food_choice`
-  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `food_icesugar`
+--
+ALTER TABLE `food_icesugar`
+  MODIFY `food_icesugar_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `lastest_news`
@@ -1513,7 +1565,7 @@ ALTER TABLE `member_likes`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu1`
@@ -1570,10 +1622,10 @@ ALTER TABLE `productsold`
   MODIFY `products_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `products_categroies`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `products_categories`
 --
-ALTER TABLE `products_categroies`
-  MODIFY `products_categroies_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `products_categories`
+  MODIFY `products_categories_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products_pic`
@@ -1611,3 +1663,7 @@ ALTER TABLE `review_likes`
 ALTER TABLE `tag`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
