@@ -7,6 +7,18 @@ const { LINEPAY_CHANNEL_ID, LINEPAY_CHANNEL_SECRET_KEY, LINEPAY_VERSION, LINEPAY
 const uuid = require('uuid');
 const axios = require("axios");
 const orders = {};
+const upload = require(__dirname + '/./upload-images');
+
+
+
+//上傳照片
+router.post('/upload', upload.single('avatar'), (req, res) => {
+    res.json(req.file);
+});
+//上傳多個檔案
+router.post('/uploads', upload.array('photos'), (req, res) => {
+    res.json(req.files);
+});
 
 
 // 資料全拿
