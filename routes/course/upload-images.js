@@ -11,8 +11,8 @@ function fileFilter(req, file, cb) {
     cb(null, !!extMap[file.mimetype]);
 }
 
-const uuidArr = uuidv4().split('-').join('');
-console.log(uuidArr);
+// const uuidArr = uuidv4().split('-').join('');
+// console.log(uuidArr);
 // const newTime = parseInt(new Date() / 100);
 // console.log(newTime);
 const storage = multer.diskStorage({
@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
         cb(null, __dirname + '/../../public/images/course');
     },
     filename: function (req, file, cb) {
-        const filename = uuidArr + extMap[file.mimetype];
+        const filename = uuidv4() + extMap[file.mimetype];
         cb(null, filename);
     }
 });

@@ -45,7 +45,20 @@ router.post('/add', async (req, res) => {
     const setSql = `VALUES (${course_name},${course_price},${course_level},\"${course_img_s}\",${course_content},${course_people},${course_material})`;
     const insertSql = `${sql}${setSql}`;
     const result = await db.query(insertSql);
-    // console.log(result);
+    console.log(result);
+    return res.json(result[0].insertId);
+});
+
+// 新增外鍵
+router.post('/addfk', async (req, res) => {
+    console.log(req.body);
+    const { course_sid, course_date, course_time, course_img_l } = req.body;
+    const sql = "INSERT INTO `course_related`(`course_sid`, `course_date`, `course_time`, `course_img_l`) ";
+    // console.log(data);
+    const setSql = `VALUES (${course_sid},\"${course_date}\",${course_time},\"${course_img_l}\")`;
+    const insertSql = `${sql}${setSql}`;
+    const result = await db.query(insertSql);
+    console.log(result);
     return res.json(result);
 });
 
