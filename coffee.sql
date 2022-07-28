@@ -3,13 +3,19 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-28 06:25:28
+-- 產生時間： 2022-07-28 06:51:57
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.1.5
+-- PHP 版本： 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫: `coffee`
@@ -99,7 +105,10 @@ INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`
 (40, 2, 320, 3, 1, 27),
 (41, 4, 370, 2, 1, 27),
 (42, 1, 320, 5, 1, 28),
-(43, 4, 370, 1, 1, 28);
+(43, 4, 370, 1, 1, 28),
+(44, 1, 370, 2, 1, 0),
+(45, 2, 320, 1, 1, 0),
+(46, 3, 320, 3, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -329,8 +338,8 @@ CREATE TABLE `food_choice` (
   `food_choice_sid` int(11) NOT NULL,
   `food_id` int(11) NOT NULL,
   `food_price` int(11) NOT NULL,
-  `food_ice` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-  `food_sugar` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `food_ice` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `food_sugar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `food_quantity` int(11) NOT NULL,
   `food_member_id` int(11) NOT NULL,
   `food_order_id` int(11) NOT NULL
@@ -365,7 +374,11 @@ INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice
 (22, 6, 70, '少冰', '無糖', 4, 1, 27),
 (23, 1, 70, '正常冰', '無糖', 4, 1, 28),
 (24, 10, 60, '去冰', '半糖', 5, 1, 28),
-(25, 10, 60, '去冰', '半糖', 2, 1, 28);
+(25, 10, 60, '去冰', '半糖', 2, 1, 28),
+(26, 1, 70, NULL, NULL, 3, 1, 0),
+(27, 2, 80, NULL, NULL, 1, 1, 0),
+(28, 4, 50, '正常冰', '無糖', 5, 1, 0),
+(29, 7, 90, NULL, NULL, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -516,13 +529,13 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_sid`, `menu_categories`, `menu_photo`, `menu_name`, `menu_kcal`, `menu_price_m`, `menu_nutrition`, `created_at`) VALUES
-(1, '4', 'cake001.jpg', '咖啡拿鐵!!!!!', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
-(2, '4', 'cake002.jpg', '焦糖瑪奇朵', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
-(3, '4', 'cake003.jpg', '卡布奇諾', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
+(1, '4', 'cake001.jpg', '蛋糕1', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
+(2, '4', 'cake002.jpg', '蛋糕2', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
+(3, '4', 'cake003.jpg', '蛋糕3', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
 (4, '4', 'cake004.jpg', '美式黑咖啡', 23.4, '50', '咖啡因含量:黃101-200mg/杯', '2022-06-13 00:00:00'),
 (5, '3', 'cake005.jpg', '黑糖風味拿鐵', 375.2, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-14 00:00:00'),
-(6, '1', 'food001.jpeg', '鴛鴦咖啡', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
-(7, '2', 'salad001.jpeg', '香草風味拿鐵', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
+(6, '1', 'food001.jpeg', '食物1', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
+(7, '2', 'salad001.jpeg', '沙拉1', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
 (8, '5', '9d8671c15bb0b49dee3efb42a3069ed8.jpg', '拿鐵歐蕾', 197.5, '75', '咖啡因含量:綠100mg以下/杯', '2022-06-17 00:00:00'),
 (9, '經典義式系列', 'd2d87c13394493eabdd11b103eb064f3.png', '義式摩卡', 368, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-18 00:00:00'),
 (10, '精品咖啡', 'd9a76cfe99cf192d735c9c9cb70d4448.jpg', '莊園級美式', 15.5, '60', '咖啡因含量:紅201mg/杯', '2022-06-19 00:00:00'),
@@ -1474,7 +1487,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1522,7 +1535,7 @@ ALTER TABLE `course_related`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
 --
 ALTER TABLE `food_choice`
-  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_icesugar`
@@ -1552,7 +1565,7 @@ ALTER TABLE `member_likes`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu1`
@@ -1650,3 +1663,7 @@ ALTER TABLE `review_likes`
 ALTER TABLE `tag`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
