@@ -48,7 +48,8 @@ const getListHandler = async (req, res)=>{
                 output.error = '頁碼太大';
                 return output;
             }
-            sql = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid WHERE coupon_receive.end_time >NOW() AND coupon_receive.status =0 AND coupon_receive.member_sid=? ORDER BY end_time DESC LIMIT ${(page-1)*output.perPage}, ${output.perPage}`;
+            sql = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid WHERE coupon_receive.end_time >NOW() AND coupon_receive.status =0 AND coupon_receive.member_sid=? ORDER BY end_time DESC `;
+            // LIMIT ${(page-1)*output.perPage}, ${output.perPage}
             const [r2] = await db.query(sql,[fake_user]);
             output.rows = r2;
         }
@@ -76,7 +77,8 @@ const getListHandler = async (req, res)=>{
                 output.error = '頁碼太大';
                 return output;
             }
-            sql4 = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status,coupon_logs.used_time,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE  coupon_receive.end_time < NOW() OR coupon_logs.used_time >0 AND coupon_receive.member_sid=? LIMIT ${(page-1)*output.perPage}, ${output.perPage}`;
+            sql4 = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status,coupon_logs.used_time,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE  coupon_receive.end_time < NOW() OR coupon_logs.used_time >0 AND coupon_receive.member_sid=? `;
+            // LIMIT ${(page-1)*output.perPage}, ${output.perPage}
             const [r4] = await db.query(sql4,[fake_user]);
             output.rows = r4;
         }
@@ -93,18 +95,9 @@ const getListHandler = async (req, res)=>{
 };
 // ==========================
 
-router.get('/', async (req, res)=>{
-    
+router.get('/API', async (req, res)=>{
     const output = await getListHandler(req, res);
-    switch(output.code){
-        case 410:
-            return res.redirect(`?page=1`);
-            break;
-        case 420:
-            return res.redirect(`?page={output.totalPages}`);
-            break;
-    }
-    res.render("coupon_foruser/main", output);
+    res.json(output);
 });
 
 module.exports = router;
