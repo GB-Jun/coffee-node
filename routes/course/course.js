@@ -38,10 +38,11 @@ router.get('/FK-get', async (req, res) => {
 // INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) VALUES (?,?,?,?,?,?,?)
 // 新增
 router.post('/add', async (req, res) => {
+    console.log(req.body);
     const { course_name, course_price, course_level, course_img_s, course_content, course_people, course_material } = req.body;
     const sql = "INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) ";
     // console.log(data);
-    const setSql = `VALUES (${course_name},${course_price},${course_level},${course_img_s},${course_content},${course_people},${course_material})`;
+    const setSql = `VALUES (${course_name},${course_price},${course_level},\"${course_img_s}\",${course_content},${course_people},${course_material})`;
     const insertSql = `${sql}${setSql}`;
     const result = await db.query(insertSql);
     // console.log(result);
