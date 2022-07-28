@@ -7,34 +7,34 @@ const uploads = require(__dirname + "/../../modules/upload-images");
 
 
 const getListHandler = async (req, res) => {
+    const rowsPerPage = 20;
     const op = {
-        perPage: 40,
         totalRows: 0,
+        rowsPerPage,
         code: 0,
         query: {},
-        rows: []
+        rows: [],
+        isEnd: false
     }
 
-    let where = ' WHERE 1 ';
-    op.page = +req.query.page || 1;
-    op.query.search = req.query.search || '';
-
-
-
-    const sql = `SELECT COUNT(1) totalRows FROM post ${where}`;
+    const sql = `SELECT COUNT(1) totalRows FROM post WHERE post.delete_state = 0`;
     const [[{ totalRows }]] = await db.query(sql);
+    
+    const totalPage = Math.ceil(totalRows / rowsPerPage);
+    op.query.times = req.query.times || 0;
+    op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
 
-    op.totalRows = totalRows;
 
     if (totalRows) {
         const sql = `
             SELECT p.* ,pi.img_name ,pi.sort,m.avatar 
             FROM \`post\` p 
-            JOIN \`post_img\` pi 
+            LEFT JOIN \`post_img\` pi 
             ON p.sid = pi.post_sid 
             LEFT JOIN \`member\` m
             ON p.member_sid = m.member_sid
             WHERE pi.sort = 1 AND p.delete_state = 0
+            LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}
         `;
         [op.rows] = await db.query(sql);
 
