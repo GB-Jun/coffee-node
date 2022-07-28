@@ -3,19 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-28 06:51:57
+-- 產生時間： 2022-07-28 10:42:32
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 7.4.29
+-- PHP 版本： 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫: `coffee`
@@ -442,6 +436,24 @@ INSERT INTO `lastest_news` (`news_sid`, `news_img`, `news_title`, `news_class_si
 (22, 'd87e02b59b55dd00c75260dc3badc0e8.jpg', '凡購買曼巴咖啡豆，即可獲得精美好禮~', 1, '2022-06-13', '2022-06-30', '即日起凡購買曼巴咖啡豆系列任兩件，第二件即可打七折呦，分享優惠再送濾掛式咖啡一包! 贈品數量有限，要買要快喔~', '2022-06-11 17:07:22', 0),
 (23, 'eacbfa0087fb2bc6f1c57429e1349b33.jpg', '一同享受炎熱夏日的小確幸，周年慶全品項8折!', 2, '2022-07-01', '2022-07-17', '周年慶活動7/1提前開跑，\r\n本門市於7/1~7/17號，每周二 | 三，\r\n凡來店消費飲品、餐食、甜點，全面8折優惠，\r\n來拎+B陪您渡過炎炎的夏日，趕快來享受這小確幸吧!', '2022-06-11 17:20:32', 0),
 (24, 'ef23bf03408de952fea0692318738c50.jpg', '天造地設的幸福絕配 來拎+B即將推出5款經典蛋糕~', 2, '2022-06-13', '2022-12-19', '----風味聯姻 天造地設的幸福絕配---\r\n🍰 卡士達千層蛋糕領軍 來拎+B推出5款經典蛋糕 🍰\r\n以咖啡融入生活的五感，讓生活滋味妝點著咖啡的甘以及蛋糕的甜\r\n來拎+以咖啡風味聯姻概念，打造5款與咖啡絕配的經典甜點\r\n讓咖啡與甜點迷用來拎+好咖啡與經典甜點，幸福包覆著每日生活\r\n即日起到12月19日點購全新的5款「經典甜點」，再加「本日精品」咖啡，可享10元現折優惠~', '2022-06-11 18:25:27', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `mapapi`
+--
+
+CREATE TABLE `mapapi` (
+  `mapapi_sid` int(11) NOT NULL,
+  `mapapi_key` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `mapapi`
+--
+
+INSERT INTO `mapapi` (`mapapi_sid`, `mapapi_key`) VALUES
+(1, 'AIzaSyCBVfTVK3SMBOShZ8yflHk4hXwxiw2YkqM');
 
 -- --------------------------------------------------------
 
@@ -1353,6 +1365,12 @@ ALTER TABLE `lastest_news`
   ADD PRIMARY KEY (`news_sid`);
 
 --
+-- 資料表索引 `mapapi`
+--
+ALTER TABLE `mapapi`
+  ADD PRIMARY KEY (`mapapi_sid`);
+
+--
 -- 資料表索引 `member`
 --
 ALTER TABLE `member`
@@ -1550,6 +1568,12 @@ ALTER TABLE `lastest_news`
   MODIFY `news_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `mapapi`
+--
+ALTER TABLE `mapapi`
+  MODIFY `mapapi_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
@@ -1663,7 +1687,3 @@ ALTER TABLE `review_likes`
 ALTER TABLE `tag`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
