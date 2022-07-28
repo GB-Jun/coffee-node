@@ -7,6 +7,18 @@ const { LINEPAY_CHANNEL_ID, LINEPAY_CHANNEL_SECRET_KEY, LINEPAY_VERSION, LINEPAY
 const uuid = require('uuid');
 const axios = require("axios");
 const orders = {};
+const upload = require(__dirname + '/./upload-images');
+
+
+
+//上傳照片
+router.post('/upload', upload.single('avatar'), (req, res) => {
+    res.json(req.file);
+});
+//上傳多個檔案
+router.post('/uploads', upload.array('photos'), (req, res) => {
+    res.json(req.files);
+});
 
 
 // 資料全拿
@@ -20,6 +32,20 @@ router.get('/FK-get', async (req, res) => {
     const sql1 = "SELECT * FROM`course` JOIN course_related ON `course`.`course_sid` = `course_related`.`course_sid`";
     const [r1] = await db.query(sql1);
     res.json(r1);
+});
+
+// 新增的SQL語法
+// INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) VALUES (?,?,?,?,?,?,?)
+// 新增
+router.post('/add', async (req, res) => {
+    const { course_name, course_price, course_level, course_img_s, course_content, course_people, course_material } = req.body;
+    const sql = "INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) ";
+    // console.log(data);
+    const setSql = `VALUES (${course_name},${course_price},${course_level},${course_img_s},${course_content},${course_people},${course_material})`;
+    const insertSql = `${sql}${setSql}`;
+    const result = await db.query(insertSql);
+    // console.log(result);
+    return res.json(result);
 });
 
 // ------------ 跟LINE PAY 串接的 API -----------

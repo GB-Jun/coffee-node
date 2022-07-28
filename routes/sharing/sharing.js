@@ -7,7 +7,7 @@ const uploads = require(__dirname + "/../../modules/upload-images");
 
 
 const getListHandler = async (req, res) => {
-    let op = {
+    const op = {
         perPage: 40,
         totalRows: 0,
         code: 0,
@@ -65,13 +65,52 @@ const getListHandler = async (req, res) => {
 
 
 
-router.get("/api", async (req, res) => {
+router.get("/post", async (req, res) => {
     let output = {
         success: false,
         error: ''
     };
 
     output = { ...(await getListHandler(req, res)), success: true };
+
+    res.json(output);
+});
+
+const getPostHandler = async (req, res, sid) => {
+    const op = {
+        code: 0,
+        query: {},
+        rows: []
+    }
+
+    const sql = `
+                    SELECT * FROM \`post\` 
+                    WHERE \`sid\` = ?
+                `;
+
+    const [rows, info] = await db.query(sql, [sid]);
+
+    if (rows.length > 0) {
+        op.code = 200;
+    } else {
+        op.code = 204;
+    }
+
+    op.rows = rows;
+
+
+    return op;
+}
+
+router.get("/post/:post_sid", async (req, res) => {
+    const post_sid = req.params.post_sid;
+    let output = {
+        success: false,
+        error: '',
+        sid: post_sid
+    };
+
+    output = { ...(await getPostHandler(req, res, post_sid)), success: true };
 
     res.json(output);
 });

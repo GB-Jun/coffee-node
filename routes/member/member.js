@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
 
-
+// --------------------- 登入 ---------------------
 router.post('/login', upload.none(), async(req, res) => {
 
     const output = {
@@ -15,22 +15,28 @@ router.post('/login', upload.none(), async(req, res) => {
         error: '',
         code: 0,
     };
-    const sql = "SELECT * FROM `member` WHERE `member_account`=?";
+    const sql = "SELECT * FROM `member` WHERE `member_account`=? ";
     const [result] = await db.query(sql, [req.body.member_account]);
 
 
+    // 比對資料庫裡有沒有使用者輸入的帳密
     if (!result.length) {
         output.code = 401;
         output.error = '帳密錯誤';
+        
         return res.json(output);
     }
 
-    output.success = bcrypt.compare(req.body.member_password, result[0].member_password);
-
+    // 比對密碼
+    output.success = bcrypt.compareSync(req.body.member_password,result[0].member_password);
+    console.log(bcrypt.compareSync(req.body.member_password,result[0].member_password));
+    
     if (!output.success) {
         // 密碼錯誤
         output.code = 402;
         output.error = '帳密錯誤';
+        output.success = false;
+        
     } else {
         // 成功登入
         const token = jwt.sign({
@@ -50,7 +56,7 @@ router.post('/login', upload.none(), async(req, res) => {
 });
 
 
-
+// --------------------- 註冊 ---------------------
 router.post('/sign-up', async (req, res) => {
 
     const output = {
@@ -62,7 +68,6 @@ router.post('/sign-up', async (req, res) => {
     const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
     
     const {member_name, member_account, member_password} = req.body;
-
 
     const [result2] = await db.query(sqlAccount, [member_account]);
 
@@ -80,15 +85,23 @@ router.post('/sign-up', async (req, res) => {
         output.error = "沒有密碼";
         res.json(output);
     }else{
-        db.query(sql, [member_name, member_account, member_password]);
-        req.body.member_password = bcrypt.hashSync(req.body.member_password, 10);
+        const hashPass = await bcrypt.hash(req.body.member_password, 10);
+        db.query(sql, [member_name, member_account, hashPass]);
         output.success = true;
         return res.json(output);
     }
 
 });
 
+// --------------------- 讀取會員資料 ---------------------
+router.get('/api/user-list', async (req, res) => {
+    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid`=1";
+    const [results] = await db.query(sql);
 
+    res.json(results);
+});
+
+// --------------------- 歷史訂單 ---------------------
 router.get('/order-history', async (req, res) => {
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
     const [results] = await db.query(sql);
