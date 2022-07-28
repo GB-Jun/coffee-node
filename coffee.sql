@@ -971,7 +971,7 @@ CREATE TABLE `products` (
   `products_forsale` int(255) NOT NULL,
   `products_onsale` int(255) NOT NULL,
   `products_stack` int(255) NOT NULL,
-  `products_with_products_categroies_sid` int(255) NOT NULL,
+  `products_with_products_categories_sid` int(255) NOT NULL,
   `products_pic` varchar(255) DEFAULT NULL,
   `products_picMuti` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -980,7 +980,7 @@ CREATE TABLE `products` (
 -- 傾印資料表的資料 `products`
 --
 
-INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `products_info`, `products_intro`, `products_spec`, `products_price`, `products_forsale`, `products_onsale`, `products_stack`, `products_with_products_categroies_sid`, `products_pic`, `products_picMuti`) VALUES
+INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `products_info`, `products_intro`, `products_spec`, `products_price`, `products_forsale`, `products_onsale`, `products_stack`, `products_with_products_categories_sid`, `products_pic`, `products_picMuti`) VALUES
 (1, '1658890257', '肯亞AA TOP(十包一入)', 'AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '產地:非洲\r\n處理法:水洗\r\n風味:黑梅/李子/葡萄\r\nAA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 370, 1, 0, 3000, 1, 'bag1-1.jpg', 'bag1-1.jpg,bag1-2.jpg,bag1-3.jpg'),
 (2, '1658890306', '模範生(十包一入)', '具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '產地:哥倫比亞\r\n處理法:水洗\r\n風味:柑橘/可可/奶油\r\n具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 320, 1, 0, 5000, 1, 'bag2-1.jpg', 'bag2-1.jpg,bag2-2.jpg,bag2-3.jpg'),
 (3, '1658890354', '征服者(十包一入)', '征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '產地:哥斯大黎加\r\n處理法:水洗\r\n風味:黑巧克力/可可/奶油\r\n征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '成分：100% 阿拉比卡咖啡豆\r\n商品規格：10g x 10包 　\r\n製造地：台灣\r\n保存期限：18個月，製造日期如包裝標示\r\n儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢\r\n咖啡因含量：41.1mg / 包\r\n', 320, 1, 0, 4000, 1, 'bag3-1.jpg', 'bag3-1.jpg,bag3-2.jpg,bag3-3.jpg'),
@@ -1060,7 +1060,7 @@ CREATE TABLE `productsold` (
   `products_forsale` int(11) DEFAULT NULL,
   `products_onsale` int(11) DEFAULT NULL,
   `products_stocks` int(11) DEFAULT NULL,
-  `products_with_products_categroies_sid` int(11) DEFAULT NULL,
+  `products_with_products_categories_sid` int(11) DEFAULT NULL,
   `products_with_products_style_filter_sid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1068,7 +1068,7 @@ CREATE TABLE `productsold` (
 -- 傾印資料表的資料 `productsold`
 --
 
-INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `products_introduction`, `products_detail_introduction`, `products_price`, `products_forsale`, `products_onsale`, `products_stocks`, `products_with_products_categroies_sid`, `products_with_products_style_filter_sid`) VALUES
+INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `products_introduction`, `products_detail_introduction`, `products_price`, `products_forsale`, `products_onsale`, `products_stocks`, `products_with_products_categories_sid`, `products_with_products_style_filter_sid`) VALUES
 (1, '1655026660', '曼巴咖啡(一包十入)', '濾掛式曼巴咖啡, 一包十入', '捨去曼特寧的濃烈與巴西的酸味，將曼特寧圓潤厚重的苦味與巴西微甜融合成溫順的曼巴，散發出自然甘甜的清香，集優雅的清爽與強勁香醇於一杯。', 320, 0, 1, 3500, 2, 2),
 (2, '1655027037', '瓜地馬拉花神(一包十入)', '瓜地馬拉花神(十包一入)', '花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', 320, 0, 1, 5000, 2, 1),
 (3, '1655027132', '耶加雪菲(一包十入)', '耶加雪菲(一包十入)', '日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩', 320, 1, 1, 5000, 2, 1),
@@ -1086,19 +1086,19 @@ INSERT INTO `productsold` (`products_sid`, `products_number`, `products_name`, `
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `products_categroies`
+-- 資料表結構 `products_categories`
 --
 
-CREATE TABLE `products_categroies` (
-  `products_categroies_sid` int(11) NOT NULL,
-  `products_categroies_name` varchar(255) NOT NULL
+CREATE TABLE `products_categories` (
+  `products_categories_sid` int(11) NOT NULL,
+  `products_categories_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `products_categroies`
+-- 傾印資料表的資料 `products_categories`
 --
 
-INSERT INTO `products_categroies` (`products_categroies_sid`, `products_categroies_name`) VALUES
+INSERT INTO `products_categories` (`products_categories_sid`, `products_categories_name`) VALUES
 (1, '濾掛式咖啡'),
 (2, '咖啡豆'),
 (3, '咖啡周邊器具'),
@@ -1159,14 +1159,14 @@ INSERT INTO `products_pic` (`products_pic_sid`, `products_pic_one`, `products_pi
 
 CREATE TABLE `products_style_filter` (
   `products_style_filter_sid` int(11) NOT NULL,
-  `products_style_filter_categroies` varchar(255) NOT NULL
+  `products_style_filter_categories` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `products_style_filter`
 --
 
-INSERT INTO `products_style_filter` (`products_style_filter_sid`, `products_style_filter_categroies`) VALUES
+INSERT INTO `products_style_filter` (`products_style_filter_sid`, `products_style_filter_categories`) VALUES
 (1, '偏酸'),
 (2, '偏苦'),
 (3, '器材'),
@@ -1426,10 +1426,10 @@ ALTER TABLE `productsold`
   ADD PRIMARY KEY (`products_sid`);
 
 --
--- 資料表索引 `products_categroies`
+-- 資料表索引 `products_categories`
 --
-ALTER TABLE `products_categroies`
-  ADD PRIMARY KEY (`products_categroies_sid`);
+ALTER TABLE `products_categories`
+  ADD PRIMARY KEY (`products_categories_sid`);
 
 --
 -- 資料表索引 `products_pic`
@@ -1622,10 +1622,10 @@ ALTER TABLE `productsold`
   MODIFY `products_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `products_categroies`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `products_categories`
 --
-ALTER TABLE `products_categroies`
-  MODIFY `products_categroies_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `products_categories`
+  MODIFY `products_categories_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products_pic`
