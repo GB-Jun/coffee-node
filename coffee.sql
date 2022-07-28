@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-28 04:59:20
+-- 產生時間： 2022-07-28 06:25:28
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -370,6 +370,32 @@ INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `food_icesugar`
+--
+
+CREATE TABLE `food_icesugar` (
+  `food_icesugar_sid` int(11) NOT NULL,
+  `icesugar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `food_icesugar`
+--
+
+INSERT INTO `food_icesugar` (`food_icesugar_sid`, `icesugar`) VALUES
+(1, '正常冰'),
+(2, '少冰'),
+(3, '去冰'),
+(4, '常溫'),
+(5, '熱'),
+(6, '無糖'),
+(7, '微糖'),
+(8, '半糖'),
+(9, '全糖');
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `lastest_news`
 --
 
@@ -490,13 +516,13 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_sid`, `menu_categories`, `menu_photo`, `menu_name`, `menu_kcal`, `menu_price_m`, `menu_nutrition`, `created_at`) VALUES
-(1, '經典義式系列', 'fc033062ba74ce77a607c86eb0ae169a.jpg', '咖啡拿鐵', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
-(2, '經典義式系列', '06d9ab3a8927b95a122ccbbe921b5d11.jpg', '焦糖瑪奇朵', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
-(3, '經典義式系列', 'fce27a17509b9661faea67672060790c.jpg', '卡布奇諾', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
-(4, '經典義式系列', '2bc4ad5f136d9bddd94def6ead5051fa.jpg', '美式黑咖啡', 23.4, '50', '咖啡因含量:黃101-200mg/杯', '2022-06-13 00:00:00'),
-(5, '經典義式系列', 'c02cf3d08a79e90d5c94ddcfa38b54ff.jpg', '黑糖風味拿鐵', 375.2, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-14 00:00:00'),
-(6, '經典義式系列', '95b4eaef32ae64728737e570c5ae0625.jpg', '鴛鴦咖啡', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
-(7, '經典義式系列', '7344cd11fafd4f28e83bf91c25f13468.jpg', '香草風味拿鐵', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
+(1, '經典義式系列', 'cake001.jpg', '咖啡拿鐵', 381.4, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-10 00:00:00'),
+(2, '經典義式系列', 'cake002.jpg', '焦糖瑪奇朵', 275.4, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-11 00:00:00'),
+(3, '經典義式系列', 'cake003.jpg', '卡布奇諾', 260.5, '70', '咖啡因含量:黃101-200mg/杯', '2022-06-12 00:00:00'),
+(4, '經典義式系列', 'cake004.jpg', '美式黑咖啡', 23.4, '50', '咖啡因含量:黃101-200mg/杯', '2022-06-13 00:00:00'),
+(5, '經典義式系列', 'cake005.jpg', '黑糖風味拿鐵', 375.2, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-14 00:00:00'),
+(6, '經典義式系列', 'food001.jpg', '鴛鴦咖啡', 231.3, '70', '咖啡因含量:綠100mg/杯', '2022-06-15 00:00:00'),
+(7, '經典義式系列', 'salad001.jpg', '香草風味拿鐵', 240.5, '90', '咖啡因含量:黃101-200mg/杯', '2022-06-16 00:00:00'),
 (8, '經典義式系列', 'fcab1487d7bcb7748ad656fc0c718186.jpg', '拿鐵歐蕾', 197.5, '75', '咖啡因含量:綠100mg以下/杯', '2022-06-17 00:00:00'),
 (9, '經典義式系列', 'fcb757f3fb568f15732945d69a7bcd86.png', '義式摩卡', 368, '80', '咖啡因含量:黃101-200mg/杯', '2022-06-18 00:00:00'),
 (10, '精品咖啡', 'ef7cf4d26f30d37c21eb371b41750dc2.jpg', '莊園級美式', 15.5, '60', '咖啡因含量:紅201mg/杯', '2022-06-19 00:00:00'),
@@ -1301,6 +1327,12 @@ ALTER TABLE `food_choice`
   ADD PRIMARY KEY (`food_choice_sid`);
 
 --
+-- 資料表索引 `food_icesugar`
+--
+ALTER TABLE `food_icesugar`
+  ADD PRIMARY KEY (`food_icesugar_sid`);
+
+--
 -- 資料表索引 `lastest_news`
 --
 ALTER TABLE `lastest_news`
@@ -1490,6 +1522,12 @@ ALTER TABLE `course_related`
 --
 ALTER TABLE `food_choice`
   MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `food_icesugar`
+--
+ALTER TABLE `food_icesugar`
+  MODIFY `food_icesugar_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `lastest_news`
