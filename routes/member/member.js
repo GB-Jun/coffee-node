@@ -95,10 +95,38 @@ router.post('/sign-up', async (req, res) => {
 
 // --------------------- 讀取會員資料 ---------------------
 router.get('/api/user-list', async (req, res) => {
-    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid`=1";
+    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid`=1";
     const [results] = await db.query(sql);
 
     res.json(results);
+});
+
+// --------------------- 修改密碼 ---------------------
+router.post('/api/edit-password', async (req, res) => {
+
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    const sql = " SELECT `member_password` FROM `member` WHERE `member_sid`= 105";
+    const [result] = await db.query(sql);
+    const newSql = " UPDATE `member` SET `member_password`= ? WHERE `member_sid`= 105";
+
+    const password = await bcrypt.compareSync(req.body.member_password,result[0].member_password);
+    output.success = password;
+    console.log(password);
+
+    if( !output.success ){
+        output.error = '舊密碼錯誤';
+        return output.success = false;
+    }else{
+        const newHashPass = await bcrypt.hash(req.body.confirm_password, 10);
+        db.query(newSql, [newHashPass]);
+        output.success = true;
+    }
+
+    res.json(output);
 });
 
 // --------------------- 歷史訂單 ---------------------
