@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-29 10:37:13
+-- 產生時間： 2022-07-29 13:45:38
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.1.5
+-- PHP 版本： 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -477,7 +477,7 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_like`, `member_level`, `avatar`) VALUES
-(1, '王曉明', '阿明', 'ming', 'ming', '2022-05-30', '0911222333', '台北市大安區', 'ming@test.com', '', '800', ''),
+(1, '王曉明', '阿明', 'ming', '$2a$10$Ne/LIsw90/DdG3EYXsH5ReI13acFHN2ZjIZTIILAGZZK7aCymxzB2', '2022-05-30', '0911222333', '台北市大安區', 'ming@test.com', '', '800', ''),
 (2, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif'),
 (4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', ''),
 (7, '123', '睡覺了', '123', '123', NULL, '123', '123456789', '123@test123', '', '', '1539960.gif'),
@@ -1573,7 +1573,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
