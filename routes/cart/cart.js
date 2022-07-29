@@ -14,6 +14,7 @@ router.get("/order/api", async (req, res) => {
 });
 
 router.get("/read_product/api", async (req, res) => {
+    // 檢查jwt token是否正確
     if (!res.locals.loginUser) {
         res.status(401).send({
             error: {
@@ -23,28 +24,52 @@ router.get("/read_product/api", async (req, res) => {
         });
         return;
     }
+    // 解構出member_sid & 撰寫sql
+    const { sid } = req.query;
     const sql = `
         SELECT
-            \`cart\`.\`cart_product_id\` AS 'id',
-            \`cart\`.\`cart_price\` AS 'price',
-            \`cart\`.\`cart_quantity\` AS 'quantity',
-            \`products\`.\`products_pic\` AS 'picture',
-            \`products\`.\`products_name\` AS 'name',
-            \`products\`.\`products_stack\` AS 'stocks',
-            \`products_with_products_categories_sid\` AS 'category'
-        FROM\`cart\`
-        JOIN \`products\` ON \`cart\`.\`cart_product_id\` = \`products\`.\`products_sid\`
-        WHERE \`cart_member_id\` = ? AND \`cart_order_id\` = 0;
+            cart_product_id AS 'id',
+            cart_price AS 'price',
+            cart_quantity AS 'quantity',
+            products.products_pic AS 'picture',
+            products.products_name AS 'name',
+            products.products_stack AS 'stocks',
+            products_with_products_categories_sid AS 'category'
+        FROM cart
+        JOIN products ON cart_product_id = products.products_sid
+        WHERE cart_member_id = ? AND cart_order_id = 0;
     `;
-    const [result] = await db.query(sql, [1]);
-    if (result.length >= 1) {
-        result.forEach(item => {
-            item.name = [item.name];
-            item.picture = `http://localhost:3500/images/products/${item.category}/${item.picture}`;
-            delete item.category;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get product list .",
+            },
         });
+        return;
     }
-    res.json(result);
+    try {
+        const [result] = await db.query(sql, [sid]);
+        if (result.length >= 1) {
+            result.forEach(item => {
+                item.name = [item.name];
+                item.picture = `http://localhost:3500/images/products/${item.category}/${item.picture}`;
+                delete item.category;
+            });
+        }
+        res.json(result);
+        return;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't find produts",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
 });
 
 router.get("/read_food/api", async (req, res) => {
@@ -57,29 +82,54 @@ router.get("/read_food/api", async (req, res) => {
         });
         return;
     }
+    // 解構出member_sid & 撰寫sql
+    const { sid } = req.query;
     const sql = `
         SELECT
-            \`food_id\` AS 'id',
-            \`food_price\` AS 'price',
-            \`food_ice\` AS 'ice',
-            \`food_sugar\` AS 'sugar',
-            \`food_quantity\` AS 'quantity',
-            \`menu\`.\`menu_name\` AS 'name',
-            \`menu\`.\`menu_photo\` AS 'picture'
-        FROM \`food_choice\`
-        JOIN \`menu\` ON \`food_id\` = \`menu\`.\`menu_sid\`
-        WHERE \`food_member_id\` = ? AND \`food_order_id\` = 0;
+            food_id AS 'id',
+            food_price AS 'price',
+            food_ice AS 'ice',
+            food_sugar AS 'sugar',
+            food_quantity AS 'quantity',
+            menu.menu_name AS 'name',
+            menu.menu_photo AS 'picture'
+        FROM food_choice
+        JOIN menu ON food_id = menu.menu_sid
+        WHERE food_member_id = ? AND food_order_id = 0;
     `;
-    const [result] = await db.query(sql, [1]);
-    result.forEach(item => {
-        item.name = [item.name, item.ice, item.sugar];
-        item.picture = `http://localhost:3500/images/food/${item.picture}`;
-        item.stocks = 9999;
-        delete item.ice;
-        delete item.sugar;
-    })
-
-    res.json(result);
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get food list .",
+            },
+        });
+        return;
+    }
+    try {
+        const [result] = await db.query(sql, [sid]);
+        if (result.length >= 1) {
+            result.forEach(item => {
+                item.name = [item.name, item.ice, item.sugar];
+                item.picture = `http://localhost:3500/images/food/${item.picture}`;
+                item.stocks = 9999;
+                delete item.ice;
+                delete item.sugar;
+            })
+        }
+        res.json(result);
+        return;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't find foods",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
 });
 
 
