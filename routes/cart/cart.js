@@ -24,8 +24,17 @@ router.get("/read_product/api", async (req, res) => {
         });
         return;
     }
-    // 解構出member_sid & 撰寫sql
     const { sid } = req.query;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get product list .",
+            },
+        });
+        return;
+    }
     const sql = `
         SELECT
             cart_product_id AS 'id',
@@ -39,16 +48,7 @@ router.get("/read_product/api", async (req, res) => {
         JOIN products ON cart_product_id = products.products_sid
         WHERE cart_member_id = ? AND cart_order_id = 0;
     `;
-    // 檢查sid
-    if (sid === undefined) {
-        res.status(401).send({
-            error: {
-                status: 401,
-                message: "There's no sid to get product list .",
-            },
-        });
-        return;
-    }
+
     try {
         const [result] = await db.query(sql, [sid]);
         if (result.length >= 1) {
@@ -73,6 +73,7 @@ router.get("/read_product/api", async (req, res) => {
 });
 
 router.get("/read_food/api", async (req, res) => {
+    // 檢查jwt token是否正確
     if (!res.locals.loginUser) {
         res.status(401).send({
             error: {
@@ -82,8 +83,17 @@ router.get("/read_food/api", async (req, res) => {
         });
         return;
     }
-    // 解構出member_sid & 撰寫sql
     const { sid } = req.query;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get food list .",
+            },
+        });
+        return;
+    }
     const sql = `
         SELECT
             food_id AS 'id',
@@ -97,16 +107,7 @@ router.get("/read_food/api", async (req, res) => {
         JOIN menu ON food_id = menu.menu_sid
         WHERE food_member_id = ? AND food_order_id = 0;
     `;
-    // 檢查sid
-    if (sid === undefined) {
-        res.status(401).send({
-            error: {
-                status: 401,
-                message: "There's no sid to get food list .",
-            },
-        });
-        return;
-    }
+
     try {
         const [result] = await db.query(sql, [sid]);
         if (result.length >= 1) {
@@ -131,6 +132,123 @@ router.get("/read_food/api", async (req, res) => {
         return;
     }
 });
+
+router.get("/product_coupon/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get product coupon .",
+            },
+        });
+        return;
+    }
+    const { sid } = req.query;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get product coupon .",
+            },
+        });
+        return;
+    }
+    const sql = `
+        SELECT
+            coupon_receive.sid AS id,
+            end_time AS expire,
+            coupon_name AS name,
+            coupon_money AS discount,
+            menu_sid AS menuId,
+            products_sid AS productId
+        FROM coupon_receive
+        JOIN coupon ON coupon_sid = coupon.sid
+        WHERE member_sid = ? AND status = 0 AND end_time >= NOW();
+    `;
+
+    try {
+        const [result] = await db.query(sql, [sid]);
+        const output = result.filter(coupon => {
+            if(coupon.menuId !== 0) return false;
+            return true;
+        })
+        output.forEach(coupon => {
+            coupon.expire = moment.parseZone(coupon.expire).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
+        });
+        res.json(output);
+        return;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't find product coupon",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+});
+
+router.get("/food_coupon/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get food coupon .",
+            },
+        });
+        return;
+    }
+    const { sid } = req.query;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get food coupon .",
+            },
+        });
+        return;
+    }
+    const sql = `
+        SELECT
+            coupon_receive.sid AS id,
+            end_time AS expire,
+            coupon_name AS name,
+            coupon_money AS discount,
+            menu_sid AS menuId,
+            products_sid AS productId
+        FROM coupon_receive
+        JOIN coupon ON coupon_sid = coupon.sid
+        WHERE member_sid = ? AND status = 0 AND end_time >= NOW();
+    `;
+
+    try {
+        const [result] = await db.query(sql, [sid]);
+        const output = result.filter(coupon => {
+            if(coupon.productId !== 0) return false;
+            return true;
+        })
+        output.forEach(coupon => {
+            coupon.expire = moment.parseZone(coupon.expire).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
+        });
+        res.json(output);
+        return;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't find food coupon",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+});
+
 
 
 // 有 token 才給過
