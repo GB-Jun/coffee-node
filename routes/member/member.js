@@ -110,6 +110,15 @@ router.post('/sign-up', async (req, res) => {
 // --------------------- 讀取會員資料 ---------------------
 router.get('/api/user-list', async (req, res) => {
 
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sid = res.locals.loginUser.sid;
 
     const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid` = ";
