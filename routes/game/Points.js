@@ -83,7 +83,7 @@ router.get('/', async (req, res)=>{
     res.render('points/main', output);
 });
 
-router.get('/api', async (req, res)=>{
+router.get('/API', async (req, res)=>{
     const output = await getListHandler(req, res);
     res.json(output);
 });
