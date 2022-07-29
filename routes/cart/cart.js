@@ -4,6 +4,7 @@ const db = require(__dirname + "/../../modules/mysql-connect");
 const { toDateString, toDateTimeString } = require(__dirname + "/../../modules/date-tools");
 const moment = require("moment-timezone");
 const Joi = require("joi");
+const { exit } = require("process");
 const uploads = require(__dirname + "/../../modules/upload-images");
 
 router.get("/order/api", async (req, res) => {
@@ -13,6 +14,15 @@ router.get("/order/api", async (req, res) => {
 });
 
 router.get("/read_product/api", async (req, res) => {
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get product list .",
+            },
+        });
+        return;
+    }
     const sql = `
         SELECT
             \`cart\`.\`cart_product_id\` AS 'id',
@@ -20,13 +30,14 @@ router.get("/read_product/api", async (req, res) => {
             \`cart\`.\`cart_quantity\` AS 'quantity',
             \`products\`.\`products_pic\` AS 'picture',
             \`products\`.\`products_name\` AS 'name',
+            \`products\`.\`products_stack\` AS 'stocks',
             \`products_with_products_categories_sid\` AS 'category'
         FROM\`cart\`
         JOIN \`products\` ON \`cart\`.\`cart_product_id\` = \`products\`.\`products_sid\`
         WHERE \`cart_member_id\` = ? AND \`cart_order_id\` = 0;
     `;
     const [result] = await db.query(sql, [1]);
-    if(result.length >= 1) {
+    if (result.length >= 1) {
         result.forEach(item => {
             item.name = [item.name];
             item.picture = `http://localhost:3500/images/products/${item.category}/${item.picture}`;
@@ -37,6 +48,15 @@ router.get("/read_product/api", async (req, res) => {
 });
 
 router.get("/read_food/api", async (req, res) => {
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get food list .",
+            },
+        });
+        return;
+    }
     const sql = `
         SELECT
             \`food_id\` AS 'id',
@@ -54,10 +74,11 @@ router.get("/read_food/api", async (req, res) => {
     result.forEach(item => {
         item.name = [item.name, item.ice, item.sugar];
         item.picture = `http://localhost:3500/images/food/${item.picture}`;
+        item.stocks = 9999;
         delete item.ice;
         delete item.sugar;
     })
-    
+
     res.json(result);
 });
 
