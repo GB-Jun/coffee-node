@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config({ path: __dirname + "/../../.env" });
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const { toDateString, toDateTimeString } = require(__dirname + "/../../modules/date-tools");
@@ -8,6 +9,8 @@ const { exit } = require("process");
 const uploads = require(__dirname + "/../../modules/upload-images");
 const sqlstring = require("sqlstring");
 const _ = require("lodash");
+
+const { DB_HOST, EXPRESS_PORT } = process.env;
 
 // product------------------------------------------------------------------------
 router.get("/read_product/api", async (req, res) => {
@@ -52,7 +55,7 @@ router.get("/read_product/api", async (req, res) => {
         if (result.length >= 1) {
             result.forEach(item => {
                 item.name = [item.name];
-                item.picture = `http://localhost:3500/images/products/${item.category}/${item.picture}`;
+                item.picture = `http://${DB_HOST}:${EXPRESS_PORT}/images/products/${item.category}/${item.picture}`;
                 delete item.category;
             });
         }
@@ -210,7 +213,7 @@ router.get("/read_food/api", async (req, res) => {
         if (result.length >= 1) {
             result.forEach(item => {
                 item.name = [item.name, item.ice, item.sugar];
-                item.picture = `http://localhost:3500/images/food/${item.picture}`;
+                item.picture = `http://${DB_HOST}:${EXPRESS_PORT}/images/food/${item.picture}`;
                 item.stocks = 9999;
                 delete item.ice;
                 delete item.sugar;
