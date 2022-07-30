@@ -165,19 +165,15 @@ router.get("/product_coupon/api", async (req, res) => {
             products_sid AS productId
         FROM coupon_receive
         JOIN coupon ON coupon_sid = coupon.sid
-        WHERE member_sid = ? AND status = 0 AND end_time >= NOW();
+        WHERE member_sid = ? AND status = 0 AND end_time >= NOW() AND NOT menu_sid != 0;
     `;
 
     try {
         const [result] = await db.query(sql, [sid]);
-        const output = result.filter(coupon => {
-            if(coupon.menuId !== 0) return false;
-            return true;
-        })
-        output.forEach(coupon => {
+        result.forEach(coupon => {
             coupon.expire = moment.parseZone(coupon.expire).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
         });
-        res.json(output);
+        res.json(result);
         return;
     } catch (error) {
         res.status(500).send({
@@ -223,19 +219,15 @@ router.get("/food_coupon/api", async (req, res) => {
             products_sid AS productId
         FROM coupon_receive
         JOIN coupon ON coupon_sid = coupon.sid
-        WHERE member_sid = ? AND status = 0 AND end_time >= NOW();
+        WHERE member_sid = ? AND status = 0 AND end_time >= NOW() AND NOT products_sid != 0;
     `;
 
     try {
         const [result] = await db.query(sql, [sid]);
-        const output = result.filter(coupon => {
-            if(coupon.productId !== 0) return false;
-            return true;
-        })
-        output.forEach(coupon => {
+        result.forEach(coupon => {
             coupon.expire = moment.parseZone(coupon.expire).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
         });
-        res.json(output);
+        res.json(result);
         return;
     } catch (error) {
         res.status(500).send({
