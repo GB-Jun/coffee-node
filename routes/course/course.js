@@ -66,6 +66,20 @@ router.post('/addfk', async (req, res) => {
     return res.json(result);
 });
 
+router.delete('/delete/:sid', async (req, res) => {
+    const sid = req.params.sid;
+    console.log(sid);
+
+    if (!sid) {
+        return res.json({ message: 'error', code: '400' });
+    }
+    const sql = `DELETE FROM course WHERE course.course_sid = ${sid}`;
+    const result = await db.query(sql);
+    console.log(result);
+    return res.json(result);
+
+});
+
 // ------------ 跟LINE PAY 串接的 API -----------
 router.post('/createOrder/:orderId', async (req, res) => {
     // 從URL把物件拿出來解開JSON
