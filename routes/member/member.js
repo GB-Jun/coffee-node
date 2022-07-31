@@ -187,6 +187,17 @@ router.post('/api/edit-password', async (req, res) => {
     res.json(output);
 });
 
+// --------------------- 上傳頭貼 ---------------------
+router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = ` UPDATE member SET avatar= ? WHERE member_sid = ${sqlSid} `;
+
+    await db.query(sql, [req.file.filename]);
+
+    res.json(req.file);
+    console.log(req.file); // 存到 public的avatar資料夾裡拿到的檔名會是req.file.filename
+});
+
 // --------------------- 歷史訂單 ---------------------
 router.get('/api/order-history', async (req, res) => {
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
