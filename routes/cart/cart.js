@@ -450,7 +450,7 @@ router.get("/cart_count/api", async (req, res) => {
         });
         return;
     }
-    const { sid } = res.locals.loginUser || { sid: 1 };
+    const { sid } = res.locals.loginUser;
     // 檢查sid
     if (sid === undefined) {
         res.status(401).send({
