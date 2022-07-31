@@ -2,11 +2,8 @@ const express = require("express");
 require("dotenv").config({ path: __dirname + "/../../.env" });
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
-const { toDateString, toDateTimeString } = require(__dirname + "/../../modules/date-tools");
 const moment = require("moment-timezone");
 const Joi = require("joi");
-const { exit } = require("process");
-const uploads = require(__dirname + "/../../modules/upload-images");
 const sqlstring = require("sqlstring");
 const _ = require("lodash");
 
@@ -322,7 +319,7 @@ router.delete("/read_food/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find produts",
+                message: "Server no response . Can't find food .",
                 errorMessage: error,
             },
         });
@@ -377,7 +374,7 @@ router.get("/product_coupon/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find product coupon",
+                message: "Server no response . Can't find product coupon .",
                 errorMessage: error,
             },
         });
@@ -432,13 +429,67 @@ router.get("/food_coupon/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find food coupon",
+                message: "Server no response . Can't find food coupon .",
                 errorMessage: error,
             },
         });
         return;
     }
 });
+
+// 購物車數量
+
+router.get("/cart_count/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get quantity .",
+            },
+        });
+        return;
+    }
+    const { sid } = res.locals.loginUser || { sid: 1 };
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get quantity .",
+            },
+        });
+        return;
+    }
+    const sqlProduct = `
+        SELECT COUNT(1) AS productCount FROM cart WHERE cart_member_id = ? AND cart_order_id = 0;
+    `;
+
+    const sqlFood = `
+        SELECT COUNT(1) AS foodCount FROM food_choice WHERE food_member_id = 1 AND food_order_id = 0;
+    `;
+
+    try {
+        const productResult = db.query(sqlProduct, [sid]);
+        const foodResult = db.query(sqlFood, [sid]);
+
+        const [[[{ productCount }]], [[{ foodCount }]]] = await Promise.all([productResult, foodResult]);
+        const cartTotalCount = productCount + foodCount
+        res.json({ cartTotalCount });
+        return;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't get quantity .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+});
+
+
 
 // 測試連線用 記得刪除
 router.get("/order/api", async (req, res) => {
