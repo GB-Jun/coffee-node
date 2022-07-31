@@ -35,7 +35,7 @@ router.get("/read_product/api", async (req, res) => {
     const sql = `
         SELECT
             cart_sid AS 'id',
-            cart_product_id AS 'product_id',
+            cart_product_id AS 'listId',
             cart_price AS 'price',
             cart_quantity AS 'quantity',
             products.products_pic AS 'picture',
@@ -193,7 +193,7 @@ router.get("/read_food/api", async (req, res) => {
     const sql = `
         SELECT
             food_choice_sid AS 'id',
-            food_id,
+            food_id AS 'listId',
             food_price AS 'price',
             food_ice AS 'ice',
             food_sugar AS 'sugar',
