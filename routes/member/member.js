@@ -123,7 +123,7 @@ router.get('/api/user-list', async (req, res) => {
     }
     const sid = res.locals.loginUser.sid;
 
-    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid` = ";
+    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_level`, `avatar` FROM `member` WHERE `member_sid` = ";
     const sqlSid = `${sid}`;
     const getUser = `${sql}${sqlSid}`
     const [results] = await db.query(getUser);
@@ -187,7 +187,7 @@ router.post('/api/edit-password', async (req, res) => {
     console.log(password);
 
     if( !output.success ){
-        output.error = '舊密碼錯誤';
+        output.passError = '舊密碼錯誤';
         output.success = false;
     }else if( req.body.member_password === req.body.confirm_password){
         output.error = '新舊密碼相同';
