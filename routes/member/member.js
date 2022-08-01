@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 
 // --------------------- 登入 ---------------------
-router.post('/login', upload.none(), async(req, res) => {
+router.post('/api/login', upload.none(), async(req, res) => {
 
     const output = {
         success: false,
@@ -42,6 +42,7 @@ router.post('/login', upload.none(), async(req, res) => {
         const token = jwt.sign({
             sid: result[0].member_sid,
             account: result[0].member_account,
+            nickname: result[0].member_nickname,
             name: result[0].member_name,
             birthday: result[0].member_birthday,
             mobile: result[0].member_mobile,
@@ -55,6 +56,7 @@ router.post('/login', upload.none(), async(req, res) => {
             sid: result[0].member_sid,
             token,
             account: result[0].member_account,
+            nickname: result[0].member_nickname,
             name: result[0].member_name,
             birthday: result[0].member_birthday,
             mobile: result[0].member_mobile,
@@ -71,7 +73,7 @@ router.post('/login', upload.none(), async(req, res) => {
 
 
 // --------------------- 註冊 ---------------------
-router.post('/sign-up', async (req, res) => {
+router.post('/api/sign-up', async (req, res) => {
 
     const output = {
         success: false,
@@ -128,6 +130,27 @@ router.get('/api/user-list', async (req, res) => {
 
     res.json(results);
 });
+// --------------------- 編輯會員資料 ---------------------
+router.post('/api/edit-user-list', async (req, res)=>{
+    const output = {
+        success: false,
+        error: '',
+    };
+    
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `UPDATE member SET member_name=?,member_nickname=?,member_birthday=?,member_mobile=?,member_address=?,member_mail=? WHERE member_sid = ${sqlSid}`;
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }else{
+        console.log(req.body);
+        const { member_name, member_nickname, member_birthday,member_mobile,member_address, member_mail } = req.body;
+        const [result] = await db.query(sql, [member_name, member_nickname, member_birthday, member_mobile, member_address, member_mail]);
+        output.success = "true";
+        res.json(output);
+    }
+})
 
 // --------------------- 修改密碼 ---------------------
 router.post('/api/edit-password', async (req, res) => {
@@ -164,8 +187,19 @@ router.post('/api/edit-password', async (req, res) => {
     res.json(output);
 });
 
+// --------------------- 上傳頭貼 ---------------------
+router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = ` UPDATE member SET avatar= ? WHERE member_sid = ${sqlSid} `;
+
+    await db.query(sql, [req.file.filename]);
+
+    res.json(req.file);
+    console.log(req.file); // 存到 public的avatar資料夾裡拿到的檔名會是req.file.filename
+});
+
 // --------------------- 歷史訂單 ---------------------
-router.get('/order-history', async (req, res) => {
+router.get('/api/order-history', async (req, res) => {
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
     const [results] = await db.query(sql);
 

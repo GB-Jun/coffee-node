@@ -27,6 +27,16 @@ router.get('/', async (req, res) => {
     const [r] = await db.query(sql);
     res.json(r);
 });
+
+// 只取一筆資料
+router.get('/data/:sid', async (req, res) => {
+    const sid = req.params.sid;
+    console.log(sid);
+    const sql = `SELECT * FROM course WHERE course_sid = ${sid};`;
+    const [r] = await db.query(sql);
+    res.json(r);
+});
+
 // 外鍵
 router.get('/FK-get', async (req, res) => {
     const sql1 = "SELECT * FROM`course` JOIN course_related ON `course`.`course_sid` = `course_related`.`course_sid`";
@@ -38,11 +48,10 @@ router.get('/FK-get', async (req, res) => {
 // INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) VALUES (?,?,?,?,?,?,?)
 // 新增
 router.post('/add', async (req, res) => {
-    console.log(req.body);
+    console.log(req.body.course_name);
     const { course_name, course_price, course_level, course_img_s, course_content, course_people, course_material } = req.body;
     const sql = "INSERT INTO `course`(`course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) ";
-    // console.log(data);
-    const setSql = `VALUES (${course_name},${course_price},${course_level},\"${course_img_s}\",${course_content},${course_people},${course_material})`;
+    const setSql = `VALUES (\"${course_name}\",${course_price},${course_level},\"${course_img_s}\",\"${course_content}\",\"${course_people}\",\"${course_material}\")`;
     const insertSql = `${sql}${setSql}`;
     const result = await db.query(insertSql);
     console.log(result);
@@ -52,16 +61,46 @@ router.post('/add', async (req, res) => {
 // 新增外鍵
 router.post('/addfk', async (req, res) => {
     console.log(req.body);
-
     const { course_sid, course_date, course_time, course_img_l } = req.body;
-    const { date1, date2 } = course_date;
-    const { time1, time2 } = course_time;
-    // console.log(date1, date2);
     const sql = "INSERT INTO `course_related`(`course_sid`, `course_date`, `course_time`, `course_img_l`)";
-    // console.log(data);
-    const setSql = `VALUES (${course_sid},${date1},${time1},\"${course_img_l}\"),(${course_sid},${date2},${time2},\"${course_img_l}\")`;
+    const setSql = `VALUES (${course_sid},\"${course_date}\",\"${course_time}\",\"${course_img_l}\")`;
     const insertSql = `${sql}${setSql}`;
     const result = await db.query(insertSql);
+    console.log(result);
+    return res.json(result);
+});
+
+// 刪除
+router.delete('/delete/:sid', async (req, res) => {
+    const sid = req.params.sid;
+    console.log(sid);
+    if (!sid) {
+        return res.json({ message: 'error', code: '400' });
+    }
+    const sql = `DELETE FROM course WHERE course.course_sid = ${sid}`;
+    const result = await db.query(sql);
+    console.log(result);
+    return res.json(result);
+});
+
+// 修改
+router.put('/edit', async (req, res) => {
+    console.log(req.body);
+    const { course_name, course_price, course_level, course_img_s, course_content, course_people, course_material, course_sid } = req.body;
+    const sql = `UPDATE course SET course_name = \"${course_name}\", course_price = ${course_price}, course_level = ${course_level}, course_img_s = \"${course_img_s}\", course_content = \"${course_content}\", course_people = \"${course_people}\", course_material = \"${course_material}\" WHERE course.course_sid = ${course_sid}`;
+    const result = await db.query(sql);
+    console.log(result);
+    return res.json(result[0].insertId);
+});
+
+// 修改外鍵
+router.put('/editFk', async (req, res) => {
+    console.log(req.body);
+    const { course_sid, course_date, course_time, course_img_l } = req.body;
+    // const { date1, date2 } = course_date;
+    // const { time1, time2 } = course_time;
+    const sql = `UPDATE course_related SET course_date = \"${course_date}\", course_time = \"${course_time}\", course_img_l = \"${course_img_l}\" WHERE course_related.course_sid = ${course_sid};`;
+    const result = await db.query(sql);
     console.log(result);
     return res.json(result);
 });
