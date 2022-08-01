@@ -62,7 +62,7 @@ const getListHandler = async (req, res) => {
         // 也能在主層index.js那邊寫template helper function, 讓function大家都能用
         // result02.forEach((el) => (el.birthday2 = toDateString(el.birthday)));
         output.rows = result02;
-        const totoalDataSql = `SELECT * FROM products ORDER BY products_sid ASC`
+        const totoalDataSql = `SELECT * FROM products AS p ORDER BY products_sid ASC`
         const [resultTotal] = await db.query(totoalDataSql)
         output.totalData = resultTotal
     }
@@ -74,6 +74,13 @@ const getListHandler = async (req, res) => {
     return output;
 };
 
+const getCouponList = async (req, res) => {
+    let output = {
+        error: "",
+        query: {},
+        rows: [],
+    }
+}
 
 //----------------------------------------------------------------------------------
 
@@ -94,6 +101,14 @@ router.get("/api/detail/:sid", async (req, res) => {
     output.payload = res.locals.payload
     res.json(output);
 });
+
+router.get("/api/coupon", async (req, res) => {
+    const output = await getListHandler(req, res);
+    output.payload = res.locals.payload
+    res.json(output);
+});
+
+
 
 router.post("/api", async (req, res) => {
     const output = await getListHandler(req, res);
