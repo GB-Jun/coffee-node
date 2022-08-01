@@ -42,12 +42,26 @@ router.post('/login', upload.none(), async(req, res) => {
         const token = jwt.sign({
             sid: result[0].member_sid,
             account: result[0].member_account,
+            name: result[0].member_name,
+            birthday: result[0].member_birthday,
+            mobile: result[0].member_mobile,
+            address: result[0].member_address,
+            mail: result[0].member_mail,
+            level: result[0].member_level,
+            avatar: result[0].avatar,
         }, process.env.JWT_SECRET);
 
         output.data = {
             sid: result[0].member_sid,
             token,
             account: result[0].member_account,
+            name: result[0].member_name,
+            birthday: result[0].member_birthday,
+            mobile: result[0].member_mobile,
+            address: result[0].member_address,
+            mail: result[0].member_mail,
+            level: result[0].member_level,
+            avatar: result[0].avatar,
         };
         output.success = true;
     }
@@ -95,8 +109,22 @@ router.post('/sign-up', async (req, res) => {
 
 // --------------------- 讀取會員資料 ---------------------
 router.get('/api/user-list', async (req, res) => {
-    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid`=1";
-    const [results] = await db.query(sql);
+
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
+    const sid = res.locals.loginUser.sid;
+
+    const sql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `avatar` FROM `member` WHERE `member_sid` = ";
+    const sqlSid = `${sid}`;
+    const getUser = `${sql}${sqlSid}`
+    const [results] = await db.query(getUser);
 
     res.json(results);
 });
@@ -109,17 +137,24 @@ router.post('/api/edit-password', async (req, res) => {
         error: '',
     };
 
-    const sql = " SELECT `member_password` FROM `member` WHERE `member_sid`= 105";
-    const [result] = await db.query(sql);
-    const newSql = " UPDATE `member` SET `member_password`= ? WHERE `member_sid`= 105";
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    console.log(res.locals.loginUser.sid);
 
-    const password = await bcrypt.compareSync(req.body.member_password,result[0].member_password);
+    const sql = ` SELECT member_password FROM member WHERE member_sid = ${sqlSid} `;
+    const [result] = await db.query(sql);
+
+    const newSql = ` UPDATE member SET member_password= ? WHERE member_sid = ${sqlSid} `;
+
+    const password = bcrypt.compareSync(req.body.member_password,result[0].member_password);
     output.success = password;
     console.log(password);
 
     if( !output.success ){
         output.error = '舊密碼錯誤';
-        return output.success = false;
+        output.success = false;
+    }else if( req.body.member_password === req.body.confirm_password){
+        output.error = '新舊密碼相同';
+        output.success = false;
     }else{
         const newHashPass = await bcrypt.hash(req.body.confirm_password, 10);
         db.query(newSql, [newHashPass]);
