@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-07-29 13:45:38
+-- 產生時間： 2022-08-01 10:41:07
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 7.4.29
+-- PHP 版本： 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -1602,7 +1602,7 @@ ALTER TABLE `member_likes`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `menu_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu1`
