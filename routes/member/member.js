@@ -143,13 +143,27 @@ router.post('/api/edit-user-list', async (req, res)=>{
     if (!res.locals.loginUser){
         output.error = "沒登入";
         return;
-    }else{
-        console.log(req.body);
+    }
+        // console.log(req.body);
         const { member_name, member_nickname, member_birthday,member_mobile,member_address, member_mail } = req.body;
         const [result] = await db.query(sql, [member_name, member_nickname, member_birthday, member_mobile, member_address, member_mail]);
+
+    // UPDATE之後若成功影響rows，要把編輯完的資料 editResult 回傳給前端
+    if(result.affectedRows >= 1 ){
+
+        const newSql = "SELECT `member_sid`,`member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail` FROM `member` WHERE `member_sid` = ";
+        const getUserList = `${newSql}${sqlSid}`;
+    
+        const [[editResult]] = await db.query(getUserList);
+    
+        console.log(editResult);
         output.success = "true";
+        output.data = editResult;
         res.json(output);
+        return;
     }
+    res.json(output);
+
 })
 
 // --------------------- 修改密碼 ---------------------
