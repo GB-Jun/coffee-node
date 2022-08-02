@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const Joi = require("joi");
+const { exit } = require("process");
 const uploads = require(__dirname + "/../../modules/upload-images");
 
 const getListHandler = async (req, res) => {
@@ -100,29 +101,58 @@ const sendCartData = async (req, res) => {
         query: {},
         rows: [],
         reqData: {},
+        cartDataRows: [],
     };
-    console.log("req.body", req.body);
-    console.log("req.params.sid", req.params.sid);
+    // console.log("req.body", req.body);
+    // console.log("req.params.sid", req.params.sid);
 
-    const insertSql = `INSERT INTO cart(cart_product_id, cart_price, cart_quantity, cart_member_id) VALUES (?,?,?,?)`;
+    const cartDataSql = `SELECT cart_product_id FROM cart WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0`;
+    const cartData = await db.query(cartDataSql);
+    output.cartDataRows = cartData;
+    console.log(output.cartDataRows[0]);
 
-    await db.query(insertSql, [
-        req.params.sid,
-        req.body[0].products_price,
-        req.body.quantity,
-        req.body.member.sid,
-    ]);
-    console.log({
-        sid: req.params.sid,
-        price: req.body[0].products_price,
-        quantity: req.body.quantity,
-        membersid: req.body.member.sid,
-    });
-    output.query = insertSql;
+    // if (output.cartDataRows[0].indexOf({ cart_product_id: req.params.sid }) > 0) {
+    // }
+    // console.log(output.cartDataRows[0].indexOf())
+
+    if (Object.values(output.cartDataRows[0]).indexOf(req.params.sid) >= 0) {
+        const updateSql = `UPDATE cart SET cart_quantity = ? WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0 AND cart_product_id = ${req.params.sid}`;
+        await db.query(updateSql, [req.body.quantity]);
+    } else {
+        const insertSql = `INSERT INTO cart(cart_product_id, cart_price, cart_quantity, cart_member_id) VALUES (?,?,?,?)`;
+
+        await db.query(insertSql, [
+            req.params.sid,
+            req.body[0].products_price,
+            req.body.quantity,
+            req.body.member.sid,
+        ]);
+        // console.log({
+        //     sid: req.params.sid,
+        //     price: req.body[0].products_price,
+        //     quantity: req.body.quantity,
+        //     membersid: req.body.member.sid,
+        // });
+        output.query = insertSql;
+    }
 
     return output;
 };
 
+const getUserLike = async (req, res) => {
+    let output = {
+        error: "",
+        query: {},
+        rows: [],
+        reqData: {},
+    };
+    const userLikeSql = `SELECT * FROM user_like`;
+    const [userLikeresult] = await db.query(userLikeSql);
+    output.query = userLikeSql;
+    output.rows = userLikeresult;
+
+    return output;
+};
 //----------------------------------------------------------------------------------
 
 router.use((req, res, next) => {
@@ -148,6 +178,12 @@ router.get("/api/coupon/:sid", async (req, res) => {
     res.json(output);
 });
 
+router.get("/api/userLike/:sid", async (req, res) => {
+    const output = await getUserLike(req, res);
+    output.payload = res.locals.payload;
+    res.json(output);
+});
+
 router.post("/api", async (req, res) => {
     const output = await getListHandler(req, res);
     output.payload = res.locals.payload;
@@ -155,6 +191,12 @@ router.post("/api", async (req, res) => {
 });
 
 router.post("/api/detail/:sid", async (req, res) => {
+    const output = await sendCartData(req, res);
+    output.payload = res.locals.payload;
+    res.json(output);
+});
+
+router.post("/api/userLike/:sid", async (req, res) => {
     const output = await sendCartData(req, res);
     output.payload = res.locals.payload;
     res.json(output);
