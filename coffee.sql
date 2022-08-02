@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-01 10:41:07
+-- 產生時間： 2022-08-02 10:49:12
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -57,52 +57,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`, `cart_member_id`, `cart_order_id`) VALUES
-(1, 1, 310, 1, 1, 1),
-(2, 2, 320, 2, 1, 1),
-(3, 5, 150, 2, 1, 1),
-(4, 3, 470, 2, 3, 2),
-(5, 4, 150, 1, 3, 2),
-(6, 1, 310, 1, 2, 0),
-(7, 2, 320, 1, 2, 0),
-(8, 3, 470, 1, 2, 0),
-(9, 4, 150, 2, 2, 0),
-(10, 1, 310, 1, 4, 0),
-(11, 5, 150, 1, 4, 0),
-(12, 5, 150, 1, 2, 0),
-(13, 2, 320, 2, 5, 0),
-(14, 4, 150, 2, 5, 0),
-(15, 3, 470, 1, 5, 0),
-(16, 2, 320, 1, 1, 21),
-(17, 5, 150, 1, 1, 21),
-(18, 6, 320, 1, 1, 21),
-(19, 2, 320, 1, 1, 22),
-(20, 5, 150, 1, 1, 22),
-(21, 6, 320, 1, 1, 22),
-(22, 5, 150, 1, 1, 23),
-(23, 6, 320, 1, 1, 23),
-(24, 2, 320, 1, 1, 23),
-(25, 1, 320, 3, 1, 22),
-(26, 2, 320, 3, 1, 22),
-(27, 3, 470, 2, 1, 22),
-(28, 1, 320, 3, 1, 23),
-(29, 2, 320, 1, 1, 23),
-(30, 3, 470, 1, 1, 23),
-(31, 1, 320, 1, 1, 24),
-(32, 2, 320, 1, 1, 24),
-(33, 3, 470, 1, 1, 24),
-(34, 1, 320, 1, 1, 25),
-(35, 2, 320, 1, 1, 25),
-(36, 3, 470, 1, 1, 25),
-(37, 1, 320, 1, 1, 26),
-(38, 3, 470, 1, 1, 26),
-(39, 1, 320, 4, 1, 27),
-(40, 2, 320, 3, 1, 27),
-(41, 4, 370, 2, 1, 27),
-(42, 1, 320, 5, 1, 28),
-(43, 4, 370, 1, 1, 28),
-(44, 1, 370, 2, 1, 0),
-(45, 2, 320, 1, 1, 0),
-(46, 3, 320, 3, 1, 0);
+(1, 1, 370, 12, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -158,8 +113,8 @@ CREATE TABLE `coupon` (
 --
 
 INSERT INTO `coupon` (`sid`, `coupon_name`, `coupon_send_type`, `coupon_setting_type`, `coupon_money`, `menu_sid`, `products_sid`, `type`, `coupon_validity_period`, `coupon_status`) VALUES
-(1, '生日優惠券$100', '1 生日時發送', '1 折扣金額', '100', 0, 0, '3 全品項', '12個月', '1'),
-(2, '註冊優惠券$100', '2 註冊時發送', '1 折扣金額', '100', 0, 0, '3 全品項', '12個月', '1'),
+(1, '生日優惠券$100', '1 生日時發送', '1 折扣金額', '100', 0, 0, '3 全品項', '12個月', '0'),
+(2, '註冊優惠券$100', '2 註冊時發送', '1 折扣金額', '100', 0, 0, '3 全品項', '12個月', '0'),
 (3, '咖啡拿鐵5折', '3 玩遊戲時發送', '2 打折', '0.5', 1, 0, '1餐點類', '6個月', '1'),
 (4, '卡布奇諾 5折', '3 玩遊戲時發送', '2 打折', '0.5', 3, 0, '1餐點類', '6個月', '1'),
 (5, '義式摩卡75折', '3 玩遊戲時發送', '2 打折', '0.75', 9, 0, '1餐點類', '6個月', '1'),
@@ -167,7 +122,7 @@ INSERT INTO `coupon` (`sid`, `coupon_name`, `coupon_send_type`, `coupon_setting_
 (7, '宇治奶茶8折', '3 玩遊戲時發送', '2 打折', '0.8', 20, 0, '1餐點類', '6個月', '1'),
 (8, '精選曼巴咖啡組8折', '3 玩遊戲時發送', '2 打折', '0.8', 0, 1, '2 商品類', '6個月', '1'),
 (9, '黃金曼特寧組9折', '3 玩遊戲時發送', '2 打折', '0.8', 0, 3, '2 商品類', '6個月', '1'),
-(10, '購物優惠券9折', '4 購物完發送', '2 打折', '0.8', 0, 0, '3 全品項', '6個月', '1');
+(10, '購物優惠券9折', '4 購物完發送', '2 打折', '0.8', 0, 0, '3 全品項', '6個月', '0');
 
 -- --------------------------------------------------------
 
@@ -378,14 +333,14 @@ INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice
 
 CREATE TABLE `food_icesugar` (
   `food_icesugar_sid` int(11) NOT NULL,
-  `icesugar` varchar(255) NOT NULL
+  `food_icesugar_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `food_icesugar`
 --
 
-INSERT INTO `food_icesugar` (`food_icesugar_sid`, `icesugar`) VALUES
+INSERT INTO `food_icesugar` (`food_icesugar_sid`, `food_icesugar_name`) VALUES
 (1, '正常冰'),
 (2, '少冰'),
 (3, '去冰'),
@@ -481,7 +436,8 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (2, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif'),
 (4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', ''),
 (7, '123', '睡覺了', '123', '123', NULL, '123', '123456789', '123@test123', '', '', '1539960.gif'),
-(14, '123', '123', '1234', '123', NULL, '123', '123', '123@test123', '', '0', '');
+(14, '123', '123', '1234', '123', NULL, '123', '123', '123@test123', '', '0', ''),
+(43, '林董', '', 'ling', '123', NULL, '', '', '', '', '0', '');
 
 -- --------------------------------------------------------
 
@@ -1301,6 +1257,25 @@ INSERT INTO `tag` (`sid`, `name`, `times`) VALUES
 (31, '12345', 1),
 (32, '無聊', 1);
 
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `user_like`
+--
+
+CREATE TABLE `user_like` (
+  `sid` int(11) NOT NULL,
+  `member_sid` int(11) NOT NULL,
+  `products_sid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `user_like`
+--
+
+INSERT INTO `user_like` (`sid`, `member_sid`, `products_sid`) VALUES
+(1, 1, 1);
+
 --
 -- 已傾印資料表的索引
 --
@@ -1505,6 +1480,12 @@ ALTER TABLE `tag`
   ADD PRIMARY KEY (`sid`);
 
 --
+-- 資料表索引 `user_like`
+--
+ALTER TABLE `user_like`
+  ADD PRIMARY KEY (`sid`);
+
+--
 -- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
 --
 
@@ -1518,7 +1499,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1590,7 +1571,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
@@ -1699,4 +1680,10 @@ ALTER TABLE `review_likes`
 --
 ALTER TABLE `tag`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `user_like`
+--
+ALTER TABLE `user_like`
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
