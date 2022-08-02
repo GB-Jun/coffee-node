@@ -115,10 +115,16 @@ const sendCartData = async (req, res) => {
     // }
     // console.log(output.cartDataRows[0].indexOf())
 
-    if (Object.values(output.cartDataRows[0]).indexOf(req.params.sid) >= 0) {
+    if (output.cartDataRows[0].map((v, i) => {
+            return v.cart_product_id
+        }).indexOf(+req.params.sid) >= 0) {
         const updateSql = `UPDATE cart SET cart_quantity = ? WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0 AND cart_product_id = ${req.params.sid}`;
         await db.query(updateSql, [req.body.quantity]);
     } else {
+        // const arr01 = output.cartDataRows[0].map((v, i) => {return v.cart_product_id
+        // })
+        // console.log(arr01.indexOf(+req.params.sid))
+        // console.log("req.params.sid",req.params.sid)
         const insertSql = `INSERT INTO cart(cart_product_id, cart_price, cart_quantity, cart_member_id) VALUES (?,?,?,?)`;
 
         await db.query(insertSql, [
