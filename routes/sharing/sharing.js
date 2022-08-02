@@ -70,9 +70,12 @@ const getPostHandler = async (req, res, sid) => {
     }
 
     const sql = `
-        SELECT * FROM \`post\` 
+        SELECT p.*,m.avatar FROM \`post\` p
+        JOIN \`member\` m 
+        ON p.member_sid = m.member_sid
         WHERE \`sid\` = ?
     `;
+
 
     const [[rows]] = await db.query(sql, [sid]);
 
@@ -111,7 +114,6 @@ const getPostImgs = async (sid) => {
 
     const [imgsData] = await db.query(sql, [sid]);
     // const tagsNameArr = tagsData.map((v) => v.name)
-    console.log(imgsData);
 
     return imgsData;
 }
