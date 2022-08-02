@@ -19,7 +19,7 @@ const getListHandler = async (req, res) => {
 
     const sql = `SELECT COUNT(1) totalRows FROM post WHERE post.delete_state = 0`;
     const [[{ totalRows }]] = await db.query(sql);
-    
+
     const totalPage = Math.ceil(totalRows / rowsPerPage);
     op.query.times = req.query.times || 0;
     op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
@@ -40,21 +40,8 @@ const getListHandler = async (req, res) => {
 
 
         for (let row of op.rows) {
-            row.tags = [];
-
-            const sql = `
-                    SELECT * FROM \`post_tag\` pt
-                    JOIN \`tag\` t 
-                    ON pt.tag_sid = t.sid 
-                    WHERE \`post_sid\` = ?
-                `;
-
-            const [tags] = await db.query(sql, [row['sid']]);
-
-            if (tags.length > 0) {
-                tags.forEach((tag) => {
-                    row.tags.push(tag);
-                });
+            if ("sid" in row) {
+                row.tags = await getPostTags(row.sid);
             }
         }
 
@@ -80,27 +67,55 @@ const getPostHandler = async (req, res, sid) => {
     const op = {
         code: 0,
         query: {},
-        rows: []
     }
 
     const sql = `
-                    SELECT * FROM \`post\` 
-                    WHERE \`sid\` = ?
-                `;
+        SELECT * FROM \`post\` 
+        WHERE \`sid\` = ?
+    `;
 
-    const [rows, info] = await db.query(sql, [sid]);
+    const [[rows]] = await db.query(sql, [sid]);
 
-    if (rows.length > 0) {
+
+    if ("sid" in rows) {
         op.code = 200;
+        op.rows = rows;
+
+        op.rows.imgs = await getPostImgs(op.rows.sid);
+        op.rows.tags = await getPostTags(op.rows.sid);
+
+
     } else {
         op.code = 204;
     }
 
-    op.rows = rows;
-
-
     return op;
 }
+
+const getPostTags = async (sid) => {
+    const sql = `
+        SELECT * FROM \`post_tag\` pt
+        JOIN \`tag\` t 
+        ON pt.tag_sid = t.sid 
+        WHERE \`post_sid\` = ?
+    `;
+
+    const [tagsData] = await db.query(sql, [sid]);
+    const tagsNameArr = tagsData.map((v) => v.name)
+
+    return tagsNameArr;
+}
+
+const getPostImgs = async (sid) => {
+    const sql = `SELECT img_name ,sort FROM post_img WHERE post_sid = ? ORDER BY sort ASC;`;
+
+    const [imgsData] = await db.query(sql, [sid]);
+    // const tagsNameArr = tagsData.map((v) => v.name)
+    console.log(imgsData);
+
+    return imgsData;
+}
+
 
 router.get("/post/:post_sid", async (req, res) => {
     const post_sid = req.params.post_sid;
