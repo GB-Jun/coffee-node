@@ -55,7 +55,7 @@ router.post('/add', async (req, res) => {
     const insertSql = `${sql}${setSql}`;
     const result = await db.query(insertSql);
     console.log(result);
-    return res.json(result);
+    return res.json(result[0].insertId);
 });
 
 // 新增外鍵
