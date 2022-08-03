@@ -7,7 +7,7 @@ const {
 } = require(__dirname + '/../../modules/date-tools');
 const moment = require('moment-timezone');
 const router = express.Router(); 
-const fake_user = 1;
+//const member_sid = 1;
 
 
 // ===============================================
@@ -27,6 +27,7 @@ const getListHandler = async (req, res)=>{
         rows2: [],
         sid:req.query.sid
     };
+    const {member_sid}=res.locals.loginUser.sid;
     let page = +req.query.page || 1;
     let type = +req.query.type || 1;
 
@@ -37,7 +38,7 @@ const getListHandler = async (req, res)=>{
             return output
         }
         t_sql = `SELECT COUNT(1) totalRows FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid WHERE coupon_receive.end_time> NOW() AND coupon_receive.status=0 AND coupon_receive.member_sid=?`;
-        const [[{totalRows}]] = await db.query(t_sql,[fake_user]);
+        const [[{totalRows}]] = await db.query(t_sql,[member_sid]);
         let totalPages = 0;
     
         if (totalRows) {
@@ -50,12 +51,12 @@ const getListHandler = async (req, res)=>{
             }
             sql = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid WHERE coupon_receive.end_time >NOW() AND coupon_receive.status =0 AND coupon_receive.member_sid=? ORDER BY end_time DESC `;
             // LIMIT ${(page-1)*output.perPage}, ${output.perPage}
-            const [r2] = await db.query(sql,[fake_user]);
+            const [r2] = await db.query(sql,[member_sid]);
             output.rows = r2;
         }
         sql_points =`SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=?`;
     
-        const [r3] = await db.query(sql,[fake_user]);
+        const [r3] = await db.query(sql,[member_sid]);
         output.rows2 = r3;
         return output;
     
@@ -66,7 +67,7 @@ const getListHandler = async (req, res)=>{
             return output
         }
         t_sql = `SELECT COUNT(1) totalRows FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.end_time <NOW() OR  coupon_logs.used_time >0  AND coupon_receive.member_sid=?`;
-        const [[{totalRows}]] = await db.query(t_sql,[fake_user]);
+        const [[{totalRows}]] = await db.query(t_sql,[member_sid]);
         let totalPages = 0;
     
         if (totalRows) {
@@ -79,13 +80,13 @@ const getListHandler = async (req, res)=>{
             }
             sql4 = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status,coupon_logs.used_time,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE  coupon_receive.end_time < NOW() OR coupon_logs.used_time >0 AND coupon_receive.member_sid=? `;
             // LIMIT ${(page-1)*output.perPage}, ${output.perPage}
-            const [r4] = await db.query(sql4,[fake_user]);
+            const [r4] = await db.query(sql4,[member_sid]);
             output.rows = r4;
         }
         
         sql_points = `SELECT coupon.coupon_name,coupon.coupon_money,coupon_receive.end_time,coupon_receive.status,coupon_logs.used_time,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=?`;
     
-        const [r5] = await db.query(sql4,[fake_user]);
+        const [r5] = await db.query(sql4,[member_sid]);
         output.rows2 = r5;
         output.code = 200;
         output = {...output, page, totalRows, totalPages,type};

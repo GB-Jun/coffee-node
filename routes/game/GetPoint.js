@@ -9,7 +9,7 @@ const {
 const moment = require('moment-timezone');
 const upload = require(__dirname + "/../../modules/upload-images");
 const router = express.Router(); 
-const fake_user = 1;
+//const member_sid = 1;
 // ====================
 
 const getListHandler = async (req, res)=>{
@@ -19,10 +19,14 @@ const getListHandler = async (req, res)=>{
         query: {},
         rows: []
     };
+    if (!res.locals.loginUser) {
+        return;
+    }
+    const {member_sid}=res.locals.loginUser.sid;
     const sql=`select * from points_record where member_sid=1 AND to_days(create_at) = to_days(now());`;
-    const {member_sid}=req.body;
+    //const {member_sid}=req.body;
     const [r] = await db.query(sql, [
-        fake_user
+        member_sid
     ]);
     output.rows = r;
     if(r.length>0){
@@ -44,7 +48,7 @@ router.post('/Api-point-result', upload.none(), async(req, res)=>{
         const sql = "INSERT INTO points_record (`member_sid`,`type`,`points_get`,`create_at`) VALUES (?, 1, ?, NOW())"; 
         const {member_sid,ScoreResult}=req.body;
         const [r] = await db.query(sql, [
-            fake_user,
+            member_sid,
             ScoreResult
         ]);
     // }
