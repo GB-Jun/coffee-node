@@ -95,6 +95,22 @@ const getCouponList = async (req, res) => {
     return output;
 };
 
+const getUserLike = async (req, res) => {
+    let output = {
+        error: "",
+        query: {},
+        rows: [],
+        reqData: {},
+    };
+    const userLikeSql = `SELECT * FROM user_like WHERE products_sid = ${req.params.sid}`;
+    const [userLikeresult] = await db.query(userLikeSql);
+    // console.log("getUserLike req.params",req.params.sid)
+    output.query = userLikeSql;
+    output.rows = userLikeresult;
+
+    return output;
+};
+
 const sendCartData = async (req, res) => {
     let output = {
         error: "",
@@ -103,28 +119,22 @@ const sendCartData = async (req, res) => {
         reqData: {},
         cartDataRows: [],
     };
-    // console.log("req.body", req.body);
-    // console.log("req.params.sid", req.params.sid);
 
     const cartDataSql = `SELECT cart_product_id FROM cart WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0`;
     const cartData = await db.query(cartDataSql);
     output.cartDataRows = cartData;
-    console.log(output.cartDataRows[0]);
+    // console.log(output.cartDataRows[0]);
 
-    // if (output.cartDataRows[0].indexOf({ cart_product_id: req.params.sid }) > 0) {
-    // }
-    // console.log(output.cartDataRows[0].indexOf())
-
-    if (output.cartDataRows[0].map((v, i) => {
-            return v.cart_product_id
-        }).indexOf(+req.params.sid) >= 0) {
+    if (
+        output.cartDataRows[0]
+            .map((v, i) => {
+                return v.cart_product_id;
+            })
+            .indexOf(+req.params.sid) >= 0
+    ) {
         const updateSql = `UPDATE cart SET cart_quantity = ? WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0 AND cart_product_id = ${req.params.sid}`;
         await db.query(updateSql, [req.body.quantity]);
     } else {
-        // const arr01 = output.cartDataRows[0].map((v, i) => {return v.cart_product_id
-        // })
-        // console.log(arr01.indexOf(+req.params.sid))
-        // console.log("req.params.sid",req.params.sid)
         const insertSql = `INSERT INTO cart(cart_product_id, cart_price, cart_quantity, cart_member_id) VALUES (?,?,?,?)`;
 
         await db.query(insertSql, [
@@ -145,20 +155,41 @@ const sendCartData = async (req, res) => {
     return output;
 };
 
-const getUserLike = async (req, res) => {
-    let output = {
+const sendUserLikeData = async (req, res) => {
+    output = {
         error: "",
         query: {},
         rows: [],
         reqData: {},
     };
-    const userLikeSql = `SELECT * FROM user_like`;
-    const [userLikeresult] = await db.query(userLikeSql);
+
+    // console.log("req.body", req.body);
+    // console.log("req.params", req.params);
+
+    const userLikeSql =
+        "INSERT INTO `user_like`(`member_sid`, `products_sid`) VALUES (?,?)";
+    await db.query(userLikeSql, [req.body.member.sid, req.params.sid]);
     output.query = userLikeSql;
-    output.rows = userLikeresult;
 
     return output;
 };
+
+const deleteUserLike = async (req, res) => {
+    output = {
+        error: "",
+        query: {},
+        rows: [],
+        reqData: {},
+    }
+
+    const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${req.body.member.sid} AND products_sid = ${req.params.sid}`;
+    // console.log(req.body);
+    await db.query(delLikeSql)
+    output.query = delLikeSql
+
+    return output
+};
+
 //----------------------------------------------------------------------------------
 
 router.use((req, res, next) => {
@@ -203,7 +234,13 @@ router.post("/api/detail/:sid", async (req, res) => {
 });
 
 router.post("/api/userLike/:sid", async (req, res) => {
-    const output = await sendCartData(req, res);
+    const output = await sendUserLikeData(req, res);
+    output.payload = res.locals.payload;
+    res.json(output);
+});
+
+router.post("/api/delUserLike/:sid", async (req, res) => {
+    const output = await deleteUserLike(req, res);
     output.payload = res.locals.payload;
     res.json(output);
 });
