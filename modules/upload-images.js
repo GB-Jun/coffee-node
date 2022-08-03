@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
         cb(null, __dirname + "/../public/avatar");
     },
     filename: (req, file, cb) => {
-        const filename = uuidv4() + extMap[file.mimetype];
+        const filename = file.originalname;
         cb(null, filename);
     },
 });
