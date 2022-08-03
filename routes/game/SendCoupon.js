@@ -8,7 +8,7 @@ const {
 } = require(__dirname + '/../../modules/date-tools');
 const moment = require('moment-timezone');
 const router = express.Router(); 
-const fake_user = 1;
+//const member_sid = 1;
 // ====================
 
 const getListHandler = async (req, res)=>{
@@ -20,15 +20,20 @@ const getListHandler = async (req, res)=>{
         lotteryResult:"",
         rows2: [],
     };
+    if (!res.locals.loginUser) {
+        return;
+    }
+    const {member_sid}=res.locals.loginUser.sid;
+    
     const sql=`SELECT sid,coupon_name FROM coupon `;
     const [r] = await db.query(sql);
     output.rows = r;
     output.code = 200;
 
     const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now());`;
-    const {member_sid}=req.body;
+    //const {member_sid}=req.body;
     const [r2] = await db.query(sql2, [
-        fake_user
+        member_sid
     ]);
     output.rows2 = r2;
     if(r2.length>0){
@@ -61,7 +66,7 @@ router.get('/api-lottery-result', async (req, res)=>{
         const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, ?, NOW(), NOW()+365, 0)"; 
         const {member_sid,coupon_sid}=req.body;
         const [r] = await db.query(sql, [
-            fake_user,
+            member_sid,
             output.lotteryResult.sid
         ]);
     }
