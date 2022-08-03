@@ -183,7 +183,7 @@ const deleteUserLike = async (req, res) => {
     }
 
     const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${req.body.member.sid} AND products_sid = ${req.params.sid}`;
-    // console.log(req.body);
+    console.log(req.body);
     await db.query(delLikeSql)
     output.query = delLikeSql
 
