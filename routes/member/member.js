@@ -206,17 +206,36 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = ` UPDATE member SET avatar= ? WHERE member_sid = ${sqlSid} `;
 
-    await db.query(sql, [req.file.filename]);
+    // 有沒有重複？
+    const sqlAvatar = ` SELECT avatar FROM member WHERE member_sid = ${sqlSid} `;
+    const [[preAvatar]] = await db.query(sqlAvatar, [req.file.filename]);
 
-    res.json(req.file);
-    console.log(req.file); // 存到 public的avatar資料夾裡拿到的檔名會是req.file.filename
+    const output = {
+        success: false,
+        error: '頭貼重複',
+    };
+
+    console.log(preAvatar.avatar !== req.file.filename);
+
+    if( preAvatar.avatar == req.file.filename ){
+        res.json(output);
+        console.log(1);
+    }else{
+        await db.query(sql, [req.file.filename]);
+        res.json(req.file);
+        console.log(2);
+    }
+
+    // console.log(req.file); // 存到 public的avatar資料夾裡拿到的檔名會是req.file.filename
 });
 
 // --------------------- 歷史訂單 ---------------------
 router.get('/api/order-history', async (req, res) => {
-    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE 1";
-    const [results] = await db.query(sql);
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE `order_member_id` = ";
+    const orderSql = `${sql}${sqlSid}`
 
+    const [results] = await db.query(orderSql);
     res.json(results);
 });
 
