@@ -122,13 +122,14 @@ const getPostImgs = async (sid) => {
 
 const getCommentAndReply = async (sid) => {
     const sql = `
-    SELECT c.*,m.avatar FROM comment c
+    SELECT c.*,m.avatar,m.member_nickname AS nickname
+    FROM comment c
     JOIN member m
     ON c.member_sid = m.member_sid
     WHERE post_sid = ?;`
 
     const rplySql = `
-    SELECT r.*,m.avatar 
+    SELECT r.*,m.avatar,m.member_nickname AS nickname
     FROM reply r 
     JOIN member m
     ON r.member_sid = m.member_sid
