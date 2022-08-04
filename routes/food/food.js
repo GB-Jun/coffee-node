@@ -43,10 +43,16 @@ const sendCartData = async (req, res) => {
 
     return output;
 };
+
+
+
+
+
+
 router.post('/addfooddata', async (req, res) => {
     const insertSql = `INSERT INTO food_choice(food_id, food_price, food_ice_id, food_sugar_id, food_quantity, food_member_id, food_order_id, food_time_id, food_store_id) VALUES ?`;
     const values = req.body.dataFromFoodDetail.map((item) => [
-        item.menu_sid, item.menu_price_m, item.ice, item.sugar, item.foodCount, `${req.body.member.sid}`, `${req.body.store_sid}${req.body.standardTime}`, req.body.standardTime, req.body.store_sid]);
+        item.menu_sid, Number(item.menu_price_m), Number(item.ice), Number(item.sugar), item.foodCount, `${req.body.member.sid}`, `${0}`, req.body.standardTime, req.body.store_sid]);
 
     const r1 = await db.query(insertSql, [values], function (err, result) {
         if (err) throw err;
@@ -54,6 +60,9 @@ router.post('/addfooddata', async (req, res) => {
     });
     return res.json(r1);
 });
+
+
+
 // const test = {
 //     dataFromFoodDetail: [
 //         {
