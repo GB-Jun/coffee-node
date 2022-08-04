@@ -250,12 +250,23 @@ router.get('/api/order-history', async (req, res) => {
 
 // --------------------- 會員收藏 ---------------------
 router.get('/api/member-likes', async (req, res) => {
+
+    // const output = {
+    //     success: false,
+    //     error: '沒有收藏',
+    // };
+
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = `SELECT products_sid FROM user_like WHERE member_sid = ${sqlSid}`;
 
     const [results] = await db.query(sql);
+    // console.log(results[0].products_sid);
+    if(!results[0]){
+        res.json(false);
+        return;
+    }
 
-    const sqlBase = "SELECT products_sid, products_name, products_price, products_pic FROM products WHERE "
+    const sqlBase = "SELECT products_sid, products_name, products_price, products_with_products_categories_sid, products_pic FROM products WHERE "
     const sqlMap = results.map((item)=>{
         return `products_sid = ${item.products_sid}`
     }).join(" OR ")
@@ -266,6 +277,24 @@ router.get('/api/member-likes', async (req, res) => {
     const [results2] = await db.query(sql2);
 
     res.json(results2);
+});
+
+router.delete('/api/member-delete-likes', async (req, res) => {
+
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    console.log(req.query.data);
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${sqlSid} AND products_sid = ${req.query.data}`;
+    const [delResult] = await db.query(delLikeSql);
+
+    if(delResult.affectedRows >= 1){
+        output.success=true;
+    }
+    res.json(output);
 });
 
 
