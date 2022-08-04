@@ -215,14 +215,19 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
         error: '頭貼重複',
     };
 
-    console.log(preAvatar.avatar !== req.file.filename);
+    // console.log(preAvatar.avatar !== req.file.filename);
 
     if( preAvatar.avatar == req.file.filename ){
+        console.log(preAvatar.avatar);
+        console.log(req.file.filename);
         res.json(output);
         console.log(1);
     }else{
-        await db.query(sql, [req.file.filename]);
-        res.json(req.file);
+        const [avatarResult] =  await db.query(sql, [req.file.filename]);
+        if(avatarResult.affectedRows >= 1){
+            output.success = true;
+        }
+        res.json(output);
         console.log(2);
     }
 
@@ -241,6 +246,27 @@ router.get('/api/order-history', async (req, res) => {
 
 // --------------------- 歷史訂單詳細 ---------------------
 
+
+
+// --------------------- 會員收藏 ---------------------
+router.get('/api/member-likes', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `SELECT products_sid FROM user_like WHERE member_sid = ${sqlSid}`;
+
+    const [results] = await db.query(sql);
+
+    const sqlBase = "SELECT products_sid, products_name, products_price, products_pic FROM products WHERE "
+    const sqlMap = results.map((item)=>{
+        return `products_sid = ${item.products_sid}`
+    }).join(" OR ")
+
+    const sql2 = sqlBase+sqlMap;
+    console.log(sql2);
+
+    const [results2] = await db.query(sql2);
+
+    res.json(results2);
+});
 
 
 module.exports = router;
