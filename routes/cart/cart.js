@@ -198,6 +198,8 @@ router.get("/read_food/api", async (req, res) => {
             food_ice_id AS 'ice',
             food_sugar_id AS 'sugar',
             food_quantity AS 'quantity',
+            food_time_id AS 'time',
+            food_store_id AS 'store',
             menu.menu_name AS 'name',
             menu.menu_photo AS 'picture'
         FROM food_choice
@@ -217,16 +219,19 @@ router.get("/read_food/api", async (req, res) => {
         const foodResult = db.query(sql, [sid]);
         const iceResult = db.query(icesql);
         const sugarResult = db.query(sugarsql);
-        const [[result], [iceTable], [sugarTable]] = await Promise.all([foodResult, iceResult, sugarResult]);
-        iceTable.unshift({id: 0, name: ""});
-        sugarTable.unshift({id: 0, name: ""});
+        const [[result], [iceRaw], [sugarRaw]] = await Promise.all([foodResult, iceResult, sugarResult]);
+        iceRaw.unshift({id: 0, name: ""});
+        sugarRaw.unshift({id: 0, name: ""});
+        const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
+        const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
         if (result.length >= 1) {
             result.forEach(item => {
-                item.ice = _.keyBy(iceTable, "id")[item.ice + ""].name;
-                item.sugar = _.keyBy(sugarTable, "id")[item.sugar + ""].name;
+                item.ice = iceTable[item.ice];
+                item.sugar = sugarTable[item.sugar];
                 item.name = [item.name, item.ice, item.sugar];
                 item.picture = `http://${DB_HOST}:${EXPRESS_PORT}/images/food/${item.picture}`;
                 item.stocks = 9999;
+                item.time = moment.parseZone(item.time).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
                 delete item.ice;
                 delete item.sugar;
             })
