@@ -180,14 +180,14 @@ const deleteUserLike = async (req, res) => {
         query: {},
         rows: [],
         reqData: {},
-    }
+    };
 
     const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${req.body.member.sid} AND products_sid = ${req.params.sid}`;
     console.log(req.body);
-    await db.query(delLikeSql)
-    output.query = delLikeSql
+    await db.query(delLikeSql);
+    output.query = delLikeSql;
 
-    return output
+    return output;
 };
 
 //----------------------------------------------------------------------------------
