@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-03 10:29:27
+-- 產生時間： 2022-08-04 10:46:52
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -51,6 +51,18 @@ CREATE TABLE `cart` (
   `cart_member_id` int(10) NOT NULL,
   `cart_order_id` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `cart`
+--
+
+INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`, `cart_member_id`, `cart_order_id`) VALUES
+(1, 2, 320, 6, 1, 0),
+(2, 1, 370, 1, 1, 0),
+(3, 11, 190, 10, 1, 0),
+(4, 5, 320, 4, 1, 0),
+(5, 3, 320, 1, 1, 0),
+(6, 3, 320, 3, 51, 0);
 
 -- --------------------------------------------------------
 
@@ -276,73 +288,69 @@ CREATE TABLE `food_choice` (
   `food_choice_sid` int(11) NOT NULL,
   `food_id` int(11) NOT NULL,
   `food_price` int(11) NOT NULL,
-  `food_ice` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `food_sugar` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `food_ice_id` int(11) NOT NULL,
+  `food_sugar_id` int(11) NOT NULL,
   `food_quantity` int(11) NOT NULL,
   `food_member_id` int(11) NOT NULL,
-  `food_order_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='food_choice';
+  `food_order_id` int(11) NOT NULL,
+  `food_time_id` datetime NOT NULL,
+  `food_store_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `food_choice`
 --
 
-INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice`, `food_sugar`, `food_quantity`, `food_member_id`, `food_order_id`) VALUES
-(1, 188, 70, '正常冰', '無糖', 2, 1, 21),
-(2, 188, 70, '常溫', '半糖', 1, 1, 21),
-(3, 192, 80, '少冰', '微糖', 1, 1, 21),
-(4, 193, 50, '熱', '全糖', 1, 1, 21),
-(5, 188, 70, '正常冰', '無糖', 2, 1, 22),
-(6, 188, 70, '常溫', '半糖', 1, 1, 22),
-(7, 192, 80, '少冰', '微糖', 1, 1, 22),
-(8, 193, 50, '熱', '全糖', 1, 1, 22),
-(9, 188, 70, '正常冰', '無糖', 1, 1, 23),
-(10, 192, 80, '常溫', '微糖', 2, 1, 23),
-(11, 190, 50, '熱', '無糖', 1, 1, 23),
-(12, 191, 100, '去冰', '微糖', 1, 1, 23),
-(13, 1, 70, '正常冰', '微糖', 2, 1, 22),
-(14, 8, 75, '正常冰', '全糖', 1, 1, 22),
-(15, 1, 70, '正常冰', '微糖', 1, 1, 23),
-(16, 4, 50, '正常冰', '半糖', 2, 1, 23),
-(17, 1, 70, '去冰', '無糖', 1, 1, 26),
-(18, 6, 70, '正常冰', '半糖', 1, 1, 26),
-(19, 1, 70, '少冰', '無糖', 5, 1, 27),
-(20, 1, 70, '去冰', '無糖', 2, 1, 27),
-(21, 1, 70, '熱', '全糖', 3, 1, 27),
-(22, 6, 70, '少冰', '無糖', 4, 1, 27),
-(23, 1, 70, '正常冰', '無糖', 4, 1, 28),
-(24, 10, 60, '去冰', '半糖', 5, 1, 28),
-(25, 10, 60, '去冰', '半糖', 2, 1, 28),
-(26, 1, 70, NULL, NULL, 3, 1, 0),
-(27, 2, 80, NULL, NULL, 1, 1, 0),
-(28, 4, 50, '正常冰', '無糖', 5, 1, 0),
-(29, 7, 90, NULL, NULL, 1, 1, 0);
+INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice_id`, `food_sugar_id`, `food_quantity`, `food_member_id`, `food_order_id`, `food_time_id`, `food_store_id`) VALUES
+(155, 32, 95, 0, 0, 5, 1, 0, '2022-08-06 10:00:00', 8),
+(156, 1, 150, 2, 8, 5, 1, 0, '2022-08-06 10:00:00', 8),
+(157, 19, 70, 1, 7, 4, 1, 0, '2022-08-06 10:00:00', 8),
+(158, 32, 95, 0, 0, 5, 1, 0, '2022-08-06 10:00:00', 8),
+(159, 1, 150, 2, 8, 5, 1, 0, '2022-08-06 10:00:00', 8),
+(160, 19, 70, 1, 7, 4, 1, 0, '2022-08-06 10:00:00', 8);
 
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `food_icesugar`
+-- 資料表結構 `food_ice`
 --
 
-CREATE TABLE `food_icesugar` (
-  `food_icesugar_sid` int(11) NOT NULL,
-  `food_icesugar_name` varchar(255) NOT NULL
+CREATE TABLE `food_ice` (
+  `food_ice_sid` int(11) NOT NULL,
+  `food_ice_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 傾印資料表的資料 `food_icesugar`
+-- 傾印資料表的資料 `food_ice`
 --
 
-INSERT INTO `food_icesugar` (`food_icesugar_sid`, `food_icesugar_name`) VALUES
+INSERT INTO `food_ice` (`food_ice_sid`, `food_ice_name`) VALUES
 (1, '正常冰'),
 (2, '少冰'),
 (3, '去冰'),
 (4, '常溫'),
-(5, '熱'),
-(6, '無糖'),
-(7, '微糖'),
-(8, '半糖'),
-(9, '全糖');
+(5, '熱');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `food_sugar`
+--
+
+CREATE TABLE `food_sugar` (
+  `food_sugar_sid` int(11) NOT NULL,
+  `food_sugar_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `food_sugar`
+--
+
+INSERT INTO `food_sugar` (`food_sugar_sid`, `food_sugar_name`) VALUES
+(1, '無糖'),
+(2, '微糖'),
+(3, '半糖'),
+(4, '全糖');
 
 -- --------------------------------------------------------
 
@@ -417,21 +425,28 @@ CREATE TABLE `member` (
   `member_mail` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `member_like` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `member_level` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'missing-image.jpg'
+  `avatar` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'missing-image.jpg',
+  `hash` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `verify` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- 傾印資料表的資料 `member`
 --
 
-INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_like`, `member_level`, `avatar`) VALUES
-(1, '王曉明', '阿明', 'ming', '$2a$10$Ne/LIsw90/DdG3EYXsH5ReI13acFHN2ZjIZTIILAGZZK7aCymxzB2', '2022-05-30', '0911222333', '台北市大安區', 'ming@test.com', '', '800', ''),
-(2, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif'),
-(4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', ''),
-(7, '123', '睡覺了', '123', '123', NULL, '123', '123456789', '123@test123', '', '', '1539960.gif'),
-(14, '123', '123', '1234', '123', NULL, '123', '123', '123@test123', '', '0', ''),
-(43, '林董', '', 'ling', '123', NULL, '', '', '', '', '0', ''),
-(44, 'corgi', '', 'corgi', '$2a$10$WgxyZXCt5e3Vk5rPpxTeFOFikhAdgzUx77v0eQNT5vQbWp1T142k6', NULL, '', '', '', '', '0', 'missing-image.jpg');
+INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_like`, `member_level`, `avatar`, `hash`, `verify`) VALUES
+(1, '王曉明', '阿明', 'ming', '$2a$10$Ne/LIsw90/DdG3EYXsH5ReI13acFHN2ZjIZTIILAGZZK7aCymxzB2', '2022-05-30', '0911222333', '台北市大安區', 'ming@test.com', '', '800', '', '', '0'),
+(2, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif', '', '0'),
+(4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', '', '', '0'),
+(43, '林董', '', 'ling', '123', NULL, '', '', '', '', '0', '', '', '0'),
+(44, 'corgi', '', 'corgi', '$2a$10$WgxyZXCt5e3Vk5rPpxTeFOFikhAdgzUx77v0eQNT5vQbWp1T142k6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(45, '0804', '', '0804', '$2a$10$epvcLV8lC.6n7uV.2lQOouA3JSgk1DlXf1WJvF97NZtUrOFHlWbsu', NULL, '0911222333', '福岡', '123@test123.com', '', '0', 'Kanna.jpg', '', '0'),
+(46, 'a0804', '', 'a0804', '$2a$10$WDQeKKeFUx8TfwYaGz46bODINYXc7vXuBh83aCMwxlrldYYC.Cy3y', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(47, 'b0804', '', 'b0804', '$2a$10$H26ZB/9ZdwWvdH49o/5bV.CKmfwNVcRqI1P1WYGX/pZqjddpQFnaK', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(48, 'f0804', '', 'f0804', '$2a$10$0dxaY2AiKVOIhahHswsE5e9EIfR3x/caLX0VbGv.XJTw/cZud3yIm', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(49, 'g0804', '', 'g0804', '$2a$10$yhnV4ceKrJTuMkM9NV5YYuWjC1aTHKsIgGGzMSnsDNVOlZNOCcjw6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(50, 'h0804', '', 'h0804', '$2a$10$/ure.R0TClfXIYgry.CF0O7rFtO5ioGG52qBUUK6yY.upqe81jNp6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0');
 
 -- --------------------------------------------------------
 
@@ -986,16 +1001,16 @@ INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `pro
 (28, '1658892557', '黃金曼特寧(二十包一入)', '手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '產地:印尼<br /><br />處理法:半水洗<br /><br />風味:焦糖/草本/麥香<br /><br />手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 5包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包<br /><br />', 630, 1, 0, 2000, 1, 'bag8-1.jpg', 'bag8-1.jpg'),
 (29, '1658892603', '曼巴(二十包一入)', '口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻/奶油/草本香韻<br /><br />口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 20包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 630, 1, 0, 2500, 1, 'bag9-1.jpg', 'bag9-1.jpg'),
 (30, '1658892655', '義式綜合豆(二十包一入)', '使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '產地:亞洲/中南美洲/非洲<br /><br />風味:可可韻味<br /><br />使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 10包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包<br /><br />', 530, 1, 0, 2500, 1, 'bag10-1.jpg', 'bag10-1.jpg'),
-(31, '1658892784', '肯亞AA TOP 分享包', 'AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '產地:非洲<br /><br />處理法:水洗<br /><br />風味:黑梅/李子/葡萄<br /><br />AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 10包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包<br /><br />', 3700, 1, 0, 2000, 1, '', NULL),
-(32, '1658892935', '模範生 分享包', '具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '產地:哥倫比亞<br /><br />處理法:水洗<br /><br />風味:柑橘/可可/奶油<br /><br />具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 10, 1, '', NULL),
-(33, '1658892986', '征服者 分享包', '征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '產地:哥斯大黎加<br /><br />處理法:水洗<br /><br />風味:黑巧克力/可可/奶油<br /><br />征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, '', NULL),
-(34, '1658893312', '木蘭花 分享包', '優雅的韻味瀰漫著蜂蜜堅果,百香果的香氣口感,同時具有宛如蔗糖般的濃郁香氣,在味蕾留下輕柔的口感', '產地:哥斯大黎加<br /><br />處理法:水洗<br /><br />風味:蜂蜜/堅果/百香果<br /><br />優雅的韻味瀰漫著蜂蜜堅果,百香果的香氣口感,同時具有宛如蔗糖般的濃郁香氣,在味蕾留下輕柔的口感', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, '', NULL),
-(35, '1658893338', '瓜地馬拉花神 分享包', '花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', '產地:瓜地馬拉<br /><br />處理法:水洗<br /><br />風味:核果/可可/花香味/柑橘<br /><br />花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 20, 1, '', NULL),
-(36, '1658893114', '耶加雪菲 分享包', '日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩', '產地:衣索比亞<br /><br />處理法:日曬<br /><br />風味:莓果/蜜桃<br /><br />日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩a', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 10, 1, '', NULL),
-(37, '1658893167', '黃金曼巴 分享包', '口感厚實甘醇的頂級黃金曼特寧搭配核果香氣絕佳的巴西咖啡豆,完美平衡呈現奶油的質感與明顯的可可味', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻味/草本香韻/奶油<br /><br />口感厚實甘醇的頂級黃金曼特寧搭配核果香氣絕佳的巴西咖啡豆,完美平衡呈現奶油的質感與明顯的可可味', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, '', NULL),
-(38, '1658893384', '黃金曼特寧 分享包', '手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '產地:印尼<br /><br />處理法:半水洗<br /><br />風味:焦糖/草本/麥香<br /><br />手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3700, 1, 0, 15, 1, '', NULL),
-(39, '1658893239', '曼巴 分享包', '口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻/奶油/草本香韻<br /><br />口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 4000, 1, '', NULL),
-(40, '1658893278', '義式綜合豆(十包一入)', '使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '產地:亞洲/中南美洲/非洲<br /><br />風味:可可韻味<br /><br />使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 2700, 1, 0, 200, 1, '', NULL),
+(31, '1658892784', '肯亞AA TOP 分享包', 'AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '產地:非洲<br /><br />處理法:水洗<br /><br />風味:黑梅/李子/葡萄<br /><br />AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 10包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包<br /><br />', 3700, 1, 0, 2000, 1, 'bag1-1.jpg', 'bag1-1.jpg,bag1-2.jpg,bag1-3.jpg'),
+(32, '1658892935', '模範生 分享包', '具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '產地:哥倫比亞<br /><br />處理法:水洗<br /><br />風味:柑橘/可可/奶油<br /><br />具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 10, 1, 'bag2-1.jpg', 'bag2-1.jpg,bag2-2.jpg'),
+(33, '1658892986', '征服者 分享包', '征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '產地:哥斯大黎加<br /><br />處理法:水洗<br /><br />風味:黑巧克力/可可/奶油<br /><br />征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, 'bag3-1.jpg', 'bag3-1.jpg,bag3-2.jpg,bag3-3.jpg'),
+(34, '1658893312', '木蘭花 分享包', '優雅的韻味瀰漫著蜂蜜堅果,百香果的香氣口感,同時具有宛如蔗糖般的濃郁香氣,在味蕾留下輕柔的口感', '產地:哥斯大黎加<br /><br />處理法:水洗<br /><br />風味:蜂蜜/堅果/百香果<br /><br />優雅的韻味瀰漫著蜂蜜堅果,百香果的香氣口感,同時具有宛如蔗糖般的濃郁香氣,在味蕾留下輕柔的口感', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, 'bag4-1.jpg', 'bag4-1.jpg,bag4-2.jpg,bag4-3.jpg'),
+(35, '1658893338', '瓜地馬拉花神 分享包', '花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', '產地:瓜地馬拉<br /><br />處理法:水洗<br /><br />風味:核果/可可/花香味/柑橘<br /><br />花神具有非常愉悅優雅花香主體的風味,酸性柔和且以巧克力般的風味尾韻作結,整體口感乾淨且明亮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 20, 1, 'bag5-1.jpg', 'bag5-1.jpg,bag5-2.jpg,bag5-3.jpg'),
+(36, '1658893114', '耶加雪菲 分享包', '日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩', '產地:衣索比亞<br /><br />處理法:日曬<br /><br />風味:莓果/蜜桃<br /><br />日曬耶加雪菲具有濃郁奔放的水果香,柔和綿長的蜜桃莓果酸卻不刺激,風味甜度高酸度明亮且細膩a', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 10, 1, 'bag6-1.jpg', 'bag6-1.jpg'),
+(37, '1658893167', '黃金曼巴 分享包', '口感厚實甘醇的頂級黃金曼特寧搭配核果香氣絕佳的巴西咖啡豆,完美平衡呈現奶油的質感與明顯的可可味', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻味/草本香韻/奶油<br /><br />口感厚實甘醇的頂級黃金曼特寧搭配核果香氣絕佳的巴西咖啡豆,完美平衡呈現奶油的質感與明顯的可可味', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 15, 1, 'bag7-1.jpg', 'bag7-1.jpg'),
+(38, '1658893384', '黃金曼特寧 分享包', '手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '產地:印尼<br /><br />處理法:半水洗<br /><br />風味:焦糖/草本/麥香<br /><br />手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3700, 1, 0, 15, 1, 'bag8-1.jpg', 'bag8-1.jpg'),
+(39, '1658893239', '曼巴 分享包', '口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻/奶油/草本香韻<br /><br />口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 3200, 1, 0, 4000, 1, 'bag9-1.jpg', 'bag9-1.jpg'),
+(40, '1658893278', '義式綜合豆(十包一入)', '使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '產地:亞洲/中南美洲/非洲<br /><br />風味:可可韻味<br /><br />使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：10g x 100包 　<br /><br />製造地：台灣<br /><br />保存期限：18個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您最佳賞味期間內飲用完畢<br /><br />咖啡因含量：41.1mg / 包', 2700, 1, 0, 200, 1, 'bag10-1.jpg', 'bag10-1.jpg'),
 (41, '1658893463', '肯亞AA TOP(半磅)', 'AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '產地:非洲<br /><br />處理法:水洗<br /><br />風味:黑梅/李子/葡萄<br /><br />AA TOP最高等級的肯亞咖啡豆其濃郁的黑梅香氣,口感豐富且尾韻悠長,轉化為肯亞特有的甜,一入口紅酒般的餘韻在口中揮之不去', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：227g±2g<br /><br />製造地：台灣<br /><br />保存期限：6個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br /', 470, 1, 0, 200, 2, '', NULL),
 (42, '1658893522', '模範生(半磅)', '具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳', '產地:哥倫比亞<br /><br />處理法:水洗<br /><br />風味:柑橘/可可/奶油<br /><br />具有豐富的芳香水果酸氣迷人,且帶有柑橘的明亮甜感,巧克力的餘韻油脂感特佳 ', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：227g±2g<br /><br />製造地：台灣<br /><br />保存期限：12個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br ', 440, 1, 0, 200, 2, '', NULL),
 (43, '1658893561', '征服者(半磅)', '征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '產地:哥斯大黎加<br /><br />處理法:水洗<br /><br />風味:黑巧克力/可可/奶油<br /><br />征服者入口可感受到濃郁的黑可克力口感,同時具有豐富且厚實的奶油風味', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：227g±2g<br /><br />製造地：台灣<br /><br />保存期限：6個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br /', 440, 1, 0, 200, 2, '', NULL),
@@ -1215,6 +1230,33 @@ CREATE TABLE `sessions` (
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `store`
+--
+
+CREATE TABLE `store` (
+  `store_sid` int(11) NOT NULL,
+  `store_name` varchar(255) NOT NULL,
+  `store_road` varchar(255) NOT NULL,
+  `store_block` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 傾印資料表的資料 `store`
+--
+
+INSERT INTO `store` (`store_sid`, `store_name`, `store_road`, `store_block`) VALUES
+(1, '0+B 光復店', '光復南路300號', '大安區, 台北市, 106台灣'),
+(2, '0+B 復興店', '復興南路一段323號', '大安區, 台北市, 106台灣'),
+(3, '0+B 龍門店', '忠孝東路四段134號', '大安區, 台北市, 106台灣'),
+(4, '0+B 永康店', '永康街2號2樓', '大安區, 台北市, 106台灣'),
+(5, '0+B 敦和店', '敦化南路二段263號', '大安區, 台北市, 106台灣'),
+(6, '0+B 微風南京店', '南京東路三段337號', '松山區, 台北市, 106台灣'),
+(7, '0+B 南京建國店', '南京東路三段1號', '中山區, 台北市, 106台灣'),
+(8, '0+B 南京三民店', '南京東路五段171號', '松山區, 台北市, 106台灣');
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `tag`
 --
 
@@ -1262,6 +1304,13 @@ CREATE TABLE `user_like` (
   `member_sid` int(11) NOT NULL,
   `products_sid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `user_like`
+--
+
+INSERT INTO `user_like` (`sid`, `member_sid`, `products_sid`) VALUES
+(2, 1, 3);
 
 --
 -- 已傾印資料表的索引
@@ -1328,10 +1377,16 @@ ALTER TABLE `food_choice`
   ADD PRIMARY KEY (`food_choice_sid`);
 
 --
--- 資料表索引 `food_icesugar`
+-- 資料表索引 `food_ice`
 --
-ALTER TABLE `food_icesugar`
-  ADD PRIMARY KEY (`food_icesugar_sid`);
+ALTER TABLE `food_ice`
+  ADD PRIMARY KEY (`food_ice_sid`);
+
+--
+-- 資料表索引 `food_sugar`
+--
+ALTER TABLE `food_sugar`
+  ADD PRIMARY KEY (`food_sugar_sid`);
 
 --
 -- 資料表索引 `lastest_news`
@@ -1461,6 +1516,12 @@ ALTER TABLE `sessions`
   ADD PRIMARY KEY (`session_id`);
 
 --
+-- 資料表索引 `store`
+--
+ALTER TABLE `store`
+  ADD PRIMARY KEY (`store_sid`);
+
+--
 -- 資料表索引 `tag`
 --
 ALTER TABLE `tag`
@@ -1486,7 +1547,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1534,13 +1595,19 @@ ALTER TABLE `course_related`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
 --
 ALTER TABLE `food_choice`
-  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `food_icesugar`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `food_ice`
 --
-ALTER TABLE `food_icesugar`
-  MODIFY `food_icesugar_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+ALTER TABLE `food_ice`
+  MODIFY `food_ice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `food_sugar`
+--
+ALTER TABLE `food_sugar`
+  MODIFY `food_sugar_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `lastest_news`
@@ -1558,7 +1625,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
@@ -1663,6 +1730,12 @@ ALTER TABLE `review_likes`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `store`
+--
+ALTER TABLE `store`
+  MODIFY `store_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `tag`
 --
 ALTER TABLE `tag`
@@ -1672,5 +1745,5 @@ ALTER TABLE `tag`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_like`
 --
 ALTER TABLE `user_like`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
