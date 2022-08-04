@@ -466,7 +466,7 @@ router.get("/cart_count/api", async (req, res) => {
     `;
 
     const sqlFood = `
-        SELECT COUNT(1) AS foodCount FROM food_choice WHERE food_member_id = 1 AND food_order_id = 0;
+        SELECT COUNT(1) AS foodCount FROM food_choice WHERE food_member_id = ? AND food_order_id = 0;
     `;
 
     try {
@@ -474,6 +474,7 @@ router.get("/cart_count/api", async (req, res) => {
         const foodResult = db.query(sqlFood, [sid]);
 
         const [[[{ productCount }]], [[{ foodCount }]]] = await Promise.all([productResult, foodResult]);
+        console.log("productCount:",productCount,"\n foodCount:",foodCount)
         const cartTotalCount = productCount + foodCount
         res.json({ cartTotalCount });
         return;
