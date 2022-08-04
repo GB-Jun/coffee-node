@@ -86,11 +86,13 @@ const getPostHandler = async (req, res, sid) => {
 
         op.rows.imgs = await getPostImgs(op.rows.sid);
         op.rows.tags = await getPostTags(op.rows.sid);
+        op.rows.comment = await getCommentAndReply(op.rows.sid);
 
 
     } else {
         op.code = 204;
     }
+
 
     return op;
 }
@@ -116,6 +118,33 @@ const getPostImgs = async (sid) => {
     // const tagsNameArr = tagsData.map((v) => v.name)
 
     return imgsData;
+}
+
+const getCommentAndReply = async (sid) => {
+    const sql = `
+    SELECT c.*,m.avatar,m.member_nickname AS nickname
+    FROM comment c
+    JOIN member m
+    ON c.member_sid = m.member_sid
+    WHERE post_sid = ?;`
+
+    const rplySql = `
+    SELECT r.*,m.avatar,m.member_nickname AS nickname
+    FROM reply r 
+    JOIN member m
+    ON r.member_sid = m.member_sid
+    WHERE comment_sid = ?;`
+
+    const [rows] = await db.query(sql, [sid]);
+
+    for (let i in rows) {
+        if (rows[i].replies) {
+            const [rply] = await db.query(rplySql, [rows[i].sid]);
+            rows[i].reply = rply;
+        }
+    }
+
+    return rows;
 }
 
 
