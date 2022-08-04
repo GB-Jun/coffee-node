@@ -195,8 +195,8 @@ router.get("/read_food/api", async (req, res) => {
             food_choice_sid AS 'id',
             food_id AS 'listId',
             food_price AS 'price',
-            food_ice AS 'ice',
-            food_sugar AS 'sugar',
+            food_ice_id AS 'ice',
+            food_sugar_id AS 'sugar',
             food_quantity AS 'quantity',
             menu.menu_name AS 'name',
             menu.menu_photo AS 'picture'
@@ -205,10 +205,25 @@ router.get("/read_food/api", async (req, res) => {
         WHERE food_member_id = ? AND food_order_id = 0;
     `;
 
+    const icesql = `
+        SELECT food_ice_sid AS id, food_ice_name AS name  FROM food_ice WHERE 1;
+    `;
+
+    const sugarsql = `
+        SELECT food_sugar_sid AS id, food_sugar_name AS name FROM food_sugar WHERE 1;
+    `;
+
     try {
-        const [result] = await db.query(sql, [sid]);
+        const foodResult = db.query(sql, [sid]);
+        const iceResult = db.query(icesql);
+        const sugarResult = db.query(sugarsql);
+        const [[result], [iceTable], [sugarTable]] = await Promise.all([foodResult, iceResult, sugarResult]);
+        iceTable.unshift({id: 0, name: ""});
+        sugarTable.unshift({id: 0, name: ""});
         if (result.length >= 1) {
             result.forEach(item => {
+                item.ice = _.keyBy(iceTable, "id")[item.ice + ""].name;
+                item.sugar = _.keyBy(sugarTable, "id")[item.sugar + ""].name;
                 item.name = [item.name, item.ice, item.sugar];
                 item.picture = `http://${DB_HOST}:${EXPRESS_PORT}/images/food/${item.picture}`;
                 item.stocks = 9999;
@@ -474,7 +489,6 @@ router.get("/cart_count/api", async (req, res) => {
         const foodResult = db.query(sqlFood, [sid]);
 
         const [[[{ productCount }]], [[{ foodCount }]]] = await Promise.all([productResult, foodResult]);
-        console.log("productCount:",productCount,"\n foodCount:",foodCount)
         const cartTotalCount = productCount + foodCount
         res.json({ cartTotalCount });
         return;
