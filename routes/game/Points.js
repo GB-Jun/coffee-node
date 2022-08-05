@@ -68,7 +68,7 @@ const getListHandler = async (req, res)=>{
 
     return output;
 };
-// ==============================
+
 router.get('/', async (req, res)=>{
     
     const output = await getListHandler(req, res);
