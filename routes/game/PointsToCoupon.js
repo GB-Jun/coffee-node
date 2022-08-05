@@ -48,7 +48,7 @@ router.get('/API', async (req, res)=>{
 
 router.post('/Api-Points-To-Coupon-result', upload.none(), async(req, res)=>{
     const output = await getListHandler(req, res);
-    const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, 3, NOW(), NOW()+ 365,0)"; 
+    const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`,`category`) VALUES (?, 3, NOW(), NOW()+ 365,0, 2)"; 
     const [r] = await db.query(sql, [
         output.member_sid
     ]);
