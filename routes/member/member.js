@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const upload = require(__dirname + "/../../modules/upload-images");
+const nodemailer = require("nodemailer");
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
@@ -74,6 +75,24 @@ router.post('/api/login', upload.none(), async(req, res) => {
 
 // --------------------- 註冊 ---------------------
 router.post('/api/sign-up', async (req, res) => {
+
+    // const transporter = nodemailer.createTransport({
+    //     host: 'smtp.gmail.com',
+    //     port: 465,
+    //     auth: {
+    //     user: 'mfee26Coffee@gmail.com',
+    //     pass: "",
+    //     },
+    // });
+    // transporter.sendMail({
+    //     from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+    //     to: '',
+    //     subject: '驗證信',
+    //     html: '<h1>測試：123456</h1>',
+    // }).then(() => {
+    //     console.log(123);
+    // }).catch(console.error);
+
 
     const output = {
         success: false,

@@ -29,6 +29,7 @@
     "moment-timezone": "^0.5.34",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.7",
     "pm2": "^5.2.0",
     "sqlstring": "^2.3.3",
     "uuid": "^8.3.2"
