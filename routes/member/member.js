@@ -272,9 +272,11 @@ router.get('/api/member-likes', async (req, res) => {
     }).join(" OR ")
 
     const sql2 = sqlBase+sqlMap;
-    console.log(sql2);
+    // console.log(sql2);
 
     const [results2] = await db.query(sql2);
+
+    console.log(results2);
 
     res.json(results2);
 });
@@ -286,7 +288,7 @@ router.delete('/api/member-delete-likes', async (req, res) => {
         error: '',
     };
 
-    console.log(req.query.data);
+    // console.log(req.query.data);
     const sqlSid = `${res.locals.loginUser.sid}`;
     const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${sqlSid} AND products_sid = ${req.query.data}`;
     const [delResult] = await db.query(delLikeSql);
