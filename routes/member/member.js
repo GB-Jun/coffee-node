@@ -81,7 +81,7 @@ router.post('/api/sign-up', async (req, res) => {
     //     port: 465,
     //     auth: {
     //     user: 'mfee26Coffee@gmail.com',
-    //     pass: "gfmcjwcanwsxqywe",
+    //     pass: "",
     //     },
     // });
     // transporter.sendMail({
