@@ -24,12 +24,13 @@ const getListHandler = async (req, res)=>{
     }
     const { sid } = res.locals.loginUser;
     output.member_sid=sid;
-    const sql=`SELECT sid,coupon_name FROM coupon `;
+    const sql=`SELECT sid,coupon_name FROM coupon WHERE coupon_status =1`;
     const [r] = await db.query(sql);
     output.rows = r;
     output.code = 200;
 
-    const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now());`;
+    //const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now())`;
+    const sql2=`select * from coupon_receive where member_sid=1 AND category=1 AND to_days(create_time) = to_days(now())`;
     const [r2] = await db.query(sql2, [
         output.member_sid,
     ]);
@@ -56,7 +57,8 @@ router.get('/api', async (req, res)=>{
 router.get('/api-lottery-result', async (req, res)=>{
     const output = await getListHandler(req, res);
     if(!(output.error)){
-        const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, ?, NOW(), NOW()+365, 0)"; 
+        // const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, ?, NOW(), NOW()+365, 0)"; 
+        const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`,`category`) VALUES (?, ?, NOW(), NOW()+ 365, 0, 1)"; 
 
         const {coupon_sid}=req.body;
         const [r] = await db.query(sql, [
