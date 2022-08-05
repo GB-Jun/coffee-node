@@ -162,4 +162,34 @@ router.get("/post/:post_sid", async (req, res) => {
 });
 
 
+router.post("/reply", async (req, res) => {
+    const { member_sid, comment_sid, content } = req.body;
+    const op = {
+        success: false,
+        error: '',
+        request: req.body || ''
+    };
+    const sql = "INSERT INTO `reply` ( `member_sid`, `comment_sid`, `content`, `created_at`) VALUES (?, ?, ?, NOW());"
+    const [r] = await db.query(sql, [member_sid, comment_sid, content]);
+
+
+    console.log(r);
+    res.json(op);
+});
+
+router.delete("/reply", async (req, res) => {
+    const { reply_sid } = req.body;
+    const op = {
+        success: false,
+        error: '',
+        request: req.body || ''
+    };
+    const sql = "DELETE FROM reply WHERE sid = ?"
+    const [r] = await db.query(sql, [reply_sid]);
+
+
+    console.log(r);
+    res.json(op);
+});
+
 module.exports = router;
