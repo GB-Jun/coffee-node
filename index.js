@@ -108,6 +108,7 @@ app.use('/Coupon_foruser', require(__dirname + '/routes/game/Coupon_foruser'));
 app.use('/SendCoupon', require(__dirname + '/routes/game/SendCoupon'));
 app.use('/GetPoint', require(__dirname + '/routes/game/GetPoint'));
 app.use('/PointsToCoupon', require(__dirname + '/routes/game/PointsToCoupon'));
+app.use('/RandomFoodMenuPhotos', require(__dirname + '/routes/game/RandomFoodMenuPhotos'));
 
 
 const path = require('path');
