@@ -47,7 +47,7 @@ const getListHandler = async (req, res) => {
 
 
         for (let row of op.rows) {
-            if ("sid" in row) {
+            if (row.sid) {
                 row.tags = await getPostTags(row.sid);
             }
         }
