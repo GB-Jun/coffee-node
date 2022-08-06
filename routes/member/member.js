@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const { verify } = require("crypto");
 
 
 // --------------------- 登入 ---------------------
@@ -15,15 +16,16 @@ router.post('/api/login', upload.none(), async(req, res) => {
         success: false,
         error: '',
         code: 0,
+        verify: '',
     };
     const sql = "SELECT * FROM `member` WHERE `member_account`=? ";
     const [result] = await db.query(sql, [req.body.member_account]);
+    const [isVerify] = await db.query(`SELECT verify FROM member WHERE member_account="${req.body.member_account}"`)
 
-
-    // 比對資料庫裡有沒有使用者輸入的帳密
+    // 比對資料庫裡有沒有使用者輸入的帳密，且verify要是1表示開通
     if (!result.length) {
         output.code = 401;
-        output.error = '帳密錯誤';
+        output.error = '帳號錯誤';
         
         return res.json(output);
     }
@@ -68,44 +70,43 @@ router.post('/api/login', upload.none(), async(req, res) => {
         };
         output.success = true;
     }
+    
+    if(isVerify[0].verify == 1){
+        output.verify = "帳號已開通";
+        res.json(output);
+    }else{
+        res.json(output);
+    }
 
-    res.json(output);
 });
 
+// --------------------- 驗證信 ---------------------
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+    user: process.env.EMAIL_ACCOUNT,
+    pass: process.env.EMAIL_PASS,
+    },
+});
+// 產生隨機六位數
+const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
 // --------------------- 註冊 ---------------------
 router.post('/api/sign-up', async (req, res) => {
-
-    // const transporter = nodemailer.createTransport({
-    //     host: 'smtp.gmail.com',
-    //     port: 465,
-    //     auth: {
-    //     user: 'mfee26Coffee@gmail.com',
-    //     pass: "",
-    //     },
-    // });
-    // transporter.sendMail({
-    //     from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
-    //     to: '',
-    //     subject: '驗證信',
-    //     html: '<h1>測試：123456</h1>',
-    // }).then(() => {
-    //     console.log(123);
-    // }).catch(console.error);
-
 
     const output = {
         success: false,
         error: '',
     };
 
-    const sql = "INSERT INTO `member`(`member_name`, `member_account`, `member_password`) VALUES (?, ?, ?)";
+    const sql = "INSERT INTO `member`(`member_name`, `member_account`, `member_password`,`member_mail`,`hash`) VALUES (?, ?, ?, ?, ?)";
     const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
     
-    const {member_name, member_account, member_password} = req.body;
+    const {member_name, member_account, member_password,member_mail} = req.body;
 
     const [result2] = await db.query(sqlAccount, [member_account]);
-
 
     // 比對有沒有資料庫裡的帳號
     if ( result2.length>0) {
@@ -121,12 +122,51 @@ router.post('/api/sign-up', async (req, res) => {
         res.json(output);
     }else{
         const hashPass = await bcrypt.hash(req.body.member_password, 10);
-        db.query(sql, [member_name, member_account, hashPass]);
+        db.query(sql, [member_name, member_account, hashPass, member_mail, hashRandom]);
+
         output.success = true;
+
+        transporter.sendMail({
+            from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+            to: `${member_mail}`,
+            subject: '驗證信',
+            html: `<h4 style="display:inline-block">您的驗證碼為：</h4><h1 style="display:inline-block">${hashRandom}</h1>`,
+        }).then(() => {
+            console.log(hashRandom);
+        }).catch();
+
         return res.json(output);
     }
 
 });
+// --------------------- 比對驗證碼 ---------------------
+router.post('/api/user-verify', async (req, res) => {
+
+    const output = {
+        success: false,
+        error: '',
+        verify:'',
+    };
+
+    const account = req.body.member_account;
+
+    const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
+    const [accountResult] = await db.query(sqlAccount, [account]);
+
+    const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
+    const [verifyResult] = await db.query(sql);
+
+    if( accountResult.length && verifyResult[0].hash === req.body.verification){
+        output.success = true;
+    }
+    const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
+    if(isVerify.affectedRows > 0){
+        output.verify=1;
+    }
+    res.json(output);
+});
+
+
 
 // --------------------- 讀取會員資料 ---------------------
 router.get('/api/user-list', async (req, res) => {
