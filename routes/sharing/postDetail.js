@@ -81,7 +81,7 @@ const getPostHandler = async (req, res, sid) => {
     const [[rows]] = await db.query(sql, [sid]);
 
 
-    if ("sid" in rows) {
+    if (rows.sid) {
         op.code = 200;
         op.rows = rows;
 

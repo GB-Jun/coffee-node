@@ -10,6 +10,7 @@ router.use('/post', require('./post'));
 router.use('/comment', require('./comment'));
 router.use('/reply', require('./reply'));
 router.use('/memberlike', require('./memberlike'));
+router.use('/previewAPI', require('./previewAPI'));
 
 
 
