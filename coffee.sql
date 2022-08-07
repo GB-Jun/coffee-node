@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-05 16:02:54
+-- 產生時間： 2022-08-07 16:23:50
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -155,7 +155,10 @@ CREATE TABLE `coupon_logs` (
 
 INSERT INTO `coupon_logs` (`sid`, `member_sid`, `coupon_receive_sid`, `order_sid`, `used_time`) VALUES
 (1, 1, 2, 1, '2022-05-31 14:29:48'),
-(2, 2, 4, 3, '2022-05-31 14:50:43');
+(2, 2, 4, 3, '2022-05-31 14:50:43'),
+(7, 1, 23, 32, '2022-08-07 21:59:34'),
+(8, 54, 22, 34, '2022-08-06 22:04:53'),
+(9, 1, 28, 35, '2022-08-07 21:59:34');
 
 -- --------------------------------------------------------
 
@@ -194,7 +197,17 @@ INSERT INTO `coupon_receive` (`sid`, `member_sid`, `coupon_sid`, `create_time`, 
 (14, 1, 4, '2022-06-11 09:22:06', '2022-11-11 09:22:06', 0, 1),
 (15, 1, 5, '2022-06-12 09:22:35', '2022-11-12 09:22:35', 0, 2),
 (16, 1, 3, '2022-06-12 10:25:01', '2022-11-12 10:25:01', 0, 1),
-(17, 1, 6, '2021-12-11 09:29:28', '2022-06-11 09:29:28', 0, 1);
+(17, 1, 6, '2021-12-11 09:29:28', '2022-06-11 09:29:28', 0, 1),
+(19, 54, 3, '2022-08-02 21:39:01', '2023-08-02 15:39:01', 0, 2),
+(20, 1, 4, '2022-08-09 15:42:27', '2023-08-09 15:42:27', 0, 2),
+(21, 54, 4, '2022-08-10 15:43:44', '2023-08-10 15:43:44', 0, 2),
+(22, 54, 5, '2022-08-06 15:44:55', '2022-08-06 15:44:55', 1, 2),
+(23, 1, 5, '2022-08-06 15:45:22', '2022-08-06 15:45:22', 1, 2),
+(24, 1, 6, '2022-06-07 15:46:02', '2022-06-07 15:46:02', 0, 2),
+(25, 54, 6, '2022-06-07 15:46:46', '2022-06-07 15:46:46', 0, 2),
+(26, 1, 7, '2022-05-07 15:47:58', '2023-05-07 15:47:58', 0, 2),
+(27, 54, 7, '2022-08-02 15:50:56', '2023-08-02 15:50:56', 0, 2),
+(28, 1, 8, '2022-07-05 16:06:09', '2023-07-05 16:06:09', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -452,7 +465,8 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (48, 'f0804', '', 'f0804', '$2a$10$0dxaY2AiKVOIhahHswsE5e9EIfR3x/caLX0VbGv.XJTw/cZud3yIm', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (49, 'g0804', '', 'g0804', '$2a$10$yhnV4ceKrJTuMkM9NV5YYuWjC1aTHKsIgGGzMSnsDNVOlZNOCcjw6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (50, 'h0804', '', 'h0804', '$2a$10$/ure.R0TClfXIYgry.CF0O7rFtO5ioGG52qBUUK6yY.upqe81jNp6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
-(51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0');
+(51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
+(54, 'Trista99', '', 'Trista99', '$2a$10$QZnjkMqulG8ly2yGrsFKF.p8GUpb6o8Pn7B/5VXR9AZnjlCKOnTBy', NULL, '', '', 'huafw2367@gmail.com', '', '0', 'missing-image.jpg', '366119', '1');
 
 -- --------------------------------------------------------
 
@@ -1579,13 +1593,13 @@ ALTER TABLE `coupon`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `coupon_logs`
 --
 ALTER TABLE `coupon_logs`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `coupon_receive`
 --
 ALTER TABLE `coupon_receive`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course`
@@ -1639,7 +1653,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
