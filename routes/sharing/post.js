@@ -14,12 +14,14 @@ router.get("/", async (req, res) => {
 });
 
 const getListHandler = async (req, res) => {
+    const { title, tag, member_sid } = req.query;
     const rowsPerPage = 20;
     const op = {
         totalRows: 0,
         rowsPerPage,
         code: 0,
         query: {},
+        sql: "",
         rows: [],
         isEnd: false
     }
@@ -28,11 +30,20 @@ const getListHandler = async (req, res) => {
     const [[{ totalRows }]] = await db.query(sql);
 
     const totalPage = Math.ceil(totalRows / rowsPerPage);
+
+    op.totalRows = totalRows;
+    op.query = req.query;
     op.query.times = req.query.times || 0;
     op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
 
 
     if (totalRows) {
+        const LIMIT = `LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}`;
+        let WHERE = "";
+        title ? WHERE += `p.title LIKE '%${title}%' AND` : WHERE += "1 AND";
+        member_sid ? WHERE += ` p.member_sid = ${member_sid} AND` : WHERE += "";
+
+
         const sql = `
             SELECT p.* ,pi.img_name ,pi.sort,m.avatar 
             FROM \`post\` p 
@@ -40,9 +51,11 @@ const getListHandler = async (req, res) => {
             ON p.sid = pi.post_sid 
             LEFT JOIN \`member\` m
             ON p.member_sid = m.member_sid
-            WHERE pi.sort = 1 AND p.delete_state = 0
-            LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}
+            WHERE ${WHERE} pi.sort = 1 AND p.delete_state = 0 
+            ${LIMIT};
         `;
+
+        op.sql = sql;
         [op.rows] = await db.query(sql);
 
 
@@ -50,6 +63,12 @@ const getListHandler = async (req, res) => {
             if (row.sid) {
                 row.tags = await getPostTags(row.sid);
             }
+        }
+
+        if (tag) {
+            op.rows = op.rows.filter((v) =>
+                v.tags.includes(tag)
+            );
         }
 
     }
