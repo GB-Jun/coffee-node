@@ -90,11 +90,12 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
     },
 });
-// 產生隨機六位數
-const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
 // --------------------- 註冊 ---------------------
 router.post('/api/sign-up', async (req, res) => {
+
+    // 產生隨機六位數
+    const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
     const output = {
         success: false,
