@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const upload = require(__dirname + "/../../modules/upload-images");
+const nodemailer = require("nodemailer");
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const { verify } = require("crypto");
 
 
 // --------------------- 登入 ---------------------
@@ -14,15 +16,16 @@ router.post('/api/login', upload.none(), async(req, res) => {
         success: false,
         error: '',
         code: 0,
+        verify: '',
     };
     const sql = "SELECT * FROM `member` WHERE `member_account`=? ";
     const [result] = await db.query(sql, [req.body.member_account]);
+    const [isVerify] = await db.query(`SELECT verify FROM member WHERE member_account="${req.body.member_account}"`)
 
-
-    // 比對資料庫裡有沒有使用者輸入的帳密
+    // 比對資料庫裡有沒有使用者輸入的帳密，且verify要是1表示開通
     if (!result.length) {
         output.code = 401;
-        output.error = '帳密錯誤';
+        output.error = '帳號錯誤';
         
         return res.json(output);
     }
@@ -67,10 +70,28 @@ router.post('/api/login', upload.none(), async(req, res) => {
         };
         output.success = true;
     }
+    
+    if(isVerify[0].verify == 1){
+        output.verify = "帳號已開通";
+        res.json(output);
+    }else{
+        res.json(output);
+    }
 
-    res.json(output);
 });
 
+// --------------------- 驗證信 ---------------------
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+    user: process.env.EMAIL_ACCOUNT,
+    pass: process.env.EMAIL_PASS,
+    },
+});
+// 產生隨機六位數
+const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
 // --------------------- 註冊 ---------------------
 router.post('/api/sign-up', async (req, res) => {
@@ -80,13 +101,12 @@ router.post('/api/sign-up', async (req, res) => {
         error: '',
     };
 
-    const sql = "INSERT INTO `member`(`member_name`, `member_account`, `member_password`) VALUES (?, ?, ?)";
+    const sql = "INSERT INTO `member`(`member_name`, `member_account`, `member_password`,`member_mail`,`hash`) VALUES (?, ?, ?, ?, ?)";
     const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
     
-    const {member_name, member_account, member_password} = req.body;
+    const {member_name, member_account, member_password,member_mail} = req.body;
 
     const [result2] = await db.query(sqlAccount, [member_account]);
-
 
     // 比對有沒有資料庫裡的帳號
     if ( result2.length>0) {
@@ -102,12 +122,51 @@ router.post('/api/sign-up', async (req, res) => {
         res.json(output);
     }else{
         const hashPass = await bcrypt.hash(req.body.member_password, 10);
-        db.query(sql, [member_name, member_account, hashPass]);
+        db.query(sql, [member_name, member_account, hashPass, member_mail, hashRandom]);
+
         output.success = true;
+
+        transporter.sendMail({
+            from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+            to: `${member_mail}`,
+            subject: '驗證信',
+            html: `<h4 style="display:inline-block">您的驗證碼為：</h4><h1 style="display:inline-block">${hashRandom}</h1>`,
+        }).then(() => {
+            console.log(hashRandom);
+        }).catch();
+
         return res.json(output);
     }
 
 });
+// --------------------- 比對驗證碼 ---------------------
+router.post('/api/user-verify', async (req, res) => {
+
+    const output = {
+        success: false,
+        error: '',
+        verify:'',
+    };
+
+    const account = req.body.member_account;
+
+    const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
+    const [accountResult] = await db.query(sqlAccount, [account]);
+
+    const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
+    const [verifyResult] = await db.query(sql);
+
+    if( accountResult.length && verifyResult[0].hash === req.body.verification){
+        output.success = true;
+    }
+    const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
+    if(isVerify.affectedRows > 0){
+        output.verify=1;
+    }
+    res.json(output);
+});
+
+
 
 // --------------------- 讀取會員資料 ---------------------
 router.get('/api/user-list', async (req, res) => {
@@ -250,22 +309,53 @@ router.get('/api/order-history', async (req, res) => {
 
 // --------------------- 會員收藏 ---------------------
 router.get('/api/member-likes', async (req, res) => {
+
+    // const output = {
+    //     success: false,
+    //     error: '沒有收藏',
+    // };
+
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = `SELECT products_sid FROM user_like WHERE member_sid = ${sqlSid}`;
 
     const [results] = await db.query(sql);
+    // console.log(results[0].products_sid);
+    if(!results[0]){
+        res.json(false);
+        return;
+    }
 
-    const sqlBase = "SELECT products_sid, products_name, products_price, products_pic FROM products WHERE "
+    const sqlBase = "SELECT products_sid, products_name, products_price, products_with_products_categories_sid, products_pic FROM products WHERE "
     const sqlMap = results.map((item)=>{
         return `products_sid = ${item.products_sid}`
     }).join(" OR ")
 
     const sql2 = sqlBase+sqlMap;
-    console.log(sql2);
+    // console.log(sql2);
 
     const [results2] = await db.query(sql2);
 
+    console.log(results2);
+
     res.json(results2);
+});
+
+router.delete('/api/member-delete-likes', async (req, res) => {
+
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    // console.log(req.query.data);
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${sqlSid} AND products_sid = ${req.query.data}`;
+    const [delResult] = await db.query(delLikeSql);
+
+    if(delResult.affectedRows >= 1){
+        output.success=true;
+    }
+    res.json(output);
 });
 
 

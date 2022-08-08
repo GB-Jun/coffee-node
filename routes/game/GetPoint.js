@@ -39,13 +39,11 @@ return output;
 };
 
 
-// ====================
-
 router.post('/Api-point-result', upload.none(), async(req, res)=>{
     // if(!(output.error)){
         const output = await getListHandler(req, res);
         const sql = "INSERT INTO points_record (`member_sid`,`type`,`points_get`,`create_at`) VALUES (?, 1, ?, NOW())"; 
-        const {member_sid,ScoreResult}=req.body;
+        const {ScoreResult}=req.body;
         const [r] = await db.query(sql, [
             output.member_sid,
             ScoreResult

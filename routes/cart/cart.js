@@ -195,9 +195,11 @@ router.get("/read_food/api", async (req, res) => {
             food_choice_sid AS 'id',
             food_id AS 'listId',
             food_price AS 'price',
-            food_ice AS 'ice',
-            food_sugar AS 'sugar',
+            food_ice_id AS 'ice',
+            food_sugar_id AS 'sugar',
             food_quantity AS 'quantity',
+            food_time_id AS 'time',
+            food_store_id AS 'store',
             menu.menu_name AS 'name',
             menu.menu_photo AS 'picture'
         FROM food_choice
@@ -205,13 +207,31 @@ router.get("/read_food/api", async (req, res) => {
         WHERE food_member_id = ? AND food_order_id = 0;
     `;
 
+    const icesql = `
+        SELECT food_ice_sid AS id, food_ice_name AS name  FROM food_ice WHERE 1;
+    `;
+
+    const sugarsql = `
+        SELECT food_sugar_sid AS id, food_sugar_name AS name FROM food_sugar WHERE 1;
+    `;
+
     try {
-        const [result] = await db.query(sql, [sid]);
+        const foodResult = db.query(sql, [sid]);
+        const iceResult = db.query(icesql);
+        const sugarResult = db.query(sugarsql);
+        const [[result], [iceRaw], [sugarRaw]] = await Promise.all([foodResult, iceResult, sugarResult]);
+        iceRaw.unshift({id: 0, name: ""});
+        sugarRaw.unshift({id: 0, name: ""});
+        const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
+        const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
         if (result.length >= 1) {
             result.forEach(item => {
+                item.ice = iceTable[item.ice];
+                item.sugar = sugarTable[item.sugar];
                 item.name = [item.name, item.ice, item.sugar];
                 item.picture = `http://${DB_HOST}:${EXPRESS_PORT}/images/food/${item.picture}`;
                 item.stocks = 9999;
+                item.time = moment.parseZone(item.time).utcOffset(8).format("YYYY/MM/DD HH:mm:ss");
                 delete item.ice;
                 delete item.sugar;
             })
@@ -474,7 +494,6 @@ router.get("/cart_count/api", async (req, res) => {
         const foodResult = db.query(sqlFood, [sid]);
 
         const [[[{ productCount }]], [[{ foodCount }]]] = await Promise.all([productResult, foodResult]);
-        console.log("productCount:",productCount,"\n foodCount:",foodCount)
         const cartTotalCount = productCount + foodCount
         res.json({ cartTotalCount });
         return;
