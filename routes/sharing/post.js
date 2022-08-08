@@ -40,7 +40,7 @@ const getListHandler = async (req, res) => {
     if (totalRows) {
         const LIMIT = `LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}`;
         let WHERE = "";
-        title ? WHERE += `p.title LIKE '%${title}%' AND` : WHERE += "1 AND";
+        title ? WHERE += `p.title LIKE ${'%' + db.escape(title) + '%'} AND` : WHERE += "1 AND";
         member_sid ? WHERE += ` p.member_sid = ${member_sid} AND` : WHERE += "";
 
 
