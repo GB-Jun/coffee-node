@@ -1,7 +1,32 @@
-const { query } = require("express");
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const db = require(__dirname + "/../../modules/mysql-connect");
+const db = require(__dirname + "/../../../modules/mysql-connect");
+
+
+router.get("", async (req, res) => {
+    const { queryString, title, tag, member_sid } = req.query;
+    const output = {
+        totalRows: 0,
+        rows: [],
+        query: { queryString },
+    }
+
+    if (queryString === " ") {
+        res.json(output);
+        return
+    }
+
+
+    output.rows = [...output.rows, ...await getNicknameData(queryString)];
+    output.rows = [...output.rows, ...await getTagData(queryString)];
+    output.rows = [...output.rows, ...await getTitleData(queryString)];
+
+
+    output.totalRows = output.rows.length;
+
+    res.json(output);
+});
+
 
 const getTitleData = async (q) => {
     const WHERE = q ? `p.title LIKE ${db.escape('%' + q + '%')} AND` : "";
@@ -60,36 +85,6 @@ const getTagData = async (q) => {
 };
 
 
-
-router.get("", async (req, res) => {
-    const { queryString, title, tag, member_sid } = req.query;
-    const output = {
-        totalRows: 0,
-        rows: [],
-        query: { queryString },
-    }
-
-    if (queryString === " ") {
-        res.json(output);
-        return
-    }
-
-
-    // // let WHERE = "";
-    // // title ? WHERE += `p.title LIKE '%${title}%' AND` : WHERE += "";
-    // const nicknameWHERE = queryString ? `member_nickname LIKE '%${queryString}%'` : "";
-
-
-
-    output.rows = [...output.rows, ...await getTitleData(queryString)];
-    output.rows = [...output.rows, ...await getNicknameData(queryString)];
-    output.rows = [...output.rows, ...await getTagData(queryString)];
-
-
-    output.totalRows = output.rows.length;
-
-    res.json(output);
-});
 
 
 
