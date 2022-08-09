@@ -21,7 +21,6 @@ const getListHandler = async (req, res) => {
         rowsPerPage,
         code: 0,
         query: {},
-        sql: "",
         rows: [],
         isEnd: false
     }
@@ -55,7 +54,6 @@ const getListHandler = async (req, res) => {
             ${LIMIT};
         `;
 
-        op.sql = sql;
         [op.rows] = await db.query(sql);
 
 

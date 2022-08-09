@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require(__dirname + "/../../modules/mysql-connect");
+const db = require(__dirname + "/../../../modules/mysql-connect");
 
 router.get("/", async (req, res) => {
     const { limit } = req.query;
