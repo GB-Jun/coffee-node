@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
+const nodemailer = require("nodemailer");
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const { verify } = require("crypto");
 
 router.get('/', async (req, res) => {
     const sql = "SELECT * FROM menu";
@@ -8,6 +12,37 @@ router.get('/', async (req, res) => {
 
     res.json(r);
 });
+
+// 訂位成功的通知信
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+        user: process.env.EMAIL_ACCOUNT,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+
+router.post('/send_mail', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+    output.success = true;
+
+    const { branch, people, hour, mail, name } = req.body;
+    transporter.sendMail({
+        from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+        to: `${mail}`,
+        subject: '【來拎+B-訂位成功信】',
+        html: `<h4 style="display:inline-block">您的驗證碼為：${name}</h4><p>${people}</p>`,
+    }).then(() => {
+        // console.log(hashRandom);
+    }).catch();
+    return res.json(output);
+}
+
+);
 
 // SELECT * FROM`主表單`
 // JOIN 要連結的表單
