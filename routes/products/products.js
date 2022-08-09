@@ -40,7 +40,7 @@ const getListHandler = async (req, res) => {
         // 如果用?來寫, 代表前面的路徑都一樣
     }
 
-    const sqlnum = `SELECT COUNT(1) totalRows FROM products ${where} ORDER BY products_sid ASC `;
+    const sqlnum = `SELECT COUNT(1) totalRows FROM products ${where} AND products_forsale > 0 ORDER BY products_sid ASC `;
     // const [result01] = await db.query(sqlnum);
     // const [[result01]] = await db.query(sqlnum);
     const [[{ totalRows }]] = await db.query(sqlnum);
@@ -55,7 +55,7 @@ const getListHandler = async (req, res) => {
             return output;
         }
 
-        const sqlData = `SELECT * FROM products ${where} ORDER BY products_sid ASC LIMIT ${
+        const sqlData = `SELECT * FROM products ${where} AND products_forsale > 0 ORDER BY products_sid ASC LIMIT ${
             (page - 1) * output.perPage
         }, ${output.perPage}`;
         const [result02] = await db.query(sqlData);
@@ -63,7 +63,7 @@ const getListHandler = async (req, res) => {
         // 也能在主層index.js那邊寫template helper function, 讓function大家都能用
         // result02.forEach((el) => (el.birthday2 = toDateString(el.birthday)));
         output.rows = result02;
-        const totoalDataSql = `SELECT * FROM products AS p ORDER BY products_sid ASC`;
+        const totoalDataSql = `SELECT * FROM products AS p WHERE products_forsale > 0 ORDER BY products_sid ASC`;
         const [resultTotal] = await db.query(totoalDataSql);
         output.totalData = resultTotal;
     }
