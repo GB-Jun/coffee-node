@@ -28,17 +28,16 @@ router.get("/", async (req, res) => {
     res.json(output);
 });
 const getListByNickname = async (req, res) => {
-    const { q } = req.query;
+    const { q, times } = req.query;
     const member_sid = +q;
 
-    const rowsPerPage = 20;
     const op = {
         totalRows: 0,
         rowsPerPage,
+        isEnd: false,
         code: 0,
-        query: {},
         rows: [],
-        isEnd: false
+        query: {},
     }
 
 
@@ -49,8 +48,9 @@ const getListByNickname = async (req, res) => {
 
     op.totalRows = totalRows;
     op.query = req.query;
-    op.query.times = req.query.times || 0;
-    op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
+    if (isNaN(+times)) op.query.times = 0;
+    op.query.times + 1 >= totalPage ? op.isEnd = true : op.isEnd = false;
+    console.log("t:" + times + "isEND:" + op.isEnd);
 
     if (totalRows) {
         const LIMIT = `LIMIT ${op.query.times * rowsPerPage},${rowsPerPage}`;
@@ -82,7 +82,7 @@ const getListByNickname = async (req, res) => {
 }
 
 const getListHandler = async (req, res) => {
-    const { q } = req.query;
+    const { q, times } = req.query;
 
     const op = {
         totalRows: 0,
@@ -128,8 +128,10 @@ const getListHandler = async (req, res) => {
     const totalPage = Math.ceil(totalRows / rowsPerPage);
 
     op.query = req.query;
-    op.query.times = req.query.times || 0;
-    op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
+
+    if (isNaN(+times)) op.query.times = 0;
+    op.query.times + 1 >= totalPage ? op.isEnd = true : op.isEnd = false;
+    console.log("t:" + times + "isEND:" + op.isEnd);
 
 
     if (totalRows) {
