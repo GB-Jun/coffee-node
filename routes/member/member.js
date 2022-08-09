@@ -359,5 +359,15 @@ router.delete('/api/member-delete-likes', async (req, res) => {
     res.json(output);
 });
 
+// --------------------- 分享記錄 ---------------------
+router.get('/api/posts-history', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} `;
+
+    const [result] = await db.query(sql);
+    res.json(result);
+});
+
+
 
 module.exports = router;
