@@ -30,12 +30,28 @@ router.post('/send_mail', async (req, res) => {
     };
     output.success = true;
 
-    const { branch, people, hour, mail, name } = req.body;
+    const { branch, people, checkedDate, mail, name } = req.body;
+
+
     transporter.sendMail({
         from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
         to: `${mail}`,
         subject: '【來拎+B-訂位成功信】',
-        html: `<h4 style="display:inline-block">您的驗證碼為：${name}</h4><p>${people}</p>`,
+        html: `<table style="border:1px solid #000;border-radius:5px; font-size:16px;color:rgb(37, 57, 69)">
+        <tr style="border:1px solid #000">
+            <td style="border:1px solid #000"><h3>用餐分店</h3></td>
+            <td style="border:1px solid #000"><h3>${branch}</h3></td>
+        </tr>
+        <tr style="border:1px solid #000">
+            <td style="border:1px solid #000"><h3>用餐人數</h3></td>
+            <td style="border:1px solid #000"><h3>${people}位</h3></td>
+        </tr>
+        <tr style="border:1px solid #000">
+            <td style="border:1px solid #000"><h3>用餐日期</h3></td>
+            <td style="border:1px solid #000"><h3>${checkedDate}</h3></td>
+        </tr>
+    </table>`
+        ,
     }).then(() => {
         // console.log(hashRandom);
     }).catch();
