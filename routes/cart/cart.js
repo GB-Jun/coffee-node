@@ -220,8 +220,8 @@ router.get("/read_food/api", async (req, res) => {
         const iceResult = db.query(icesql);
         const sugarResult = db.query(sugarsql);
         const [[result], [iceRaw], [sugarRaw]] = await Promise.all([foodResult, iceResult, sugarResult]);
-        iceRaw.unshift({id: 0, name: ""});
-        sugarRaw.unshift({id: 0, name: ""});
+        iceRaw.unshift({ id: 0, name: "" });
+        sugarRaw.unshift({ id: 0, name: "" });
         const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
         const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
         if (result.length >= 1) {
@@ -454,6 +454,130 @@ router.get("/food_coupon/api", async (req, res) => {
             },
         });
         return;
+    }
+});
+
+// 結帳
+router.post("/check/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get check .",
+            },
+        });
+        return;
+    }
+    const { sid } = res.locals.loginUser;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to check .",
+            },
+        });
+        return;
+    }
+
+    // 取得最大的orderid + 1
+    const newestOrdersql = `
+        SELECT max(order_id) AS maxOrder FROM \`order\`;
+    `;
+    let insertOrderId;
+    try {
+        const [[{ maxOrder }]] = await db.query(newestOrdersql)
+        insertOrderId = +maxOrder + 1;
+        // console.log(insertOrderId)
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't find max order id .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+
+    // 寫入order
+    const sql = `
+        INSERT INTO \`order\`(
+            order_time, order_name, order_mail,
+            order_phone, order_pay, order_pay_info,
+            order_deliver, order_address, order_member_id,
+            order_coupon_id, order_price, order_id,
+            order_discount, order_status, order_list
+        ) VALUES (
+            NOW(),?,?,
+            ?,?,?,
+            ?,?,?,
+            ?,?,?,
+            ?,?,?
+        );
+    `;
+    // console.log(req.body);
+    // const body = {
+    //     name: '王曉明',
+    //     phone: '0912345678',
+    //     email: 'mfee26coffee@gmail.com',
+    //     payWay: '信用卡',
+    //     deliverWay: 'ATM轉帳',
+    //     address: '彰化縣和美鎮和樂路26號',
+    //     card: 5242556789134567,
+    //     finalPrice: 910,
+    //     discount: '100',
+    //     couponId: 1,
+    //     nowList: 'productList'
+    // }
+    const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount, nowList } = req.body;
+    const coupon = couponId === -1 ? "NULL" : couponId;
+    const list = nowList === "productList" ? 0 : 1;
+    const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
+    // console.log(sqlFormat);
+    const orderOutput = { insertId: -1, success: false };
+    try {
+        const [result] = await db.query(sqlFormat);
+        // console.log(result.affectedRows);
+        if (result.affectedRows >= 1) {
+            orderOutput.insertId = result.insertId;
+            orderOutput.success = true;
+        }
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't operate check .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+    if (orderOutput.success) {
+        const sqlCart = `
+            UPDATE \`cart\` SET cart_order_id = ? WHERE cart_member_id = ? AND cart_order_id = 0;
+        `;
+        const sqlFood = `
+            UPDATE food_choice SET food_order_id = ? WHERE food_member_id = ? AND food_order_id = 0;
+        `;
+        const sql = nowList === "productList" ? sqlCart : sqlFood;
+
+        const sqlFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
+        try {
+            const [result] = await db.query(sqlFormat);
+            res.json(result);
+            return;
+        } catch (error) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    message: "Server no response . Can't operate change order id .",
+                    errorMessage: error,
+                },
+            });
+            return;
+        }
     }
 });
 
