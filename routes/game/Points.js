@@ -31,6 +31,7 @@ const getListHandler = async (req, res)=>{
     output.member_sid=sid;
     let page = +req.query.page || 1;
     let type = +req.query.type || 1;
+    console.log(req.query.type);
 
     if(page<1) {
         output.code = 410;
@@ -64,10 +65,9 @@ const getListHandler = async (req, res)=>{
     const sql03=`SELECT total_points FROM points_user WHERE member_sid=?`;
 
     const [r3] = await db.query(sql03,[output.member_sid]);
-    // console.log(r3);
     output.rows2 = r3;
     output.code = 200;
-    output = {...output, page, totalRows, totalPages,type};
+    output = {...output, page, totalRows, totalPages, type};
 
 
     return output;
