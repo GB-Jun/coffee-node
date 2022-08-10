@@ -508,13 +508,13 @@ router.post("/check/api", async (req, res) => {
             order_phone, order_pay, order_pay_info,
             order_deliver, order_address, order_member_id,
             order_coupon_id, order_price, order_id,
-            order_discount, order_status
+            order_discount, order_status, order_list
         ) VALUES (
             NOW(),?,?,
             ?,?,?,
             ?,?,?,
             ?,?,?,
-            ?,?
+            ?,?,?
         );
     `;
     // console.log(req.body);
@@ -531,9 +531,10 @@ router.post("/check/api", async (req, res) => {
     //     couponId: 1,
     //     nowList: 'productList'
     // }
-    const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount } = req.body;
+    const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount, nowList } = req.body;
     const coupon = couponId === -1 ? "NULL" : couponId;
-    const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中"])
+    const list = nowList === "productList" ? 0 : 1;
+    const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
     // console.log(sqlFormat);
     const orderOutput = { insertId: -1, success: false };
     try {
@@ -553,7 +554,6 @@ router.post("/check/api", async (req, res) => {
         });
         return;
     }
-    const { nowList } = req.body;
     if (orderOutput.success) {
         const sqlCart = `
             UPDATE \`cart\` SET cart_order_id = ? WHERE cart_member_id = ? AND cart_order_id = 0;
