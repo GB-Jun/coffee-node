@@ -297,7 +297,7 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
 // --------------------- 歷史訂單 ---------------------
 router.get('/api/order-history', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id` FROM `order` WHERE `order_member_id` = ";
+    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`,`order_list` FROM `order` WHERE `order_member_id` = ";
     const orderSql = `${sql}${sqlSid}`
 
     const [results] = await db.query(orderSql);
@@ -307,9 +307,9 @@ router.get('/api/order-history', async (req, res) => {
 // --------------------- 歷史訂單詳細 ---------------------
 router.get('/api/order-history-detail', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    // const OrderSql = `SELECT order_sid, order_time, order_member_id, order_price, order_id, order_discount, order_status FROM order JOIN cart ON order_sid = cart_order_id WHERE order_member_id = cart_member_id`;
-    const OrderSql = `SELECT order_sid, order_time, order_member_id, order_price, order_id, order_discount, order_status,cart_price,cart_quantity,products_name,products_price,products_with_products_categories_sid,products_pic FROM order JOIN cart ON order_sid = cart_order_id JOIN products ON products_sid = cart_product_id WHERE order_member_id = 1 1 AND cart_order_id != 0`;
-    const [results] = await db.query();
+    const Order = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `cart_sid`,`cart_price`,`cart_quantity`,`products_name`,`products_price`,`products_with_products_categories_sid`,`products_pic` FROM `order` JOIN `cart` ON `order_sid` = `cart_order_id` JOIN `products` ON `products_sid` = `cart_product_id` WHERE `order_member_id` = ";
+    const OrderSql = `${Order}${sqlSid} AND cart_order_id != 0`
+    const [results] = await db.query(OrderSql);
     res.json(results);
 });
 
