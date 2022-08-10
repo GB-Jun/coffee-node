@@ -30,12 +30,35 @@ router.post('/send_mail', async (req, res) => {
     };
     output.success = true;
 
-    const { branch, people, hour, mail, name } = req.body;
+    const { selectItem, people, checkedDate, mail, name } = req.body;
     transporter.sendMail({
         from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
         to: `${mail}`,
         subject: '【來拎+B-訂位成功信】',
-        html: `<h4 style="display:inline-block">您的驗證碼為：${name}</h4><p>${people}</p>`,
+        html: ` <div style="width:400px;text-align:center;margin: 60px;">
+        <h3>${name} 您好<h3>
+        <h3>已為您安排訂位</h3>
+                <table
+                    style="border:1px solid #ccc;border-radius:5px; font-size:16px;color:rgb(37, 57, 69);padding: 0 20px; display: flex; width: 400px;justify-content: center;">
+                    <tr style="border:1px solid #ccc">
+                            <h2>${selectItem.storeName}</h2>
+                            <p style="font-size: 14px;font-weight:normal">${selectItem.storeBlock}${selectItem.storeRoad}</p>
+                    </tr>
+                    <tr style="border:1px solid #ccc;color:#b9966a;">
+                            <h3>${checkedDate}</h3>
+                    </tr>
+                    <tr style="border:1px solid #ccc">
+                            <h3>${people}位</h3>            
+                    </tr>
+                    <tr>
+
+                        <td style="border-top:1px solid #ccc;width: 440px;">
+
+                            <h4>★用餐當日訂位保留時間為10分鐘，請準時入席，逾時將取消訂位。</h4>
+                        </td>
+                    </tr>
+                </table>
+    </div>`,
     }).then(() => {
         // console.log(hashRandom);
     }).catch();
@@ -99,3 +122,5 @@ router.post('/addfooddata', async (req, res) => {
 });
 
 module.exports = router;
+
+
