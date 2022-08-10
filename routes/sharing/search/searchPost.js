@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     res.json(output);
 });
 const getListById = async (req, res) => {
-    const { q, times, type, auth = 0 } = req.query;
+    const { q = 0, times, type } = req.query;
     let WHERE = ""
     if (type === "nickname") WHERE = "p.member_sid";
     if (type === "title") WHERE = "p.sid";
@@ -118,9 +118,9 @@ const getListById = async (req, res) => {
 
 
         if (type === "tag") {
-            [op.rows] = await db.query(tagSql, [auth, q]);
+            [op.rows] = await db.query(tagSql, [q, q]);
         } else {
-            [op.rows] = await db.query(sql, [auth, q]);
+            [op.rows] = await db.query(sql, [q, q]);
         }
 
 
@@ -137,7 +137,7 @@ const getListById = async (req, res) => {
 }
 
 const getListHandler = async (req, res) => {
-    const { q, times, auth = 0 } = req.query;
+    const { q = 0, times } = req.query;
 
     const op = {
         success: false,
@@ -220,7 +220,7 @@ const getListHandler = async (req, res) => {
         `;
 
 
-        [op.rows] = await db.query(sql, [auth, auth]);
+        [op.rows] = await db.query(sql, [q, q]);
 
 
         for (let row of op.rows) {
