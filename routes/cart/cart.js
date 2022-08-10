@@ -464,7 +464,7 @@ router.post("/check/api", async (req, res) => {
         res.status(401).send({
             error: {
                 status: 401,
-                message: "Wrong verify to get food coupon .",
+                message: "Wrong verify to get check .",
             },
         });
         return;
@@ -475,7 +475,7 @@ router.post("/check/api", async (req, res) => {
         res.status(401).send({
             error: {
                 status: 401,
-                message: "There's no sid to get food coupon .",
+                message: "There's no sid to check .",
             },
         });
         return;
@@ -494,7 +494,7 @@ router.post("/check/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find food coupon .",
+                message: "Server no response . Can't find max order id .",
                 errorMessage: error,
             },
         });
@@ -517,16 +517,19 @@ router.post("/check/api", async (req, res) => {
             ?,?
         );
     `;
+    // console.log(req.body);
     // const body = {
     //     name: '王曉明',
     //     phone: '0912345678',
     //     email: 'mfee26coffee@gmail.com',
     //     payWay: '信用卡',
     //     deliverWay: 'ATM轉帳',
-    //     address: '彰化縣埤頭鄉斗苑西路4號',
+    //     address: '彰化縣和美鎮和樂路26號',
     //     card: 5242556789134567,
-    //     finalPrice: 4160,
-    //     discount: 0
+    //     finalPrice: 910,
+    //     discount: '100',
+    //     couponId: 1,
+    //     nowList: 'productList'
     // }
     const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount } = req.body;
     const coupon = couponId === -1 ? "NULL" : couponId;
@@ -544,7 +547,7 @@ router.post("/check/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find food coupon .",
+                message: "Server no response . Can't operate check .",
                 errorMessage: error,
             },
         });
@@ -560,11 +563,21 @@ router.post("/check/api", async (req, res) => {
         `;
         const sql = nowList === "productList" ? sqlCart : sqlFood;
 
-        console.log(orderOutput.insertId);
         const sqlFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
-        const [result] = await db.query(sqlFormat);
-        res.json(result);
-        return;
+        try {
+            const [result] = await db.query(sqlFormat);
+            res.json(result);
+            return;
+        } catch (error) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    message: "Server no response . Can't operate change order id .",
+                    errorMessage: error,
+                },
+            });
+            return;
+        }
     }
 });
 
