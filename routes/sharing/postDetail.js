@@ -69,7 +69,6 @@ const getPostHandler = async (req, res, sid) => {
         code: 0,
         query: {},
     }
-    console.log(sid);
 
     const sql = `
         SELECT p.*,m.avatar FROM \`post\` p
@@ -80,7 +79,6 @@ const getPostHandler = async (req, res, sid) => {
 
 
     const [[rows]] = await db.query(sql, [sid]);
-    console.log(rows);
 
     if (rows && rows.sid) {
         op.code = 200;
