@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-10 07:35:42
+-- 產生時間： 2022-08-10 09:47:56
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 7.4.29
 
@@ -91,7 +91,8 @@ INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`
 (32, 17, 170, 1, 1, 11),
 (33, 1, 370, 1, 1, 12),
 (34, 7, 320, 1, 1, 12),
-(35, 14, 170, 1, 1, 12);
+(35, 14, 170, 1, 1, 12),
+(36, 1, 370, 1, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -351,7 +352,8 @@ INSERT INTO `food_choice` (`food_choice_sid`, `food_id`, `food_price`, `food_ice
 (157, 19, 70, 1, 2, 4, 1, 5, '2022-08-06 10:00:00', 8),
 (158, 32, 95, 0, 0, 3, 1, 5, '2022-08-06 10:00:00', 8),
 (159, 1, 150, 2, 3, 2, 1, 5, '2022-08-06 10:00:00', 8),
-(160, 19, 70, 1, 4, 1, 1, 5, '2022-08-06 10:00:00', 8);
+(160, 19, 70, 1, 4, 1, 1, 5, '2022-08-06 10:00:00', 8),
+(161, 19, 70, 1, 4, 1, 1, 14, '2022-08-06 10:00:00', 8);
 
 -- --------------------------------------------------------
 
@@ -721,26 +723,29 @@ CREATE TABLE `order` (
   `order_price` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `order_discount` int(11) NOT NULL DEFAULT 0,
-  `order_status` varchar(255) NOT NULL DEFAULT '配送中'
+  `order_status` varchar(255) NOT NULL DEFAULT '配送中',
+  `order_list` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `order`
 --
 
-INSERT INTO `order` (`order_sid`, `order_time`, `order_name`, `order_mail`, `order_phone`, `order_pay`, `order_pay_info`, `order_deliver`, `order_address`, `order_member_id`, `order_coupon_id`, `order_price`, `order_id`, `order_discount`, `order_status`) VALUES
-(1, '2022-08-10 12:12:04', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '宜蘭縣羅東鎮維揚路9號', 1, 0, 1010, 53491, 0, '配送中'),
-(2, '2022-08-10 12:15:32', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '桃園市龍潭區番子窩路22號', 1, 1, 1390, 53492, 100, '配送中'),
-(3, '2022-08-10 12:17:18', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '花蓮縣玉里鎮自強三街18號', 1, 1, 1190, 53493, 100, '配送中'),
-(4, '2022-08-10 12:21:35', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '雲林縣崙背鄉民主路15號', 1, 1, 1280, 53494, 100, '配送中'),
-(5, '2022-08-10 12:33:33', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '花蓮縣花蓮市民享八街13號', 1, 0, 1685, 53495, 0, '配送中'),
-(6, '2022-08-10 12:50:20', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '高雄市杉林區杉美路19號', 1, 0, 1010, 53496, 0, '配送中'),
-(7, '2022-08-10 13:13:41', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', ' 高雄市苓雅區江都街9號', 1, 0, 1080, 53497, 0, '配送中'),
-(8, '2022-08-10 13:15:34', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '彰化縣和美鎮和樂路26號', 1, 1, 910, 53498, 100, '配送中'),
-(9, '2022-08-10 13:20:00', '王曉明', 'hunter850711@yahoo.com.tw', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '宜蘭縣宜蘭市自強路29號', 1, 1, 410, 53499, 100, '配送中'),
-(10, '2022-08-10 13:22:36', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '新竹縣寶山鄉尖山路27號', 1, 1, 1370, 53500, 100, '配送中'),
-(11, '2022-08-10 13:26:04', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '彰化縣溪州鄉村中路6號', 1, 0, 660, 53501, 0, '配送中'),
-(12, '2022-08-10 13:30:24', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '南投縣南投市學府三街11號', 1, 0, 860, 53502, 0, '配送中');
+INSERT INTO `order` (`order_sid`, `order_time`, `order_name`, `order_mail`, `order_phone`, `order_pay`, `order_pay_info`, `order_deliver`, `order_address`, `order_member_id`, `order_coupon_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `order_list`) VALUES
+(1, '2022-08-10 12:12:04', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '宜蘭縣羅東鎮維揚路9號', 1, 0, 1010, 53491, 0, '配送中', 0),
+(2, '2022-08-10 12:15:32', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '桃園市龍潭區番子窩路22號', 1, 1, 1390, 53492, 100, '配送中', 0),
+(3, '2022-08-10 12:17:18', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '花蓮縣玉里鎮自強三街18號', 1, 1, 1190, 53493, 100, '配送中', 0),
+(4, '2022-08-10 12:21:35', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '雲林縣崙背鄉民主路15號', 1, 1, 1280, 53494, 100, '配送中', 0),
+(5, '2022-08-10 12:33:33', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '花蓮縣花蓮市民享八街13號', 1, 0, 1685, 53495, 0, '配送中', 0),
+(6, '2022-08-10 12:50:20', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '高雄市杉林區杉美路19號', 1, 0, 1010, 53496, 0, '配送中', 0),
+(7, '2022-08-10 13:13:41', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', ' 高雄市苓雅區江都街9號', 1, 0, 1080, 53497, 0, '配送中', 0),
+(8, '2022-08-10 13:15:34', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '彰化縣和美鎮和樂路26號', 1, 1, 910, 53498, 100, '配送中', 1),
+(9, '2022-08-10 13:20:00', '王曉明', 'hunter850711@yahoo.com.tw', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '宜蘭縣宜蘭市自強路29號', 1, 1, 410, 53499, 100, '配送中', 0),
+(10, '2022-08-10 13:22:36', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '新竹縣寶山鄉尖山路27號', 1, 1, 1370, 53500, 100, '配送中', 0),
+(11, '2022-08-10 13:26:04', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '彰化縣溪州鄉村中路6號', 1, 0, 660, 53501, 0, '配送中', 0),
+(12, '2022-08-10 13:30:24', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '南投縣南投市學府三街11號', 1, 0, 860, 53502, 0, '配送中', 0),
+(13, '2022-08-10 15:44:52', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '新竹縣湖口鄉達生九街13號', 1, 0, 370, 53503, 0, '配送中', 0),
+(14, '2022-08-10 15:46:11', '王曉明', 'mfee26coffee@gmail.com', '0912345678', '信用卡', '5242556789134567', 'ATM轉帳', '新竹縣湖口鄉達生九街13號', 1, 0, 70, 53504, 0, '配送中', 1);
 
 -- --------------------------------------------------------
 
@@ -1367,8 +1372,8 @@ CREATE TABLE `user_like` (
 --
 
 INSERT INTO `user_like` (`sid`, `member_sid`, `products_sid`) VALUES
-(6, 1, 1),
-(7, 1, 2);
+(7, 1, 2),
+(9, 1, 1);
 
 --
 -- 已傾印資料表的索引
@@ -1605,7 +1610,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1653,7 +1658,7 @@ ALTER TABLE `course_related`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
 --
 ALTER TABLE `food_choice`
-  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `food_choice_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_ice`
@@ -1707,7 +1712,7 @@ ALTER TABLE `menu1`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `order_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `points_record`
@@ -1803,5 +1808,5 @@ ALTER TABLE `tag`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_like`
 --
 ALTER TABLE `user_like`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
