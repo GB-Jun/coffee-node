@@ -10,7 +10,11 @@ router.use('/post', require('./post'));
 router.use('/comment', require('./comment'));
 router.use('/reply', require('./reply'));
 router.use('/memberlike', require('./memberlike'));
-router.use('/previewAPI', require('./previewAPI'));
+
+// search
+router.use('/search/previewAPI', require('./search/previewAPI'));
+router.use('/search/popTag', require('./search/popTag'));
+router.use('/search/searchPost', require('./search/searchPost'));
 
 
 

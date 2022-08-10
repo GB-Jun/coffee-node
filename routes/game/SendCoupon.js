@@ -24,15 +24,16 @@ const getListHandler = async (req, res)=>{
     }
     const { sid } = res.locals.loginUser;
     output.member_sid=sid;
+    console.log(output.member_sid);
     const sql=`SELECT sid,coupon_name FROM coupon WHERE coupon_status =1`;
     const [r] = await db.query(sql);
     output.rows = r;
     output.code = 200;
 
     //const sql2=`select * from coupon_receive where member_sid=? AND to_days(create_time) = to_days(now())`;
-    const sql2=`select * from coupon_receive where member_sid=1 AND category=1 AND to_days(create_time) = to_days(now())`;
+    const sql2=`select * from coupon_receive where member_sid=? AND category=1 AND to_days(create_time) = to_days(now())`;
     const [r2] = await db.query(sql2, [
-        output.member_sid,
+        output.member_sid
     ]);
     output.rows2 = r2;
     if(r2.length>0){

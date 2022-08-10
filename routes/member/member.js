@@ -90,11 +90,12 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
     },
 });
-// 產生隨機六位數
-const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
 // --------------------- 註冊 ---------------------
 router.post('/api/sign-up', async (req, res) => {
+
+    // 產生隨機六位數
+    const hashRandom = Math.floor(100000 + Math.random() * 900000);
 
     const output = {
         success: false,
@@ -357,6 +358,16 @@ router.delete('/api/member-delete-likes', async (req, res) => {
     }
     res.json(output);
 });
+
+// --------------------- 分享記錄 ---------------------
+router.get('/api/posts-history', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} `;
+
+    const [result] = await db.query(sql);
+    res.json(result);
+});
+
 
 
 module.exports = router;
