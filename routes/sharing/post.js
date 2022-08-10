@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
+const WEEK_DIFF = "TIMESTAMPDIFF(WEEK,p.created_at,NOW()) weekdiff"
+
+
 
 router.get("/", async (req, res) => {
     let output = {
@@ -14,9 +17,10 @@ router.get("/", async (req, res) => {
 });
 
 const getListHandler = async (req, res) => {
-    const { title, tag, member_sid } = req.query;
+    const { title, tag, member_sid, times, auth = 0 } = req.query;
     const rowsPerPage = 20;
     const op = {
+        success: false,
         totalRows: 0,
         rowsPerPage,
         code: 0,
@@ -32,11 +36,15 @@ const getListHandler = async (req, res) => {
 
     op.totalRows = totalRows;
     op.query = req.query;
-    op.query.times = req.query.times || 0;
-    op.query.times >= totalPage ? op.isEnd = true : op.isEnd = false;
+    if (isNaN(+times)) op.query.times = 0;
+    op.query.times + 1 >= totalPage ? op.isEnd = true : op.isEnd = false;
 
 
     if (totalRows) {
+        const randNum = Math.floor(Math.random() * 5 + .3) * 2;
+        // weekdiff*(0.5~1.5) ORDER BY like - weekDif* 0~10 DESC
+        const ORDER_BY = ` ORDER BY (p.likes-weekdiff*${randNum}) DESC,p.updated_at DESC`
+
         const LIMIT = `LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}`;
         let WHERE = "";
         title ? WHERE += `p.title LIKE ${'%' + db.escape(title) + '%'} AND` : WHERE += "1 AND";
@@ -44,17 +52,19 @@ const getListHandler = async (req, res) => {
 
 
         const sql = `
-            SELECT p.* ,pi.img_name ,pi.sort,m.avatar 
+            SELECT p.* ,pi.img_name ,pi.sort,m.avatar,${WEEK_DIFF},
+            (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid= ?) everlike
             FROM \`post\` p 
             LEFT JOIN \`post_img\` pi 
             ON p.sid = pi.post_sid 
             LEFT JOIN \`member\` m
             ON p.member_sid = m.member_sid
             WHERE ${WHERE} pi.sort = 1 AND p.delete_state = 0 
+            ${ORDER_BY}
             ${LIMIT};
         `;
 
-        [op.rows] = await db.query(sql);
+        [op.rows] = await db.query(sql, auth);
 
 
         for (let row of op.rows) {
@@ -68,7 +78,7 @@ const getListHandler = async (req, res) => {
                 v.tags.includes(tag)
             );
         }
-
+        op.success = true;
     }
     return op;
 }
