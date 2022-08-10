@@ -464,7 +464,7 @@ router.post("/check/api", async (req, res) => {
         res.status(401).send({
             error: {
                 status: 401,
-                message: "Wrong verify to get food coupon .",
+                message: "Wrong verify to get check .",
             },
         });
         return;
@@ -475,7 +475,7 @@ router.post("/check/api", async (req, res) => {
         res.status(401).send({
             error: {
                 status: 401,
-                message: "There's no sid to get food coupon .",
+                message: "There's no sid to check .",
             },
         });
         return;
@@ -494,7 +494,7 @@ router.post("/check/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find food coupon .",
+                message: "Server no response . Can't find max order id .",
                 errorMessage: error,
             },
         });
@@ -508,29 +508,33 @@ router.post("/check/api", async (req, res) => {
             order_phone, order_pay, order_pay_info,
             order_deliver, order_address, order_member_id,
             order_coupon_id, order_price, order_id,
-            order_discount, order_status
+            order_discount, order_status, order_list
         ) VALUES (
             NOW(),?,?,
             ?,?,?,
             ?,?,?,
             ?,?,?,
-            ?,?
+            ?,?,?
         );
     `;
+    // console.log(req.body);
     // const body = {
     //     name: '王曉明',
     //     phone: '0912345678',
     //     email: 'mfee26coffee@gmail.com',
     //     payWay: '信用卡',
     //     deliverWay: 'ATM轉帳',
-    //     address: '彰化縣埤頭鄉斗苑西路4號',
+    //     address: '彰化縣和美鎮和樂路26號',
     //     card: 5242556789134567,
-    //     finalPrice: 4160,
-    //     discount: 0
+    //     finalPrice: 910,
+    //     discount: '100',
+    //     couponId: 1,
+    //     nowList: 'productList'
     // }
-    const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount } = req.body;
+    const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount, nowList } = req.body;
     const coupon = couponId === -1 ? "NULL" : couponId;
-    const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中"])
+    const list = nowList === "productList" ? 0 : 1;
+    const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
     // console.log(sqlFormat);
     const orderOutput = { insertId: -1, success: false };
     try {
@@ -544,13 +548,12 @@ router.post("/check/api", async (req, res) => {
         res.status(500).send({
             error: {
                 status: 500,
-                message: "Server no response . Can't find food coupon .",
+                message: "Server no response . Can't operate check .",
                 errorMessage: error,
             },
         });
         return;
     }
-    const { nowList } = req.body;
     if (orderOutput.success) {
         const sqlCart = `
             UPDATE \`cart\` SET cart_order_id = ? WHERE cart_member_id = ? AND cart_order_id = 0;
@@ -560,11 +563,21 @@ router.post("/check/api", async (req, res) => {
         `;
         const sql = nowList === "productList" ? sqlCart : sqlFood;
 
-        console.log(orderOutput.insertId);
         const sqlFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
-        const [result] = await db.query(sqlFormat);
-        res.json(result);
-        return;
+        try {
+            const [result] = await db.query(sqlFormat);
+            res.json(result);
+            return;
+        } catch (error) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    message: "Server no response . Can't operate change order id .",
+                    errorMessage: error,
+                },
+            });
+            return;
+        }
     }
 });
 
