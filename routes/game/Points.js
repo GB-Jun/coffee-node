@@ -24,7 +24,10 @@ const getListHandler = async (req, res)=>{
         rows2: [],
         member_sid:0
     };
-    const {sid}=res.locals.loginUser;
+    if (!res.locals.loginUser) {
+        return;
+    }
+    const { sid } = res.locals.loginUser;
     output.member_sid=sid;
     let page = +req.query.page || 1;
     let type = +req.query.type || 1;
@@ -58,9 +61,10 @@ const getListHandler = async (req, res)=>{
         output.rows = r2;
     }
 
-    const sql03=`SELECT points_user.total_points,member.member_sid FROM points_user JOIN member ON points_user.member_sid=member.member_sid WHERE points_user.member_sid=?`;
+    const sql03=`SELECT total_points FROM points_user WHERE member_sid=?`;
 
     const [r3] = await db.query(sql03,[output.member_sid]);
+    // console.log(r3);
     output.rows2 = r3;
     output.code = 200;
     output = {...output, page, totalRows, totalPages,type};
@@ -70,7 +74,6 @@ const getListHandler = async (req, res)=>{
 };
 
 router.get('/', async (req, res)=>{
-    
     const output = await getListHandler(req, res);
     switch(output.code){
         case 410:
