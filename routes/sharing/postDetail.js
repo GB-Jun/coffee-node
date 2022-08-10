@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router({ mergeParams:true }); // mergeParams = /share/post/:id/
+const router = express.Router({ mergeParams: true }); // mergeParams = /share/post/:id/
 const db = require(__dirname + "/../../modules/mysql-connect");
 
 router.get("/", async (req, res) => {
@@ -69,6 +69,7 @@ const getPostHandler = async (req, res, sid) => {
         code: 0,
         query: {},
     }
+    console.log(sid);
 
     const sql = `
         SELECT p.*,m.avatar FROM \`post\` p
@@ -79,9 +80,9 @@ const getPostHandler = async (req, res, sid) => {
 
 
     const [[rows]] = await db.query(sql, [sid]);
+    console.log(rows);
 
-
-    if (rows.sid) {
+    if (rows && rows.sid) {
         op.code = 200;
         op.rows = rows;
 

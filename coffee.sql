@@ -3,13 +3,19 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-10 10:29:45
+-- 產生時間： 2022-08-10 11:43:32
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.1.5
+-- PHP 版本： 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫: `coffee`
@@ -104,7 +110,7 @@ CREATE TABLE `comment` (
   `sid` int(11) NOT NULL,
   `content` varchar(255) NOT NULL,
   `replies` int(11) NOT NULL DEFAULT 0,
-  `created_at` date NOT NULL,
+  `created_at` datetime NOT NULL,
   `post_sid` int(11) NOT NULL,
   `member_sid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -114,15 +120,16 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`sid`, `content`, `replies`, `created_at`, `post_sid`, `member_sid`) VALUES
-(1, '挖~課程看起來很讚耶 不知道適不適合新手?', 1, '2022-06-03', 1, 1005),
-(15, '我也覺得', 0, '2022-06-13', 161, 886),
-(16, '可愛', 0, '2022-06-13', 2, 886),
-(17, '看起來好讚我也想參加!', 0, '2022-06-13', 1, 886),
-(18, '我喜歡粗好粗的', 0, '2022-06-13', 150, 1001),
-(19, '推推', 0, '2022-06-13', 147, 666),
-(20, '拍的好看喔', 0, '2022-06-13', 150, 666),
-(21, '餓了', 0, '2022-06-13', 144, 666),
-(22, '讚', 0, '2022-06-13', 1, 1001);
+(1, '挖~課程看起來很讚耶 不知道適不適合新手?', 1, '2022-06-03 00:00:00', 1, 1005),
+(15, '我也覺得', 0, '2022-06-13 00:00:00', 161, 886),
+(16, '可愛', 0, '2022-06-13 00:00:00', 2, 886),
+(17, '看起來好讚我也想參加!', 0, '2022-06-13 00:00:00', 1, 886),
+(18, '我喜歡粗好粗的', 0, '2022-06-13 00:00:00', 150, 1001),
+(19, '推推', 0, '2022-06-13 00:00:00', 147, 666),
+(20, '拍的好看喔', 0, '2022-06-13 00:00:00', 150, 666),
+(21, '餓了', 0, '2022-06-13 00:00:00', 144, 666),
+(22, '讚', 0, '2022-06-13 00:00:00', 1, 1001),
+(23, '123', 2, '2022-08-10 17:28:43', 150, 1);
 
 -- --------------------------------------------------------
 
@@ -493,7 +500,8 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (49, 'g0804', '', 'g0804', '$2a$10$yhnV4ceKrJTuMkM9NV5YYuWjC1aTHKsIgGGzMSnsDNVOlZNOCcjw6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (50, 'h0804', '', 'h0804', '$2a$10$/ure.R0TClfXIYgry.CF0O7rFtO5ioGG52qBUUK6yY.upqe81jNp6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
-(54, 'Trista99', '', 'Trista99', '$2a$10$QZnjkMqulG8ly2yGrsFKF.p8GUpb6o8Pn7B/5VXR9AZnjlCKOnTBy', NULL, '', '', 'huafw2367@gmail.com', '', '0', 'missing-image.jpg', '366119', '1');
+(54, 'Trista99', '', 'Trista99', '$2a$10$QZnjkMqulG8ly2yGrsFKF.p8GUpb6o8Pn7B/5VXR9AZnjlCKOnTBy', NULL, '', '', 'huafw2367@gmail.com', '', '0', 'missing-image.jpg', '366119', '1'),
+(55, '123', '', '123', '$2a$10$n4ZxjN9Z5xRu0MaLKft4aeLPJgrfwqGAoNLmJaUiJfCRz3bGexu5y', NULL, '', '', 'chia87616@gmail.com', '', '0', 'missing-image.jpg', '515944', '0');
 
 -- --------------------------------------------------------
 
@@ -857,7 +865,7 @@ INSERT INTO `post` (`sid`, `title`, `content`, `member_nickname`, `member_sid`, 
 (147, '手沖基礎班讚讚', '逸經告訴我們，不要對每一個故事都信以為真。這激勵了我。每個人都不得不面對這些問題。在面對這種問題時，務必詳細考慮手沖的各種可能。馮學峰說過一句富有哲理的話，當一個人用工作去迎接光明，光明很快就會來照耀著他。這段話對世界的改變有著深遠的影響。拉蒙納斯說過一句著名的話，良心是公正廉潔的法官。這句話幾乎解讀出了問題的根本。', '新手大圓', 1005, 3, 1, 1, '2022-06-13 00:17:56', NULL, 0),
 (148, '基礎班課程', '逸經告訴我們，不要對每一個故事都信以為真。這激勵了我。每個人都不得不面對這些問題。在面對這種問題時，務必詳細考慮手沖的各種可能。馮學峰說過一句富有哲理的話，當一個人用工作去迎接光明，光明很快就會來照耀著他。這段話對世界的改變有著深遠的影響。拉蒙納斯說過一句著名的話，良心是公正廉潔的法官。這句話幾乎解讀出了問題的根本。', '新手大圓', 1005, 1, 0, 1, '2022-06-13 00:17:56', NULL, 0),
 (149, '拉花課程很有趣欸', '拉花課程很有趣欸', 'Hank', 1408, 0, 0, 1, '2022-06-13 00:23:26', NULL, 0),
-(150, '薯條粗的不好粗 不粗的好粗', '薯條粗的不好粗 不粗的好粗<br/>好粗好粗', 'Hank', 1408, 4, 2, 2, '2022-06-13 00:31:50', NULL, 0),
+(150, '薯條粗的不好粗 不粗的好粗', '薯條粗的不好粗 不粗的好粗<br/>好粗好粗', 'Hank', 1, 4, 3, 2, '2022-06-13 00:31:50', NULL, 0),
 (151, '跟大家分享一個很酷的東西', '我也不知道是甚麼', '新手大圓', 1005, 0, 0, 3, '2022-06-13 00:36:56', NULL, 0),
 (152, '大隻法國麵包', '大隻法國麵包', '新手大圓', 1005, 0, 0, 2, '2022-06-13 00:37:27', NULL, 0),
 (153, '我的拉花 就問你贊不贊', '讚嗎?', '新手大圓', 1005, 2, 0, 1, '2022-06-13 00:38:12', NULL, 0),
@@ -1307,7 +1315,7 @@ CREATE TABLE `reply` (
   `sid` int(11) NOT NULL,
   `content` varchar(255) NOT NULL,
   `comment_sid` int(11) NOT NULL,
-  `created_at` date NOT NULL,
+  `created_at` datetime NOT NULL,
   `member_sid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1316,7 +1324,9 @@ CREATE TABLE `reply` (
 --
 
 INSERT INTO `reply` (`sid`, `content`, `comment_sid`, `created_at`, `member_sid`) VALUES
-(1, '這邊的老師都很會教，別擔心', 1, '2022-06-04', 1001);
+(1, '這邊的老師都很會教，別擔心', 1, '2022-06-04 00:00:00', 1001),
+(9, '45345', 23, '2022-08-10 17:28:56', 1),
+(10, '7373', 23, '2022-08-10 17:28:59', 1);
 
 -- --------------------------------------------------------
 
@@ -1686,7 +1696,7 @@ ALTER TABLE `cart`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `coupon`
@@ -1758,13 +1768,13 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
 --
 ALTER TABLE `member_likes`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=379;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=394;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `menu`
@@ -1848,7 +1858,7 @@ ALTER TABLE `products_style_filter`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `reply`
 --
 ALTER TABLE `reply`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `review`
@@ -1880,3 +1890,7 @@ ALTER TABLE `tag`
 ALTER TABLE `user_like`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

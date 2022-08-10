@@ -1,10 +1,10 @@
 const express = require("express");
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const db = require(__dirname + "/../../../modules/mysql-connect");
-
+const LIMIT = " LIMIT 8";
 
 router.get("", async (req, res) => {
-    const { queryString, title, tag, member_sid } = req.query;
+    const { queryString } = req.query;
     const output = {
         totalRows: 0,
         rows: [],
@@ -31,11 +31,11 @@ router.get("", async (req, res) => {
 const getTitleData = async (q) => {
     const WHERE = q ? `p.title LIKE ${db.escape('%' + q + '%')} AND` : "";
     const ORDER = " ORDER BY p.likes DESC"
-    const LIMIT = " LIMIT 8";
+    const LIMIT = " LIMIT 6";
 
 
     const sql = `
-    SELECT 'title' AS type ,p.title AS name ,p.sid AS post_sid, p.member_nickname AS author,pi.img_name AS src 
+    SELECT 'title' AS type ,p.title AS name ,p.sid , p.member_nickname AS author,pi.img_name AS src 
     FROM post p 
     LEFT JOIN post_img pi ON p.sid = pi.post_sid 
     WHERE ${WHERE} pi.sort = 1 AND p.delete_state = 0
@@ -48,7 +48,6 @@ const getTitleData = async (q) => {
 
 const getNicknameData = async (q) => {
     const WHERE = q ? `m.member_nickname LIKE ${db.escape('%' + q + '%')}` : "1";
-    const LIMIT = " LIMIT 8";
 
     // 輸出{type = "nickname",name:nickname,src:avatar,member_sid,post_quantity}
     // 以關聯子查詢post_quantity做降冪排序,發文數多的會員會排在前面
@@ -74,7 +73,7 @@ const getNicknameData = async (q) => {
 
 const getTagData = async (q) => {
     const WHERE = q ? `t.name LIKE ${db.escape('%' + q + '%')}` : "1";
-    const LIMIT = " LIMIT 8";
+
 
     const sql = `
     SELECT 'tag' AS type, t.* FROM tag t WHERE ${WHERE} ORDER BY times DESC ${LIMIT};`;
