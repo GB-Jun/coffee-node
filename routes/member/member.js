@@ -305,7 +305,13 @@ router.get('/api/order-history', async (req, res) => {
 });
 
 // --------------------- 歷史訂單詳細 ---------------------
-
+router.get('/api/order-history-detail', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    // const OrderSql = `SELECT order_sid, order_time, order_member_id, order_price, order_id, order_discount, order_status FROM order JOIN cart ON order_sid = cart_order_id WHERE order_member_id = cart_member_id`;
+    const OrderSql = `SELECT order_sid, order_time, order_member_id, order_price, order_id, order_discount, order_status,products_name,products_price,products_with_products_categories_sid,products_pic FROM order JOIN cart ON order_sid = cart_order_id JOIN products ON products_sid = cart_product_id WHERE order_member_id = 1`;
+    const [results] = await db.query();
+    res.json(results);
+});
 
 
 // --------------------- 會員收藏 ---------------------
