@@ -297,7 +297,7 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
 // --------------------- 歷史訂單 ---------------------
 router.get('/api/order-history', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`,`order_list` FROM `order` WHERE `order_member_id` = ";
+    const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_list`, `order_status` FROM `order` WHERE `order_member_id` = ";
     const orderSql = `${sql}${sqlSid}`
 
     const [results] = await db.query(orderSql);
@@ -307,10 +307,22 @@ router.get('/api/order-history', async (req, res) => {
 // --------------------- 歷史訂單詳細 ---------------------
 router.get('/api/order-history-detail', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const Order = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `cart_sid`,`cart_price`,`cart_quantity`,`products_name`,`products_price`,`products_with_products_categories_sid`,`products_pic` FROM `order` JOIN `cart` ON `order_sid` = `cart_order_id` JOIN `products` ON `products_sid` = `cart_product_id` WHERE `order_member_id` = ";
-    const OrderSql = `${Order}${sqlSid} AND cart_order_id != 0`
-    const [results] = await db.query(OrderSql);
-    res.json(results);
+    // sql 用 AS 重命名，讓
+    const Product = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `order_list`, `cart_sid`,`cart_price` AS cartPrice,`cart_quantity` AS quantity,`products_name` AS name,`products_price` AS price, `products_with_products_categories_sid`,`products_pic` AS pic FROM `order` JOIN `cart` ON `order_sid` = `cart_order_id` JOIN `products` ON `products_sid` = `cart_product_id` WHERE `order_member_id` = ";
+    const ProductSql = `${Product}${sqlSid} AND cart_order_id != 0`
+
+    const Food ="SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `order_list`, `food_choice_sid` AS cart_sid, `food_price` AS cartPrice, `food_quantity` AS quantity, `menu_name` AS name,`menu_price_m` AS price, `menu_photo` AS pic FROM `order` JOIN `food_choice` ON `order_sid` = `food_order_id` JOIN `menu` ON `menu_sid` = `food_id` WHERE `order_member_id` = ";
+    const FoodSql = `${Food}${sqlSid} AND food_order_id != 0`
+
+    const [ProductResult] = await db.query(ProductSql);
+    ProductResult.forEach((v)=>{
+        v.cart_sid = "cart"+v.cart_sid;
+    })
+    const [FoodResult] = await db.query(FoodSql);
+
+    // 把商品和餐點一起傳給前端
+    res.json([...ProductResult,...FoodResult]);
+
 });
 
 
