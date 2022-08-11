@@ -23,25 +23,40 @@ router.post('/uploads', upload.array('photos'), (req, res) => {
 
 // 資料全拿
 router.get('/', async (req, res) => {
-    const sql = "SELECT * FROM course";
-    const [r] = await db.query(sql);
-    res.json(r);
+    try {
+        const sql = "SELECT * FROM course";
+        const [r] = await db.query(sql);
+        res.json(r);
+    } catch (error) {
+        console.log(error);
+        res.json(error);
+    }
 });
 
 // 只取一筆資料
 router.get('/data/:sid', async (req, res) => {
-    const sid = req.params.sid;
-    console.log(sid);
-    const sql = `SELECT * FROM course WHERE course_sid = ${sid};`;
-    const [r] = await db.query(sql);
-    res.json(r);
+    try {
+        const sid = req.params.sid;
+        console.log(sid);
+        const sql = `SELECT * FROM course WHERE course_sid = ${sid};`;
+        const [r] = await db.query(sql);
+        res.json(r);
+    } catch (error) {
+        console.log(error);
+        res.json(error);
+    }
 });
 
 // 外鍵
 router.get('/FK-get', async (req, res) => {
-    const sql1 = "SELECT * FROM`course` JOIN course_related ON `course`.`course_sid` = `course_related`.`course_sid`";
-    const [r1] = await db.query(sql1);
-    res.json(r1);
+    try {
+        const sql1 = "SELECT * FROM`course` JOIN course_related ON `course`.`course_sid` = `course_related`.`course_sid`";
+        const [r1] = await db.query(sql1);
+        res.json(r1);
+    } catch (error) {
+        console.log(error);
+        res.json(error);
+    }
 });
 
 // 新增的SQL語法
@@ -84,15 +99,20 @@ router.post('/addfk', async (req, res) => {
 
 // 刪除
 router.delete('/delete/:sid', async (req, res) => {
-    const sid = req.params.sid;
-    console.log(sid);
-    if (!sid) {
-        return res.json({ message: 'error', code: '400' });
+    try {
+        const sid = req.params.sid;
+        console.log(sid);
+        if (!sid) {
+            return res.json({ message: 'error', code: '400' });
+        }
+        const sql = `DELETE FROM course WHERE course.course_sid = ${sid}`;
+        const result = await db.query(sql);
+        console.log(result);
+        return res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.json(error);
     }
-    const sql = `DELETE FROM course WHERE course.course_sid = ${sid}`;
-    const result = await db.query(sql);
-    console.log(result);
-    return res.json(result);
 });
 
 // 修改
