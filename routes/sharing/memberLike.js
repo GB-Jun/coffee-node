@@ -26,11 +26,11 @@ router.get("/:post_sid", async (req, res) => {
         const totalSql = `SELECT likes AS total FROM post WHERE sid = ?`
         const [[r2]] = await db.query(totalSql, [post_sid]);
         op.liked = r.liked;
+        op.total = r2.total;
         op.success = true;
         res.json(op);
     } catch (err) {
         res.json(err);
-        console.log(err);
     }
 
 
@@ -56,7 +56,7 @@ router.post("/:post_sid", async (req, res) => {
     const [r] = await db.query(sql, [member_sid, post_sid, post_sid]);
     op.success = true;
 
-    console.log(r);
+    
     res.json(op);
 });
 
@@ -81,7 +81,7 @@ router.delete("/:post_sid", async (req, res) => {
     `
     const [r] = await db.query(sql, [post_sid, member_sid, post_sid]);
     op.success = true;
-    console.log(r)
+   
 
     res.json(op);
 });

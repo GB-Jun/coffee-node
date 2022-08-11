@@ -52,8 +52,7 @@ const getListHandler = async (req, res) => {
 
 
         const sql = `
-            SELECT p.* ,pi.img_name ,pi.sort,m.avatar,${WEEK_DIFF},
-            (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid= ?) everlike
+            SELECT p.* ,pi.img_name ,pi.sort,m.avatar,${WEEK_DIFF}
             FROM \`post\` p 
             LEFT JOIN \`post_img\` pi 
             ON p.sid = pi.post_sid 
@@ -64,7 +63,7 @@ const getListHandler = async (req, res) => {
             ${LIMIT};
         `;
 
-        [op.rows] = await db.query(sql, auth);
+        [op.rows] = await db.query(sql);
 
 
         for (let row of op.rows) {

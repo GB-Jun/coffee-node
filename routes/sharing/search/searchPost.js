@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     }
 
     let output = {}
-    if (type === "nickname" || type === "title" || type === "tag") {
+    if (type === "nickname" || type === "title" || type === "tag" || type === "member_like") {
         if (isNaN(q)) {
             res.json({ success: false, msg: "q is NaN" });
             return
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
         output = { ...(await getListById(req, res)) };
 
     } else {
-        output = { ...(await getListById(req, res)) };
+        output = { ...(await getListHandler(req, res)) };
     }
 
 
@@ -51,7 +51,7 @@ const getListById = async (req, res) => {
     }
     const LIMIT = `LIMIT ${op.query.times * rowsPerPage},${rowsPerPage}`;
 
-    const sql = `SELECT COUNT(1) totalRows FROM post p WHERE p.member_sid = ? AND delete_state = 0`;
+    const nicknameSql = `SELECT COUNT(1) totalRows FROM post WHERE member_sid = ? AND delete_state = 0`;
     const tagSql = `
     SELECT COUNT(1) AS taged_times,p.*, pi.img_name, m.avatar  FROM post p
     LEFT JOIN post_tag pt
@@ -71,17 +71,23 @@ const getListById = async (req, res) => {
     ON p.sid = ml.post_sid
     WHERE ml.member_sid = ? AND  p.delete_state = 0;
     `;
+    const titleSql = `SELECT COUNT(1) totalRows FROM post WHERE sid = ? AND delete_state = 0`;
+
 
     if (type === "tag") {
         const [r] = await db.query(tagSql, [q]);
         op.totalRows = r.length;
     } else if (type === "nickname") {
-        const [[{ totalRows }]] = await db.query(sql, [q]);
+        const [[{ totalRows }]] = await db.query(nicknameSql, [q]);
         op.totalRows = totalRows;
     } else if (type === "member_like") {
         const [[{ totalRows }]] = await db.query(likeSql, [q]);
         op.totalRows = totalRows;
+    } else if (type === "title") {
+        const [[{ totalRows }]] = await db.query(titleSql, [q]);
+        op.totalRows = totalRows;
     }
+
     const totalPage = Math.ceil(op.totalRows / rowsPerPage);
     op.query.times + 1 >= totalPage ? op.isEnd = true : op.isEnd = false;
 
@@ -89,9 +95,8 @@ const getListById = async (req, res) => {
 
     if (op.query.times * rowsPerPage <= op.totalRows) {
 
-        const sql = `
-        SELECT p.* ,pi.img_name,m.avatar,
-        (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid= ?) everlike
+        const nicknameSql = `
+        SELECT p.* ,pi.img_name,m.avatar
         FROM post p
         LEFT JOIN post_img pi 
         ON p.sid = pi.post_sid 
@@ -103,8 +108,7 @@ const getListById = async (req, res) => {
         `;
 
         const tagSql = `
-        SELECT COUNT(1) AS taged_times,p.*, pi.img_name, m.avatar,
-        (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid= ?) everlike
+        SELECT COUNT(1) AS taged_times,p.*, pi.img_name, m.avatar
         FROM post p
         LEFT JOIN post_tag pt
         ON p.sid = pt.post_sid
@@ -131,15 +135,29 @@ const getListById = async (req, res) => {
         WHERE ml.member_sid = ? AND pi.sort = 1 AND p.delete_state = 0
         ${ORDER_BY}
         ${LIMIT};
-        `
+        `;
+
+        const titleSql = `
+        SELECT p.* ,pi.img_name,m.avatar
+        FROM post p
+        LEFT JOIN post_img pi 
+        ON p.sid = pi.post_sid 
+        LEFT JOIN member m
+        ON p.member_sid = m.member_sid
+        WHERE p.sid = ? AND pi.sort = 1 AND p.delete_state = 0
+        ${ORDER_BY}
+        ${LIMIT}
+        `;
 
 
         if (type === "tag") {
-            [op.rows] = await db.query(tagSql, [q, q]);
+            [op.rows] = await db.query(tagSql, [q]);
         } else if (type === "nickname") {
-            [op.rows] = await db.query(sql, [q, q]);
+            [op.rows] = await db.query(nicknameSql, [q]);
         } else if (type === "member_like") {
             [op.rows] = await db.query(likeSql, [q]);
+        } else if (type === "title") {
+            [op.rows] = await db.query(titleSql, [q]);
         }
 
 
