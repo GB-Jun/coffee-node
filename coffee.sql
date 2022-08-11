@@ -473,7 +473,13 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (50, 'h0804', '', 'h0804', '$2a$10$/ure.R0TClfXIYgry.CF0O7rFtO5ioGG52qBUUK6yY.upqe81jNp6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (54, 'Trista99', '', 'Trista99', '$2a$10$QZnjkMqulG8ly2yGrsFKF.p8GUpb6o8Pn7B/5VXR9AZnjlCKOnTBy', NULL, '', '', 'huafw2367@gmail.com', '', '0', 'missing-image.jpg', '366119', '1'),
-(55, '123', '', '123', '$2a$10$n4ZxjN9Z5xRu0MaLKft4aeLPJgrfwqGAoNLmJaUiJfCRz3bGexu5y', NULL, '', '', 'chia87616@gmail.com', '', '0', 'missing-image.jpg', '515944', '0');
+(55, '123', '', '123', '$2a$10$n4ZxjN9Z5xRu0MaLKft4aeLPJgrfwqGAoNLmJaUiJfCRz3bGexu5y', NULL, '', '', 'chia87616@gmail.com', '', '0', 'missing-image.jpg', '515944', '0'),
+(666, '子揚', 'Tommy', 'tommy', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0', 'tommy.jpg', '', '1'),
+(886, '黃老皮', '老皮','pi1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0', 'lao_pi.png', '', '1'),
+(999, '來亂的', '來亂的', 'li1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0', 'missing-image.jpg', '', '1'),
+(1001, '王小明', '帥氣a小明', 'ming1', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0', 'ming.jpg', '', '1'),
+(1005, '陳大圓', '新手大圓', 'yuan', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0',  'missing-image.jpg', '', '1'),
+(1408, '漢克', 'Hank', 'hank1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '','test@gmail.com', '', '0',  'missing-image.jpg', '', '1');
 
 -- --------------------------------------------------------
 
