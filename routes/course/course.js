@@ -58,7 +58,7 @@ router.post('/add', async (req, res) => {
         console.log(result);
         return res.json(result[0].insertId);
     } catch (error) {
-        res.send(error);
+        console.log(error);
         return;
     }
 
