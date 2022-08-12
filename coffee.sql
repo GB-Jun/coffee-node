@@ -283,7 +283,7 @@ INSERT INTO `course` (`course_sid`, `course_name`, `course_price`, `course_level
 CREATE TABLE `course_related` (
   `sid` int(11) NOT NULL,
   `course_sid` int(11) NOT NULL,
-  `course_date` date NOT NULL,
+  `course_date` varchar(255) NOT NULL,
   `course_time` varchar(255) NOT NULL,
   `course_img_l` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
