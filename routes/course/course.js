@@ -13,7 +13,13 @@ const upload = require(__dirname + '/./upload-images');
 
 //上傳照片
 router.post('/upload', upload.single('avatar'), (req, res) => {
-    res.json(req.file);
+    try {
+        res.json(req.file);
+    } catch (error) {
+        console.log(error);
+        res.json(error);
+    }
+
 });
 //上傳多個檔案
 router.post('/uploads', upload.array('photos'), (req, res) => {
@@ -74,7 +80,7 @@ router.post('/add', async (req, res) => {
         return res.json(result[0].insertId);
     } catch (error) {
         console.log(error);
-        return;
+        res.json(error);
     }
 
 });
@@ -92,7 +98,7 @@ router.post('/addfk', async (req, res) => {
         return res.json(result);
     } catch (error) {
         console.log(error);
-        return;
+        res.json(error);
     }
 
 });
@@ -125,8 +131,8 @@ router.put('/edit', async (req, res) => {
         console.log(result);
         return res.json(result[0].insertId);
     } catch (error) {
+        console.log(error);
         res.send(error);
-        return;
     }
 
 });
@@ -143,8 +149,8 @@ router.put('/editFk', async (req, res) => {
         console.log(result);
         return res.json(result);
     } catch (error) {
+        console.log(error);
         res.send(error);
-        return;
     }
 
 });
