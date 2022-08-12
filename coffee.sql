@@ -277,34 +277,6 @@ INSERT INTO `course` (`course_sid`, `course_name`, `course_price`, `course_level
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `course_backup`
---
-
-CREATE TABLE `course_backup` (
-  `course_sid` int(11) NOT NULL,
-  `course_name` varchar(255) NOT NULL,
-  `course_price` int(11) NOT NULL,
-  `course_level` int(11) NOT NULL,
-  `course_img_s` varchar(255) NOT NULL,
-  `course_content` varchar(255) NOT NULL,
-  `course_people` varchar(255) NOT NULL,
-  `course_material` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 傾印資料表的資料 `course_backup`
---
-
-INSERT INTO `course_backup` (`course_sid`, `course_name`, `course_price`, `course_level`, `course_img_s`, `course_content`, `course_people`, `course_material`) VALUES
-(1, '測試', 123, 1, '93583e83c60b1594e60f6d4728187c60.jpg', '221', '212', '11'),
-(2, '12', 121, 1, 'd89814e1706d044b7e474815c54909c2.jpg', '21', '21', '12'),
-(3, '咖啡烘焙', 2000, 2, 'img', '體驗自己親手烘焙咖啡豆的樂趣', '想體驗自己烘咖啡豆的人', '咖啡豆.相關沖煮器材設備(課程提供)'),
-(4, '咖啡生豆認識及風味鑑嘗學', 3000, 3, 'img', '認識不同咖啡產地及品種，加強自己品嚐咖啡思維', '對咖啡豆有濃厚興趣及對咖啡烘焙有興趣朋友參加', '咖啡豆.相關沖煮器材設備(課程提供)'),
-(5, '手沖咖啡基礎訓練班', 1500, 1, 'img', '學會從風味中了解自己沖煮手法', '適合初學者或希望了解自己沖煮技巧缺點人士', '咖啡豆.相關沖煮器材設備(課程提供)');
-
--- --------------------------------------------------------
-
---
 -- 資料表結構 `course_related`
 --
 
@@ -313,18 +285,17 @@ CREATE TABLE `course_related` (
   `course_sid` int(11) NOT NULL,
   `course_date` date NOT NULL,
   `course_time` varchar(255) NOT NULL,
-  `course_img_l` varchar(255) NOT NULL,
-  `course_number_people` int(11) NOT NULL
+  `course_img_l` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `course_related`
 --
 
-INSERT INTO `course_related` (`sid`, `course_sid`, `course_date`, `course_time`, `course_img_l`, `course_number_people`) VALUES
-(1, 1, '2022-09-01', 'AM-10', 'img', 0),
-(2, 1, '2022-09-25', 'PM-02', 'img', 0),
-(3, 1, '2022-08-30', 'PM-03', 'img', 0);
+INSERT INTO `course_related` (`sid`, `course_sid`, `course_date`, `course_time`, `course_img_l`) VALUES
+(1, 1, '2022-09-01', 'AM-10', 'img'),
+(2, 1, '2022-09-25', 'PM-02', 'img'),
+(3, 1, '2022-08-30', 'PM-03', 'img');
 
 -- --------------------------------------------------------
 
@@ -1496,11 +1467,6 @@ ALTER TABLE `coupon_receive`
 ALTER TABLE `course`
   ADD PRIMARY KEY (`course_sid`);
 
---
--- 資料表索引 `course_backup`
---
-ALTER TABLE `course_backup`
-  ADD PRIMARY KEY (`course_sid`);
 
 --
 -- 資料表索引 `course_related`
@@ -1717,11 +1683,6 @@ ALTER TABLE `coupon_receive`
 ALTER TABLE `course`
   MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `course_backup`
---
-ALTER TABLE `course_backup`
-  MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course_related`
