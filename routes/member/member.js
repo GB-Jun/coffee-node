@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const { verify } = require("crypto");
+const { log } = require("console");
 
 
 // --------------------- 登入 ---------------------
@@ -307,7 +308,7 @@ router.get('/api/order-history', async (req, res) => {
 // --------------------- 歷史訂單詳細 ---------------------
 router.get('/api/order-history-detail', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    // sql 用 AS 重命名，讓
+    // sql 用 AS 重命名，讓欄位名稱相同，前端就能一起抓
     const Product = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `order_list`, `cart_sid`,`cart_price` AS cartPrice,`cart_quantity` AS quantity,`products_name` AS name,`products_price` AS price, `products_with_products_categories_sid`,`products_pic` AS pic FROM `order` JOIN `cart` ON `order_sid` = `cart_order_id` JOIN `products` ON `products_sid` = `cart_product_id` WHERE `order_member_id` = ";
     const ProductSql = `${Product}${sqlSid} AND cart_order_id != 0`
 
@@ -381,6 +382,15 @@ router.delete('/api/member-delete-likes', async (req, res) => {
 router.get('/api/posts-history', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} `;
+
+    const [result] = await db.query(sql);
+    res.json(result);
+});
+
+// --------------------- 優惠券 ---------------------
+router.get('/api/coupons', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `SELECT coupon.coupon_name,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=${sqlSid} AND coupon_receive.status=0 AND coupon_receive.end_time> NOW() `;
 
     const [result] = await db.query(sql);
     res.json(result);
