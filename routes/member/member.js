@@ -396,6 +396,15 @@ router.get('/api/coupons', async (req, res) => {
     res.json(result);
 });
 
+// --------------------- 會員點數 ---------------------
+router.get('/api/total-points', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `SELECT total_points,voucher_amount FROM points_user WHERE member_sid=${sqlSid}`;
+
+    const [result] = await db.query(sql);
+
+    res.json(result);
+});
 
 
 module.exports = router;
