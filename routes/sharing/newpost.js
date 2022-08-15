@@ -1,36 +1,55 @@
 const express = require("express");
 const router = express.Router();
 const db = require(__dirname + "/../../modules/mysql-connect");
-const uploadDir = "./images/sharing/"
 const upload = require(__dirname + "/../../modules/sharing-upload")
 
 
-
 router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, res) => {
-    const { title, content } = req.body;
-    const op = {
-        success: false,
-        error: '',
-        request: req.body || ''
-    };
-    // console.log(req.files);
-    console.log(req.body);
-    console.log(req.files);
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify.",
+            },
+        });
+        return;
+    }
+    const { sid, nickname } = res.locals.loginUser;
+    const { title, content, topic_sid } = req.body;
+
+
+    const sql = `
+    INSERT INTO post (title, content, member_nickname, member_sid, topic_sid, created_at )
+    VALUES (?, ?, ?, ?, ?, NOW());
+    `;
 
 
 
+    try {
+        const [r] = await db.query(sql, [title, content, nickname, sid, topic_sid]);
+        const post_sid = r.insertId;
 
-    // const sql = `
-    // INSERT INTO comment (member_sid, content, post_sid, created_at) VALUES (?, ?, ?, NOW());
-    // UPDATE post SET comments = comments + 1 WHERE sid = ?;
-    // `;
+        const VALUES = req.files.photos.map((v, i) => {
+            return `('${v.filename}', '${post_sid}', '${i + 1}')`;
+        });
+        const photoSQL = `INSERT INTO post_img ( img_name, post_sid, sort) VALUES ${VALUES.join(',')}`;
+        const [photo_r] = await db.query(photoSQL);
 
-    // const [r] = await db.query(sql, [member_sid, content, post_sid, post_sid]);
-    // if (r) op.success = true;
+        res.json(photo_r);
 
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response.",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
 
-    // console.log(r);
-    res.json(op);
 });
 
 
