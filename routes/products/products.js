@@ -40,7 +40,7 @@ const getListHandler = async (req, res) => {
         // 如果用?來寫, 代表前面的路徑都一樣
     }
 
-    const sqlnum = `SELECT COUNT(1) totalRows FROM products ${where} AND products_forsale > 0 ORDER BY products_sid ASC `;
+    const sqlnum = `SELECT COUNT(1) totalRows FROM products ${where} AND products_forsale > 0 ORDER BY products_with_products_categories_sid ASC, products_sid`;
     // const [result01] = await db.query(sqlnum);
     // const [[result01]] = await db.query(sqlnum);
     const [[{ totalRows }]] = await db.query(sqlnum);
@@ -55,7 +55,7 @@ const getListHandler = async (req, res) => {
             return output;
         }
 
-        const sqlData = `SELECT * FROM products ${where} AND products_forsale > 0 ORDER BY products_sid ASC LIMIT ${
+        const sqlData = `SELECT * FROM products ${where} AND products_forsale > 0 ORDER BY products_with_products_categories_sid ASC, products_sid LIMIT ${
             (page - 1) * output.perPage
         }, ${output.perPage}`;
         const [result02] = await db.query(sqlData);
@@ -63,7 +63,7 @@ const getListHandler = async (req, res) => {
         // 也能在主層index.js那邊寫template helper function, 讓function大家都能用
         // result02.forEach((el) => (el.birthday2 = toDateString(el.birthday)));
         output.rows = result02;
-        const totoalDataSql = `SELECT * FROM products AS p WHERE products_forsale > 0 ORDER BY products_sid ASC`;
+        const totoalDataSql = `SELECT * FROM products AS p WHERE products_forsale > 0 ORDER BY products_with_products_categories_sid ASC, products_sid`;
         const [resultTotal] = await db.query(totoalDataSql);
         output.totalData = resultTotal;
     }
@@ -86,7 +86,7 @@ const getCouponList = async (req, res) => {
     output.reqData = req.params.sid;
     const page_sid = req.params.sid;
     const whereSql = `WHERE (menu_sid = 0 AND products_sid = 0) OR (menu_sid <= 0 AND products_sid > 0 AND products_sid = ${page_sid}) AND coupon_status = 1`;
-    const couponSql = `SELECT * FROM coupon AS c ${whereSql} ORDER BY sid ASC`;
+    const couponSql = `SELECT * FROM coupon AS c ${whereSql} ORDER BY products_with_products_categories_sid ASC, products_sid`;
     const [couponResult] = await db.query(couponSql);
 
     output.rows = couponResult;
