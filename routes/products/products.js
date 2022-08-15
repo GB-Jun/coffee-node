@@ -123,7 +123,19 @@ const sendCartData = async (req, res) => {
     const cartDataSql = `SELECT cart_product_id FROM cart WHERE cart_member_id = ${req.body.member.sid} AND cart_order_id = 0`;
     const cartData = await db.query(cartDataSql);
     output.cartDataRows = cartData;
-    // console.log(output.cartDataRows[0]);
+    // console.log("output.cartDataRows:",output.cartDataRows);
+    // console.log("req.body", req.body)
+
+    // console.log("output.cartDataRows", output.cartDataRows);
+    // console.log(
+    //     "map",
+    //     output.cartDataRows[0]
+    //         .map((v, i) => {
+    //             return +v.cart_product_id;
+    //         })
+    //         .indexOf(+req.params.sid)
+    // );
+    // console.log("+req.params.sid", +req.params.sid);
 
     if (
         output.cartDataRows[0]
@@ -139,17 +151,17 @@ const sendCartData = async (req, res) => {
 
         await db.query(insertSql, [
             req.params.sid,
-            req.body[0].products_price,
+            req.body.products_price,
             req.body.quantity,
             req.body.member.sid,
         ]);
-        // console.log({
-        //     sid: req.params.sid,
-        //     price: req.body[0].products_price,
-        //     quantity: req.body.quantity,
-        //     membersid: req.body.member.sid,
-        // });
-        output.query = insertSql;
+    // console.log({
+    //     sid: req.params.sid,
+    //     price: req.body.products_price,
+    //     quantity: req.body.quantity,
+    //     membersid: req.body.member.sid,
+    // });
+    output.query = insertSql;
     }
 
     return output;
@@ -183,7 +195,7 @@ const deleteUserLike = async (req, res) => {
     };
 
     const delLikeSql = `DELETE FROM user_like WHERE member_sid = ${req.body.member.sid} AND products_sid = ${req.params.sid}`;
-    console.log(req.body);
+    // console.log(req.body);
     await db.query(delLikeSql);
     output.query = delLikeSql;
 
