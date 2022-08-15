@@ -7,6 +7,7 @@ const uploads = require(__dirname + "/../../modules/upload-images");
 
 router.use('/post/:post_sid', require('./postDetail'));
 router.use('/post', require('./post'));
+router.use('/post/new', require('./newpost'));
 router.use('/comment', require('./comment'));
 router.use('/reply', require('./reply'));
 router.use('/memberlike', require('./memberlike'));

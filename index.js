@@ -87,6 +87,7 @@ app.post("/try-post", bodyParser, (req, res) => {
 //     res.json(req.file);
 // });
 
+
 // app.post("/post-uploadeds", upload.array("photos"), (req, res) => {
 //     res.json(req.files);
 // });
