@@ -3,19 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-14 07:38:43
+-- 產生時間： 2022-08-15 10:24:34
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 7.4.29
+-- PHP 版本： 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫: `coffee`
@@ -99,8 +93,14 @@ INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`
 (34, 7, 320, 1, 1, 12),
 (35, 14, 170, 1, 1, 12),
 (36, 1, 370, 1, 1, 13),
-(37, 4, 320, 6, 1, 0),
-(38, 6, 320, 1, 1, 0);
+(48, 13, 170, 1, 1, 0),
+(49, 14, 170, 1, 1, 0),
+(63, 2, 320, 1, 1, 0),
+(64, 3, 320, 1, 1, 0),
+(65, 4, 320, 1, 1, 0),
+(66, 1, 370, 1, 1, 0),
+(67, 6, 320, 1, 1, 0),
+(68, 81, 1200, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -330,8 +330,6 @@ INSERT INTO `course_related` (`sid`, `course_sid`, `course_date`, `course_time`,
 
 -- --------------------------------------------------------
 
--- --------------------------------------------------------
-
 --
 -- 資料表結構 `food_choice`
 --
@@ -500,7 +498,13 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (50, 'h0804', '', 'h0804', '$2a$10$/ure.R0TClfXIYgry.CF0O7rFtO5ioGG52qBUUK6yY.upqe81jNp6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (51, 'i0804', '', 'i0804', '$2a$10$ierbhGoO.Qa9n4Uh1MaCA.mO4xnvj.JG021T9gkBT4.rgyUEQ0Ba.', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (54, 'Trista99', '', 'Trista99', '$2a$10$QZnjkMqulG8ly2yGrsFKF.p8GUpb6o8Pn7B/5VXR9AZnjlCKOnTBy', NULL, '', '', 'huafw2367@gmail.com', '', '0', 'missing-image.jpg', '366119', '1'),
-(55, '123', '', '123', '$2a$10$n4ZxjN9Z5xRu0MaLKft4aeLPJgrfwqGAoNLmJaUiJfCRz3bGexu5y', NULL, '', '', 'chia87616@gmail.com', '', '0', 'missing-image.jpg', '515944', '0');
+(55, '123', '', '123', '$2a$10$n4ZxjN9Z5xRu0MaLKft4aeLPJgrfwqGAoNLmJaUiJfCRz3bGexu5y', NULL, '', '', 'chia87616@gmail.com', '', '0', 'missing-image.jpg', '515944', '0'),
+(666, '子揚', 'Tommy', 'tommy', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'tommy.jpg', '', '1'),
+(886, '黃老皮', '老皮', 'pi1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'lao_pi.png', '', '1'),
+(999, '來亂的', '來亂的', 'li1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'missing-image.jpg', '', '1'),
+(1001, '王小明', '帥氣a小明', 'ming1', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'ming.jpg', '', '1'),
+(1005, '陳大圓', '新手大圓', 'yuan', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'qZqZo6SVk6ecq6Y.jpg', '', '1'),
+(1408, '漢克', 'Hank', 'hank1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'missing-image.jpg', '', '1');
 
 -- --------------------------------------------------------
 
@@ -510,7 +514,7 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 
 CREATE TABLE `member_likes` (
   `sid` int(11) NOT NULL,
-  `member_sid` varchar(255) NOT NULL,
+  `member_sid` int(11) NOT NULL,
   `post_sid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -519,20 +523,20 @@ CREATE TABLE `member_likes` (
 --
 
 INSERT INTO `member_likes` (`sid`, `member_sid`, `post_sid`) VALUES
-(116, '1001', 2),
-(135, '000666', 2),
-(137, '000004', 7),
-(139, '000004', 1),
-(140, '000001', 1),
-(152, '001001', 1001),
-(153, '001001', 0),
-(154, '001411', 27),
-(209, '666', 0),
-(334, '666', 72),
-(374, '666', 15),
-(375, '666', 42),
-(376, '001001', 150),
-(378, '001001', 1);
+(116, 1001, 2),
+(135, 666, 2),
+(137, 4, 7),
+(139, 4, 1),
+(140, 1, 1),
+(152, 1001, 1001),
+(153, 1001, 0),
+(154, 1411, 27),
+(209, 666, 0),
+(334, 666, 72),
+(374, 666, 15),
+(375, 666, 42),
+(376, 1001, 150),
+(378, 1001, 1);
 
 -- --------------------------------------------------------
 
@@ -1183,7 +1187,19 @@ INSERT INTO `products` (`products_sid`, `products_number`, `products_name`, `pro
 (139, '1660292264', '黃金曼特寧(2磅)', '手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '產地:印尼<br /><br />處理法:半水洗<br /><br />風味:焦糖/草本/麥香<br /><br />手選三次,挑選20目左右碩大的特優級曼特寧生豆,豆質結實緊密,豐富油脂帶出巧克力般滑順奶油般香甜', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：908g±8g<br /><br />製造地：台灣<br /><br />保存期限：6個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br /', 1880, 1, 0, 245, 2, 'coffeeBean8-1.jpg', 'coffeeBean8-1.jpg,coffeeBean8-2.jpg'),
 (140, '1660292265', '曼巴(2磅)', '口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '產地:印尼/巴西<br /><br />處理法:半水洗<br /><br />風味:可可韻/奶油/草本香韻<br /><br />口感厚實甘醇的曼特寧搭配核果香氣絕佳的巴西咖啡豆,奶油的質感與明顯的可可味搭配後清雅的回甘口感一直會讓人回味無窮', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：908g±8g<br /><br />製造地：台灣<br /><br />保存期限：6個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br /', 1280, 1, 0, 486, 2, 'coffeeBean9-1.jpg', 'coffeeBean9-1.jpg,coffeeBean9-2.jpg'),
 (141, '1660292266', '曼特寧(2磅)', '為蘇門答臘最具代表的咖啡豆,其草本風味質感濃郁芳香度特強,口感厚實的甘甜味是它的獨到之處,對於度喜歡酸味的人的最佳選擇', '產地:印尼<br /><br />處理法:半水洗<br /><br />風味:奶油/草本香韻<br /><br />為蘇門答臘最具代表的咖啡豆,其草本風味質感濃郁芳香度特強,口感厚實的甘甜味是它的獨到之處,對於度喜歡酸味的人的最佳選擇', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：908g±8g<br /><br />製造地：台灣<br /><br />保存期限：12個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br ', 1280, 1, 0, 346, 2, 'coffeeBean10-1.jpg', 'coffeeBean10-1.jpg,coffeeBean10-2.jpg'),
-(142, '1660292267', '義式綜合豆(2磅)', '使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '產地:亞洲/中南美洲/非洲<br /><br />風味:可可韻味<br /><br />使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：908g±8g<br /><br />製造地：台灣<br /><br />保存期限：12個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br ', 1200, 1, 0, 434, 2, 'coffeeBean11-1.jpg', 'coffeeBean11-1.jpg,coffeeBean11-2.jpg');
+(142, '1660292267', '義式綜合豆(2磅)', '使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '產地:亞洲/中南美洲/非洲<br /><br />風味:可可韻味<br /><br />使用當季最新鮮100%阿拉比卡咖啡豆,經由專業烘焙來呈現濃郁口感及可可韻味,並帶有淡淡果香餘韻,非常適合調配拿鐵以及卡布奇諾', '成分：100% 阿拉比卡咖啡豆<br /><br />商品規格：908g±8g<br /><br />製造地：台灣<br /><br />保存期限：12個月，製造日期如包裝標示<br /><br />儲存方法：咖啡豆均屬新鮮烘焙，因此我們建議您在一個月的最佳賞味期間內飲用完畢完，並盡量保存在陰（暗）涼處,保存容器以單向排氣咖啡袋、儲豆罐或其它具單向排氣功能之容器為宜<br /><br />咖啡因含量：每10g含45±5mg（咖啡豆屬天然農產品，會因季節、產地及沖泡時間而影響咖啡因含量）<br /><br ', 1200, 1, 0, 434, 2, 'coffeeBean11-1.jpg', 'coffeeBean11-1.jpg,coffeeBean11-2.jpg'),
+(143, '1660545856', '摩卡杏仁肉鬆捲', '爽脆的捲心餅中悉心填入香鬆的豬肉鬆，外層裹上義式咖啡粉製成的摩卡可可與金黃色杏仁角，香脆甜鹹美味縈繞口中。', '爽脆的捲心餅中悉心填入香鬆的豬肉鬆，外層裹上以義式咖啡粉製成的摩卡可可與金黃色杏仁角，香脆甜鹹美味縈繞口中。<br />\n<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />', '禮盒內容:<br /><br />\n摩卡杏仁肉鬆捲*18支。\n<br />\n<br />\n詳細營養標示請參考商品外包裝<br />\n<br />\n豬肉產地：台灣<br />', 480, 1, 0, 300, 4, 'box3-1.jpg', 'box3-1.jpg'),
+(144, '1660545924', '雙份摩卡杏仁肉鬆捲', '爽脆的捲心餅中悉心填入香鬆的豬肉鬆，外層裹上義式咖啡粉製成的摩卡可可與金黃色杏仁角，香脆甜鹹美味縈繞口中。', '爽脆的捲心餅中悉心填入香鬆的豬肉鬆，外層裹上以義式咖啡粉製成的摩卡可可與金黃色杏仁角，香脆甜鹹美味縈繞口中。<br />\n<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />', '禮盒內容:<br /><br />\n摩卡杏仁肉鬆捲*36支。<br />\n<br />\n詳細營養標示請參考商品外包裝<br />\n<br />\n豬肉產地：台灣<br />', 960, 1, 0, 300, 4, 'box3-1.jpg', 'box3-1.jpg'),
+(145, '1660546213', '精選咖啡蛋捲禮盒', '以義式咖啡粉特製而成，咖啡香氣完美融合蛋香與奶香，酥脆爽口欲罷不能。<br />\r\n', '以義式咖啡粉特製而成，咖啡香氣完美融合蛋香與奶香，酥脆爽口欲罷不能。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '禮盒內容:<br /><br />\n精選咖啡蛋捲 18入<br />\n<br />\n商品皆為每日限量供應，售完為止。<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />', 500, 1, 0, 20, 4, 'box4-1.jpg', 'box4-1.jpg'),
+(146, '1660546228', '雙份精選咖啡蛋捲禮盒', '以義式咖啡粉特製而成，咖啡香氣完美融合蛋香與奶香，酥脆爽口欲罷不能。<br />\r\n', '以義式咖啡粉特製而成，咖啡香氣完美融合蛋香與奶香，酥脆爽口欲罷不能。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '禮盒內容:<br /><br />\n精選咖啡蛋捲 36入<br />\n<br />\n商品皆為每日限量供應，售完為止。<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />', 1000, 1, 0, 20, 4, 'box4-1.jpg', 'box4-1.jpg'),
+(147, '1660546996', '臻選綜合蛋捲禮盒', '優質雞蛋製成的蛋捲，嚴選咖啡、可可、紅茶、蜂蜜、起司、麥麩等6種不同的口味，讓喜歡多元口味與喜愛嘗鮮的你，每包打開每口都是不同的好心情與好滋味。', '優質雞蛋製成的蛋捲，嚴選咖啡、可可、紅茶、蜂蜜、起司、麥麩等6種不同的口味，讓喜歡多元口味與喜愛嘗鮮的你，每包打開每口都是不同的好心情與好滋味。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '咖啡、可可、紅茶、蜂蜜、起司、麥麩臻選蛋捲各3入<br />\r\n<br />\r\n詳細食品營養標示說明，請見營養標示表。<br />\r\n<br />\r\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\r\n<br />', 500, 1, 0, 30, 4, 'box5-1.jpg', 'box5-1.jpg'),
+(148, '1660547027', '雙份臻選綜合蛋捲禮盒', '優質雞蛋製成的蛋捲，嚴選咖啡、可可、紅茶、蜂蜜、起司、麥麩等6種不同的口味，讓喜歡多元口味與喜愛嘗鮮的你，每包打開每口都是不同的好心情與好滋味。', '優質雞蛋製成的蛋捲，嚴選咖啡、可可、紅茶、蜂蜜、起司、麥麩等6種不同的口味，讓喜歡多元口味與喜愛嘗鮮的你，每包打開每口都是不同的好心情與好滋味。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '咖啡、可可、紅茶、蜂蜜、起司、麥麩臻選蛋捲各6入<br />\r\n<br />\r\n詳細食品營養標示說明，請見營養標示表。<br />\r\n<br />\r\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\r\n<br />', 1000, 1, 0, 30, 4, 'box5-1.jpg', 'box5-1.jpg'),
+(149, '1660547200', '咖啡捲心酥禮盒', '酥脆的咖啡捲內夾入濃郁的咖啡餡，是一款大人小孩都喜愛的點心。', '酥脆的咖啡捲內夾入濃郁的咖啡餡，是一款大人小孩都喜愛的點心。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '咖啡捲心酥 18入<br />\n<br />\n詳細食品營養標示說明，請見營養標示表。<br />\n<br />\n商品皆為每日限量供應，售完為止。<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\n<br />', 360, 1, 0, 400, 4, 'box6-1.jpg', 'box6-1.jpg'),
+(150, '1660547216', '雙份咖啡捲心酥禮盒', '酥脆的咖啡捲內夾入濃郁的咖啡餡，是一款大人小孩都喜愛的點心。', '酥脆的咖啡捲內夾入濃郁的咖啡餡，是一款大人小孩都喜愛的點心。<br />\r\n<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '咖啡捲心酥 36入<br />\n<br />\n詳細食品營養標示說明，請見營養標示表。<br />\n<br />\n商品皆為每日限量供應，售完為止。<br />\n<br />\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\n<br />', 720, 1, 0, 400, 4, 'box6-1.jpg', 'box6-1.jpg'),
+(151, '1660547508', '法蘭酥禮盒', '3種香酥可口，甜而不膩的法蘭酥！', '香酥可口，甜而不膩的法蘭酥！<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '禮盒內容:<br />\r\n那堤法蘭酥、草莓奶霜法蘭酥、海鹽焦糖法蘭酥，各6片。<br />\r\n<br />\r\n詳細食品營養標示說明，請見營養標示表。<br />\r\n<br />\r\n商品皆為每日限量供應，售完為止。<br />\r\n<br />\r\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\r\n<br />', 450, 1, 0, 240, 4, 'box3-1.jpg', 'box3-1.jpg'),
+(152, '1660547523', '雙份法蘭酥禮盒', '3種香酥可口，甜而不膩的法蘭酥！', '香酥可口，甜而不膩的法蘭酥！<br />\r\n[季節限定包裝，數量有限，售完為止。]<br />\r\n<br />\r\n<br />\r\n詳細營養標示請參考商品外包裝<br />', '禮盒內容:<br />\r\n那堤法蘭酥、草莓奶霜法蘭酥、海鹽焦糖法蘭酥，各12片。<br />\r\n<br />\r\n詳細食品營養標示說明，請見營養標示表。<br />\r\n<br />\r\n商品皆為每日限量供應，售完為止。<br />\r\n<br />\r\n網站刊載之商品僅供參考，實際商品以門市現貨為準。<br />\r\n<br />', 900, 1, 0, 240, 4, 'box3-1.jpg', 'box3-1.jpg'),
+(153, '1660548469', '黑色鋁合金手搖磨豆機', '黑色鋁合金手搖磨豆機', '網站刊載之商品僅供參考，實際商品依門市陳列實品為準。<br />\r\n<br />\r\n商品售價為建議價格，實際售價依各通路為準。<br />\r\n<br />\r\n商品銷售數量依各門市實際庫存為主。<br />\r\n<br />\r\n商品上市首日，每位顧客每次結帳限購乙個，如有額外需求需重新排隊；隔日起不再限制。<br />\r\n<br />', '規格：咖啡粉24g<br />\r\n材質：本體外殼-鋁合金/<br />\r\n本體內部-ABS樹脂(耐熱溫度100℃) /<br />\r\n蓋子-壓克力樹脂/<br />\r\n把手-鋁合金、PP聚丙烯/<br />\r\n刀盤-陶瓷刀/<br />\r\n彈簧、軸零件-JIS SUS304不鏽鋼/<br />\r\n調節器-尼龍/止滑墊-矽膠<br />\r\n產地：中國<br />\r\n<br />\r\n如商品有裂痕請勿再使用，以免破裂產生危險。<br />\r\n陶瓷刀盤部份可拆水洗，請充份晾乾後再裝回。<br />', 2950, 1, 0, 20, 3, 'others24-1.jpg', 'others24-1.jpg,others24-2.jpg,others24-3.jpg,others24-1.jpg'),
+(154, '1660550019', '八角陶瓷濾杯', '八角陶瓷濾杯', '網站刊載之商品僅供參考，實際商品依門市陳列實品為準。<br />\r\n<br />\r\n商品售價為建議價格，實際售價依各通路為準。<br />\r\n<br />\r\n商品銷售數量依各門市實際庫存為主。<br />\r\n<br />\r\n商品上市首日，每位顧客每次結帳限購乙個，如有額外需求需重新排隊；隔日起不再限制。<br />\r\n<br />', '容量: 4杯<br />\r\n<br />\r\n材質：全瓷<br />\r\n<br />\r\n產地：日本<br />\r\n<br />\r\n本產品適用洗碗機，取出時請小心高溫燙手，放入時請避免碰撞。<br />\r\n<br />\r\n請使用中性清洗劑與海綿清洗，請勿使用菜瓜布或鋼刷等尖銳物。<br />\r\n<br />\r\n本商品不適用於微波爐、電磁爐及直火加熱、烤箱，並請勿放入冷凍庫中。<br />\r\n<br />', 960, 1, 0, 30, 3, 'others25-1.jpg', 'others25-1.jpg,others25-2.jpg');
 
 -- --------------------------------------------------------
 
@@ -1245,6 +1261,18 @@ INSERT INTO `products_categories` (`products_categories_sid`, `products_categori
 (3, '咖啡周邊器具'),
 (4, '禮盒'),
 (5, '電子禮物卡');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `products_filter`
+--
+
+CREATE TABLE `products_filter` (
+  `products_filter_sid` int(11) NOT NULL,
+  `products_sid` int(11) NOT NULL,
+  `products_style_sid` varchar(127) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1314,7 +1342,16 @@ INSERT INTO `products_style_filter` (`products_style_filter_sid`, `products_styl
 (4, '耗材'),
 (5, '咖啡禮盒'),
 (6, '食品禮盒'),
-(7, '電子卡');
+(7, '禮券'),
+(8, '熱門商品'),
+(9, '推薦商品'),
+(10, '最新產品'),
+(11, '周邊產品'),
+(12, '馬克杯'),
+(13, '水洗法'),
+(14, '日曬'),
+(15, '半水洗'),
+(16, '阿拉比卡咖啡豆');
 
 -- --------------------------------------------------------
 
@@ -1629,6 +1666,12 @@ ALTER TABLE `products_categories`
   ADD PRIMARY KEY (`products_categories_sid`);
 
 --
+-- 資料表索引 `products_filter`
+--
+ALTER TABLE `products_filter`
+  ADD PRIMARY KEY (`products_filter_sid`);
+
+--
 -- 資料表索引 `products_pic`
 --
 ALTER TABLE `products_pic`
@@ -1696,7 +1739,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1726,13 +1769,13 @@ ALTER TABLE `coupon_receive`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course_related`
 --
 ALTER TABLE `course_related`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
@@ -1768,7 +1811,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1409;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
@@ -1828,7 +1871,7 @@ ALTER TABLE `post_tag`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products`
 --
 ALTER TABLE `products`
-  MODIFY `products_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
+  MODIFY `products_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `productsold`
@@ -1843,6 +1886,12 @@ ALTER TABLE `products_categories`
   MODIFY `products_categories_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `products_filter`
+--
+ALTER TABLE `products_filter`
+  MODIFY `products_filter_sid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products_pic`
 --
 ALTER TABLE `products_pic`
@@ -1852,7 +1901,7 @@ ALTER TABLE `products_pic`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products_style_filter`
 --
 ALTER TABLE `products_style_filter`
-  MODIFY `products_style_filter_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `products_style_filter_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `reply`
@@ -1890,7 +1939,3 @@ ALTER TABLE `tag`
 ALTER TABLE `user_like`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
