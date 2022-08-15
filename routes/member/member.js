@@ -399,11 +399,13 @@ router.get('/api/coupons', async (req, res) => {
 // --------------------- 會員點數 ---------------------
 router.get('/api/total-points', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = `SELECT total_points,voucher_amount FROM points_user WHERE member_sid=${sqlSid}`;
+    const canUseSql = `SELECT total_points,voucher_amount FROM points_user WHERE member_sid=${sqlSid}`;
+    const totalPointsSql = `SELECT member_sid, member_level FROM member WHERE member_sid=${sqlSid}`;
 
-    const [result] = await db.query(sql);
+    const [canUseResult] = await db.query(canUseSql);
+    const [totalPointsResult] = await db.query(totalPointsSql);
 
-    res.json(result);
+    res.json([...canUseResult,...totalPointsResult]);
 });
 
 
