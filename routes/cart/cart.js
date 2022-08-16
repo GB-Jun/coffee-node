@@ -532,10 +532,10 @@ router.post("/check/api", async (req, res) => {
     //     nowList: 'productList'
     // }
     const { name, email, phone, payWay, card, deliverWay, address, couponId, finalPrice, discount, nowList } = req.body;
-    const coupon = couponId === -1 ? "NULL" : couponId;
+    const coupon = couponId === -1 ? null : couponId;
     const list = nowList === "productList" ? 0 : 1;
     const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
-    // console.log(sqlFormat);
+    console.log(sqlFormat);
     const orderOutput = { insertId: -1, success: false };
     try {
         const [result] = await db.query(sqlFormat);
