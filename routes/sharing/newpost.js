@@ -5,8 +5,8 @@ const upload = require(__dirname + "/../../modules/sharing-upload")
 
 
 router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, res) => {
-    // 檢查jwt token是否正確
     if (!res.locals.loginUser) {
+        // 檢查jwt token
         res.status(401).send({
             error: {
                 status: 401,
@@ -23,24 +23,33 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
         tagArray = myTag.split(",");
     }
 
+
     if (title.trim() === "" || content.trim() === "" || topic_sid.trim() === "") {
-        res.status(401).send({
+        res.status(400).send({
             error: {
-                status: 401,
-                message: "Columns can't be null",
+                status: 400,
+                message: "Request body cannot be empty",
             },
         });
         return;
-    } else if (title.trim().length > 50 || content.trim().length > 500) {
-        res.status(401).send({
+    } else if (title.trim().length > 50 || content.trim().length > 500 || tagArray.length > 5) {
+        res.status(400).send({
             error: {
-                status: 401,
-                message: "Words length over limit",
+                status: 400,
+                message: "Word count over limit",
+            },
+        });
+        return;
+    }else if(req.files.photos===undefined||req.files.photos.length){
+        res.status(400).send({
+            error: {
+                status: 400,
+                message: "File count error",
             },
         });
         return;
     }
-
+        
 
     const sql = `
     INSERT INTO post (title, content, member_nickname, member_sid, topic_sid, created_at )
@@ -59,23 +68,17 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
         const photoSQL = `INSERT INTO post_img ( img_name, post_sid, sort) VALUES ${VALUES.join(',')}`;
         const [photo_r] = await db.query(photoSQL);
 
-        // 查tag表有沒有該名字,有的話該tag times+1
+
         for (let i = 0; i < tagArray.length; i++) {
             const name = tagArray[i];
 
-            const isTagExistSQL = `SELECT COUNT(1) isExist FROM tag WHERE name = ?;`
-            const [tag_r] = await db.query(isTagExistSQL, [name]);
+            // UPSERT tag by tag.name
+            const UPSERT_SQL = `INSERT INTO tag (name) VALUES (?) ON DUPLICATE KEY UPDATE times = times + 1;`
+            const [r] = await db.query(UPSERT_SQL, [name]);
 
-            if (tag_r.isExist) {
-                const [r] = await db.query("UPDATE tag SET times = times + 1 WHERE name = ?", [name]);
-                const tag_sid = r.insertId;
-                db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
-
-            } else {
-                const [r] = db.query("INSERT INTO `tag` (`name`) VALUES ('?')", [name]);
-                const tag_sid = r.insertId;
-                db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
-            }
+            const tag_sid = r.insertId;
+            // INSERT post_tag by post_sid,tag insertId
+            db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
         }
 
 
