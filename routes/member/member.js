@@ -299,7 +299,7 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
 router.get('/api/order-history', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_list`, `order_status` FROM `order` WHERE `order_member_id` = ";
-    const orderSql = `${sql}${sqlSid}`
+    const orderSql = `${sql}${sqlSid} ORDER BY order_time DESC`
 
     const [results] = await db.query(orderSql);
     res.json(results);
