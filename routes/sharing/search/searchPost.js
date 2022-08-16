@@ -69,7 +69,8 @@ const getListById = async (req, res) => {
     SELECT COUNT(1) totalRows FROM member_likes ml
     LEFT JOIN post p
     ON p.sid = ml.post_sid
-    WHERE ml.member_sid = ? AND  p.delete_state = 0;
+    WHERE ml.member_sid = ? AND  p.delete_state = 0
+    GROUP  BY ml.post_sid;
     `;
     const titleSql = `SELECT COUNT(1) totalRows FROM post WHERE sid = ? AND delete_state = 0`;
 
@@ -133,6 +134,7 @@ const getListById = async (req, res) => {
         JOIN member m
         ON m.member_sid = p.member_sid
         WHERE ml.member_sid = ? AND pi.sort = 1 AND p.delete_state = 0
+        GROUP  BY ml.post_sid
         ${ORDER_BY}
         ${LIMIT};
         `;
