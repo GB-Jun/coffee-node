@@ -4,7 +4,7 @@ const db = require(__dirname + "/../../../modules/mysql-connect");
 const LIMIT = " LIMIT 8";
 
 router.get("", async (req, res) => {
-    const { queryString } = req.query;
+    const { queryString, type } = req.query;
     const output = {
         totalRows: 0,
         rows: [],
@@ -16,6 +16,13 @@ router.get("", async (req, res) => {
         return
     }
 
+
+    if (type === "tag") {
+        output.rows = [...output.rows, ...await getTagData(queryString)];
+        output.totalRows = output.rows.length;
+        res.json(output);
+        return;
+    }
 
     output.rows = [...output.rows, ...await getNicknameData(queryString)];
     output.rows = [...output.rows, ...await getTagData(queryString)];

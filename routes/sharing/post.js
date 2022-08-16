@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const WEEK_DIFF = "TIMESTAMPDIFF(WEEK,p.created_at,NOW()) weekdiff"
-
+let randNum = Math.floor(Math.random() * 5 + .3) * 2;
+// 10mins chg randNum
+setInterval(() => { randNum = Math.floor(Math.random() * 5 + .3) * 2; }, 1000 * 60 * 10);
 
 
 router.get("/", async (req, res) => {
@@ -41,11 +43,10 @@ const getListHandler = async (req, res) => {
 
 
     if (totalRows) {
-        const randNum = Math.floor(Math.random() * 5 + .3) * 2;
-        // weekdiff*(0.5~1.5) ORDER BY like - weekDif* 0~10 DESC
+        //  ORDER BY like - weekDif* 0~10 DESC
         const ORDER_BY = ` ORDER BY (p.likes-weekdiff*${randNum}) DESC,p.updated_at DESC`
-
-        const LIMIT = `LIMIT ${((op.query.times + totalPage) % totalPage) * rowsPerPage},${rowsPerPage}`;
+        const LIMIT = `LIMIT ${(op.query.times % totalPage) * rowsPerPage},${rowsPerPage}`;
+        
         let WHERE = "";
         title ? WHERE += `p.title LIKE ${'%' + db.escape(title) + '%'} AND` : WHERE += "1 AND";
         member_sid ? WHERE += ` p.member_sid = ${member_sid} AND` : WHERE += "";
