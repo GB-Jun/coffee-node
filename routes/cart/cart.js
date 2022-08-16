@@ -535,7 +535,7 @@ router.post("/check/api", async (req, res) => {
     const coupon = couponId === -1 ? null : couponId;
     const list = nowList === "productList" ? 0 : 1;
     const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
-    console.log(sqlFormat);
+    // console.log(sqlFormat);
     const orderOutput = { insertId: -1, success: false };
     try {
         const [result] = await db.query(sqlFormat);
@@ -555,6 +555,8 @@ router.post("/check/api", async (req, res) => {
         return;
     }
     if (orderOutput.success) {
+        const queryArray = [];
+        // 清空購物車sql
         const sqlCart = `
             UPDATE \`cart\` SET cart_order_id = ? WHERE cart_member_id = ? AND cart_order_id = 0;
         `;
@@ -562,10 +564,27 @@ router.post("/check/api", async (req, res) => {
             UPDATE food_choice SET food_order_id = ? WHERE food_member_id = ? AND food_order_id = 0;
         `;
         const sql = nowList === "productList" ? sqlCart : sqlFood;
+        const sqlCartFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
+        queryArray.push(db.query(sqlCartFormat));
 
-        const sqlFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
+        // if(couponId !== -1) {
+        //     // 更改coupon receive sql
+        //     const sqlCouponReceive = `
+        //         UPDATE coupon_receive SET status = 1 WHERE sid = ?;
+        //     `;
+        //     const sqlCouponReceiveFormat = sqlstring.format(sqlCouponReceive, [couponId])
+        //     queryArray.push(db.query(sqlCouponReceiveFormat));
+
+        //     // insert coupon_logs
+        //     const sqlCouponLogs = `
+        //     INSERT INTO coupon_logs(member_sid, coupon_receive_sid, order_sid, used_time) VALUES (
+
+        //     )
+        //     `;
+        // }
+
         try {
-            const [result] = await db.query(sqlFormat);
+            const [result] = await Promise.all(queryArray);
             res.json(result);
             return;
         } catch (error) {
