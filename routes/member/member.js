@@ -161,7 +161,7 @@ router.post('/api/user-verify', async (req, res) => {
     if( accountResult.length && verifyResult[0].hash === req.body.verification){
         output.success = true;
     }
-    const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
+    const [isVerify] = await db.query(`UPDATE member SET verify=0 WHERE member_account= "${account}"`);
     if(isVerify.affectedRows > 0){
         output.verify=1;
     }
