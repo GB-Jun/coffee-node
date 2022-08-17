@@ -16,7 +16,11 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
         return;
     }
     const { sid, nickname } = res.locals.loginUser;
-    const { title, content, topic_sid, myTag } = req.body;
+    const { title, content: c, topic_sid, myTag } = req.body;
+
+    const pattern = /\r\n|\r|\n/;
+    const content = c.replace(pattern, '<br />');
+
 
     let tagArray = [];
     if (myTag.trim()) {
@@ -40,7 +44,7 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
             },
         });
         return;
-    }else if(req.files.photos===undefined||req.files.photos.length){
+    } else if (req.files.photos === undefined || req.files.photos.length > 5) {
         res.status(400).send({
             error: {
                 status: 400,
@@ -49,7 +53,7 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
         });
         return;
     }
-        
+
 
     const sql = `
     INSERT INTO post (title, content, member_nickname, member_sid, topic_sid, created_at )
@@ -87,7 +91,6 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
         res.json(photo_r);
 
     } catch (error) {
-        console.log(error)
         res.status(500).send({
             error: {
                 status: 500,

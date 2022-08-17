@@ -40,7 +40,6 @@ router.delete("/", async (req, res) => {
     const [r] = await db.query(sql, [comment_sid, post_sid]);
     if (r) op.success = true;
 
-    console.log(r);
     res.json(op);
 });
 

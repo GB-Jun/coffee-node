@@ -19,7 +19,6 @@ router.post("/", async (req, res) => {
     const [r] = await db.query(sql, [member_sid, comment_sid, content, comment_sid]);
 
 
-    console.log(r);
     res.json(op);
 });
 
@@ -37,7 +36,6 @@ router.delete("/", async (req, res) => {
     const [r] = await db.query(sql, [reply_sid, comment_sid]);
 
 
-    console.log(r);
     res.json(op);
 });
 
