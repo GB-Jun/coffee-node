@@ -131,7 +131,7 @@ router.post('/api/sign-up', async (req, res) => {
         transporter.sendMail({
             from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
             to: `${member_mail}`,
-            subject: '驗證信',
+            subject: '來拎+B註冊驗證信，歡迎您的加入！',
             html: `<h4 style="display:inline-block">您的驗證碼為：</h4><h1 style="display:inline-block">${hashRandom}</h1>`,
         }).then(() => {
             console.log(hashRandom);
@@ -396,17 +396,26 @@ router.get('/api/coupons', async (req, res) => {
     res.json(result);
 });
 
-// --------------------- 會員點數 ---------------------
-router.get('/api/total-points', async (req, res) => {
+// --------------------- 會員可用點數 ---------------------
+router.get('/api/canUse-points', async (req, res) => {
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const canUseSql = `SELECT total_points,voucher_amount FROM points_user WHERE member_sid=${sqlSid}`;
-    const totalPointsSql = `SELECT member_sid, member_level FROM member WHERE member_sid=${sqlSid}`;
+    const canUseSql = `SELECT total_points FROM points_user WHERE member_sid=${sqlSid}`;
 
     const [canUseResult] = await db.query(canUseSql);
+
+    res.json(canUseResult);
+});
+
+// --------------------- 會員累積點數 ---------------------
+router.get('/api/total-points', async (req, res) => {
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const totalPointsSql = `SELECT member_sid, member_level FROM member WHERE member_sid=${sqlSid}`;
+
     const [totalPointsResult] = await db.query(totalPointsSql);
 
-    res.json([...canUseResult,...totalPointsResult]);
+    res.json(totalPointsResult);
 });
+
 
 
 module.exports = router;
