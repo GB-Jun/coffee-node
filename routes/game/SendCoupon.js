@@ -59,7 +59,7 @@ router.get('/api-lottery-result', async (req, res)=>{
     const output = await getListHandler(req, res);
     if(!(output.error)){
         // const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`) VALUES (?, ?, NOW(), NOW()+365, 0)"; 
-        const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`,`category`) VALUES (?, ?, NOW(), NOW()+ 365, 0, 1)"; 
+        const sql = "INSERT INTO coupon_receive (`member_sid`,`coupon_sid`,`create_time`,`end_time`,`status`,`category`) VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 365 DAY), 0, 1)"; 
 
         const {coupon_sid}=req.body;
         const [r] = await db.query(sql, [
