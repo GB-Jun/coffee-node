@@ -595,7 +595,7 @@ router.post("/check/api", async (req, res) => {
         try {
             const results = await Promise.all(queryArray);
             const resultArray = results.map(result => result[0].affectedRows >= 1);
-            if(resultArray.indexOf(false) >= 0) {
+            if (resultArray.indexOf(false) >= 0) {
                 orderOutput.success = false;
             }
             res.json(orderOutput);
@@ -611,6 +611,133 @@ router.post("/check/api", async (req, res) => {
             return;
         }
     }
+});
+
+// detail
+router.get("/detail/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get detail .",
+            },
+        });
+        return;
+    }
+    const { sid } = res.locals.loginUser;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get detail .",
+            },
+        });
+        return;
+    }
+    // 檢查insetId
+    const { insertId } = req.query;
+    if (insertId === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no insertId to get detail .",
+            },
+        });
+        return;
+    }
+    const output = {
+        orderNumber: -1,
+        price: 0,
+        list: "",
+    };
+    const sqlLastInsert = `
+        SELECT order_id AS orderNumber, order_price AS price, order_list AS list FROM \`order\` WHERE order_sid = ?;
+    `;
+    const sqlLastInsertFormat = sqlstring.format(sqlLastInsert, [insertId])
+    try {
+        const [[result]] = await db.query(sqlLastInsertFormat);
+        output.orderNumber = result.orderNumber;
+        output.price = result.price;
+        output.list = result.list;
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't operate find order detail .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+    const sqlProduct = `
+        SELECT
+            cart_sid AS 'id',
+            cart_quantity AS 'quantity',
+            products.products_name AS 'name',
+        FROM cart
+        JOIN products ON cart_product_id = products.products_sid
+        WHERE cart_member_id = ? AND cart_order_id = ?;
+    `;
+    const sqlFood = `
+        SELECT
+            food_choice_sid AS 'id',
+            food_ice_id AS 'ice',
+            food_sugar_id AS 'sugar',
+            food_quantity AS 'quantity',
+            menu.menu_name AS 'name'
+        FROM food_choice
+        JOIN menu ON food_id = menu.menu_sid
+        WHERE food_member_id = ? AND food_order_id = ?;
+    `;
+    const sql = output.list === 0 ? sqlProduct : sqlFood;
+    const sqlFormat = sqlstring.format(sql, [sid, insertId]);
+    const icesql = `
+        SELECT food_ice_sid AS id, food_ice_name AS name  FROM food_ice WHERE 1;
+    `;
+
+    const sugarsql = `
+        SELECT food_sugar_sid AS id, food_sugar_name AS name FROM food_sugar WHERE 1;
+    `;
+    try {
+        if (output.list === 0) {
+            const [result] = await db.query(sqlFormat);
+            output.rawData = result;
+        } else {
+            const foodResult = db.query(sqlFormat);
+            const iceResult = db.query(icesql);
+            const sugarResult = db.query(sugarsql);
+            const [[result], [iceRaw], [sugarRaw]] = await Promise.all([foodResult, iceResult, sugarResult]);
+            iceRaw.unshift({ id: 0, name: "" });
+            sugarRaw.unshift({ id: 0, name: "" });
+            const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
+            const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
+            console.log(result[0].ice);
+            console.log(result[0].ice === 0 ? "" : `(${item.ice})` );
+            if (result.length >= 1) {
+                result.forEach(item => {
+                    item.ice = iceTable[item.ice];
+                    item.sugar = sugarTable[item.sugar];
+                    item.name = item.name + (item.ice === "" ? "" : `(${item.ice})`) + (item.sugar === "" ? "" : `(${item.sugar})`);
+                    delete item.ice;
+                    delete item.sugar;
+                })
+            }
+            output.rawData = result;
+            console.log(result);
+        }
+    } catch (error) {
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't operate find order detail list .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+    res.json(output);
 });
 
 // 購物車數量
