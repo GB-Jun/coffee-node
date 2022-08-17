@@ -489,7 +489,6 @@ router.post("/check/api", async (req, res) => {
     try {
         const [[{ maxOrder }]] = await db.query(newestOrdersql)
         insertOrderId = +maxOrder + 1;
-        // console.log(insertOrderId)
     } catch (error) {
         res.status(500).send({
             error: {
@@ -517,7 +516,6 @@ router.post("/check/api", async (req, res) => {
             ?,?,?
         );
     `;
-    // console.log(req.body);
     // const body = {
     //     name: '王曉明',
     //     phone: '0912345678',
@@ -535,13 +533,16 @@ router.post("/check/api", async (req, res) => {
     const coupon = couponId === -1 ? null : couponId;
     const list = nowList === "productList" ? 0 : 1;
     const sqlFormat = sqlstring.format(sql, [name, email, phone, payWay, card, deliverWay, address, sid, coupon, finalPrice, insertOrderId, discount, "配送中", list])
-    // console.log(sqlFormat);
-    const orderOutput = { insertId: -1, success: false };
+    const orderOutput = { insertId: -1, success: false, time: "" };
     try {
         const [result] = await db.query(sqlFormat);
-        // console.log(result.affectedRows);
-        if (result.affectedRows >= 1) {
+        const sqlNow = `
+            SELECT order_time AS timeNow FROM \`order\` WHERE order_sid = ?;
+        `;
+        const [[{ timeNow }]] = await db.query(sqlNow, [result.insertId]);
+        if (result.affectedRows >= 1 && timeNow) {
             orderOutput.insertId = result.insertId;
+            orderOutput.time = moment.parseZone(timeNow).utcOffset(8).format("YYYY-MM-DD HH:mm:ss");
             orderOutput.success = true;
         }
     } catch (error) {
@@ -567,25 +568,37 @@ router.post("/check/api", async (req, res) => {
         const sqlCartFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
         queryArray.push(db.query(sqlCartFormat));
 
-        // if(couponId !== -1) {
-        //     // 更改coupon receive sql
-        //     const sqlCouponReceive = `
-        //         UPDATE coupon_receive SET status = 1 WHERE sid = ?;
-        //     `;
-        //     const sqlCouponReceiveFormat = sqlstring.format(sqlCouponReceive, [couponId])
-        //     queryArray.push(db.query(sqlCouponReceiveFormat));
+        /*
+            寫入order後的output結構
+            const orderOutput = { insertId: -1, success: false, time: "" };
+        */
+        if (couponId !== -1) {
+            // 更改coupon receive sql
+            const sqlCouponReceive = `
+                UPDATE coupon_receive SET status = 1 WHERE sid = ?;
+            `;
+            const sqlCouponReceiveFormat = sqlstring.format(sqlCouponReceive, [couponId])
+            queryArray.push(db.query(sqlCouponReceiveFormat));
 
-        //     // insert coupon_logs
-        //     const sqlCouponLogs = `
-        //     INSERT INTO coupon_logs(member_sid, coupon_receive_sid, order_sid, used_time) VALUES (
-
-        //     )
-        //     `;
-        // }
+            // insert coupon_logs
+            const sqlCouponLogs = `
+                INSERT INTO coupon_logs(
+                    member_sid, coupon_receive_sid, order_sid, used_time
+                ) VALUES (
+                    ?,?,?,?
+                )
+            `;
+            const sqlCouponLogsFormat = sqlstring.format(sqlCouponLogs, [sid, couponId, orderOutput.insertId, orderOutput.time])
+            queryArray.push(db.query(sqlCouponLogsFormat));
+        }
 
         try {
-            const [result] = await Promise.all(queryArray);
-            res.json(result);
+            const results = await Promise.all(queryArray);
+            const resultArray = results.map(result => result[0].affectedRows >= 1);
+            if(resultArray.indexOf(false) >= 0) {
+                orderOutput.success = false;
+            }
+            res.json(orderOutput);
             return;
         } catch (error) {
             res.status(500).send({
