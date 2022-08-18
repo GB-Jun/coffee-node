@@ -15,7 +15,7 @@ function fileFilter(req, file, cb) {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, __dirname + '/../public/images/test');
+        cb(null, __dirname + '/../public/images/sharing');
     },
     filename: function (req, file, cb) {
         const filename = 'p'+moment(new Date()).format('YYYYMMDD-')+v4() + extMap[file.mimetype];

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-17 10:42:49
+-- 產生時間： 2022-08-18 06:14:16
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -304,11 +304,7 @@ INSERT INTO `course` (`course_sid`, `course_name`, `course_price`, `course_level
 (115, '雪人拉花', 1500, 2, '3f12e880-d6ac-4246-b3b9-212fe8bc77b8.png', '牛奶藝術（Lae Art） 又稱為拉花。是一種在濃縮咖啡（Espresso）裡， 加入經由濃縮咖啡機（Espresso Machine）加熱後產生大量的氣體壓力蒸氣，將產生大量的氣體壓力蒸氣經由空氣與蛋白質跟牛奶脂肪摩擦後，產生凝結的固體泡沫，再經由氣體旋轉原理，將固體的泡沫，吸入牛奶內部接而混和了牛奶與泡沫，產生了滑順細緻的泡沫牛奶（Steam Milk），接著將溫熱的泡沫牛奶加入製作好的濃縮咖啡裡，在短短幾秒內，經由推擠、晃動、轉動等不同組合方式，完成一杯擁有美麗圖案或是有著像絲綢般口感的咖啡拿鐵。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
 (116, '恐龍拉花', 1200, 1, 'c100501a-53e7-4085-bc68-66bb24a8f7d2.png', '你是咖啡迷嗎？咖啡的世界包羅萬象，從原料到端上桌那一杯，都有許多學問在裡頭，這也是為什麼許多人一接觸咖啡就會變得無法自拔。而其中有一項技術「拉花」更是不少咖啡師會練習的項目，完美的拉花，能讓一杯咖啡變得更美麗、富有生命力！', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
 (117, '天馬拉花', 1500, 2, '8a3ba0fe-1645-428f-b50b-09432739b651.png', '表面看起來花俏的咖啡拉花，除了引人注目的技巧外，一個成功的咖啡拉花，其實是藉由各個不同的環節組合而成， 像是最重要的基底咖啡 Espresso，如何成功萃取出好的咖啡油脂，除了影響入口口感，對於咖啡拉花圖案的成形也會有著重要影響，又或者是關乎到奶泡是否綿密的牛奶品質，另外，還有蒸氣管放置角度，以及蒸氣噴出的狀態等等，這些都是直接或間接影響到最後成敗的重要因素。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
-(118, '鳥兒拉花', 1500, 2, 'd902d917-8684-452c-8734-62432f729aa4.png', '一杯咖啡，最令人印象深刻的是什麼呢？\n在閒暇之餘，帶著書到咖啡廳，隨手點杯熱拿鐵。最令人愉悅的是熱咖啡端上來的那一刻\n濃郁的咖啡香配上綿密的奶泡，除此之外，就是令人驚豔的拉花了。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
-(119, '獅子拉花', 1400, 3, 'a01b9705-f654-4e98-a2a9-acda7c696047.png', '咖啡拉花是通過將奶泡倒入一杯義式濃縮咖啡中並在拿鐵的表面上形成圖案。 也可以通過簡單地繪製奶泡的頂層來創造或裝飾它。由於咖啡拉花存在一定技術，很難始終如一地創造咖啡拉花出來。反過來，這受限於咖啡師的經驗和濃縮咖啡機的品質。因此，咖啡拉花本身成為拿鐵咖啡師的最後一個挑戰。該技術不僅限於拿鐵咖啡，還適用於其他含奶泡的飲品，例如卡布奇諾和熱巧克力。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
-(120, '小貓拉花', 1800, 3, 'c5a3a37e-aa91-424c-a92c-9490bdf66a3b.png', '你知道「咖啡拉花」其實也是適合親子同樂的活動嗎？\n一說到「咖啡拉花」，腦海中總會浮現出咖啡廳店員專業的手勢以及咖啡杯中美麗的花紋。但是，拿鐵拉花這門藝術其實並不困難！今天0+B就要來和大家分享『如何輕鬆做出可愛的3D立體咖啡拉花』。只要學會以下的步驟，不管大朋友、小朋友都能在家成功做出可愛的杯中動物喔！', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
-(121, '小熊拉花', 1500, 2, '3f3e1448-11d9-4785-82bd-cc405a1a4080.png', '如果是在熱咖啡上製作3D拉花，那麼牛奶最好是使用「成分無調整鮮乳」，加熱之後可以打出綿密細緻的奶泡。\n若是要盛放在冰咖啡或冰拿鐵上，那麼推薦使用在低溫時較容易打出奶泡的「低脂」或「脫脂牛乳」，但是要注意奶泡的持久性會差一些。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n'),
-(122, '草葉拉花', 1200, 1, 'aba3af2c-c439-4330-bfca-301f7fe2d313.png', '喝咖啡不僅是品嚐其中的苦味、酸味、果香等風味，在視覺上也需要有好看的外型，在這個視覺當道的現代，更是佔據了不少好感分數！畢竟大家都喜歡拍照上傳分享，這杯咖啡不只是好喝，如果還好看的話，就會在社群掀起一陣熱潮，吸引許多人前往品嚐。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n');
+(118, '鳥兒拉花', 1500, 2, 'd902d917-8684-452c-8734-62432f729aa4.png', '一杯咖啡，最令人印象深刻的是什麼呢？\n在閒暇之餘，帶著書到咖啡廳，隨手點杯熱拿鐵。最令人愉悅的是熱咖啡端上來的那一刻\n濃郁的咖啡香配上綿密的奶泡，除此之外，就是令人驚豔的拉花了。', '‧適合年滿12歲以上對拉花有興趣的各位!如未滿18歲則需家長陪同參加。\n<br>\n‧對咖啡有興趣者，無須任何品飲、沖煮經驗。\n<br>\n‧想增加第二專長進修者。\n<br>\n‧企業專業進修增加工作職能者。\n<br>\n‧欲從事咖啡相關工作者必學證照。\n<br>\n‧已經從業或是已在教授咖啡課程者。\n', '‧磨豆機\n<br>\n‧手沖壺\n<br>\n‧溫度計\n<br>\n‧電子秤\n<br>\n‧濾杯\n<br>\n‧濾紙\n<br>\n(以上材料由主辦者提供,不需額外付費。)\n');
 
 -- --------------------------------------------------------
 
@@ -345,13 +341,10 @@ INSERT INTO `course_related` (`sid`, `course_sid`, `course_date`, `course_time`,
 (19, 115, '2022-08-25,2022-08-29', 'AM 10:00,PM 03:00', '1fd9c0a4-febc-4b60-8923-5dd9a2c2cfeb.png,19ae3554-278e-4bde-9289-c1bc4f44942a.png,624818be-1980-414f-9b29-34159ceae511.png'),
 (20, 116, '2022-08-25,2022-08-29', 'AM 10:00,PM 03:00', '0a82ae45-39e9-4c10-b911-a9cfaf9ad883.png,8fd65fd6-ca25-49bf-a00b-a8670bd5a226.png,043eda8a-c43f-427f-a29e-b1be8d49c4b8.png'),
 (21, 117, '2022-08-28,2022-08-29', 'AM 10:30,PM 02:00', 'f3e89c83-cc40-4a57-8d32-b5d3aa23f7c1.png,582ffb23-8a47-4824-9abc-138e69aeadf1.png,41d16bab-690e-44f2-9163-5de37b95a881.png'),
-(22, 118, '2022-08-26,2022-08-29', 'AM 10:30,PM 03:30', '4a9bcbba-4bf4-4548-8292-6fe9b904670a.png,8529d2c2-eff0-48ac-826b-11c2ec8105e5.png,b3274eb4-fc50-46f2-8143-fcea0abc187f.png,dd2b3921-bfaa-4a44-a1d1-9b8522036095.png'),
-(23, 119, '2022-08-27,2022-08-28', 'AM 10:30,PM 03:30', '3e70a28b-a3b2-4539-8740-8c8f40ec3ad8.png,10a43f12-b077-45a2-a509-3920ea18bab8.png,eb5da565-153d-49a1-b69f-0dd28e6c0a00.png'),
-(24, 120, '2022-08-27,2022-08-28', 'AM 10:20,PM 01:30', '7f45d71b-095c-4db1-b883-83d99bc4ca7e.png,5c6a5062-6fbf-488e-ad7c-b570b6a2f41e.png,e09c60c2-e547-41ac-a888-1cb8ceb36816.png'),
-(25, 121, '2022-08-28,2022-08-29', 'AM 09:00,PM 02:50', '9d388584-c325-4ba6-88af-c113c1af5cd4.png,83e51bca-4fce-4dae-8cbe-0b209075043c.png,9486da4e-5366-45d8-b2e5-2b78008fb35b.png'),
-(26, 122, '2022-08-25,2022-08-26', 'AM 09:15,PM 03:15', '5de1c07b-48b1-41f9-b6ff-4ec292b02942.png,f1b4642d-d302-44ab-98e9-a3de5c3ea347.png,91b2953b-0bdb-4d1d-89b3-a33cfaf16577.png,d12f3c5b-c8de-4d55-a36d-b05d914e4a95.png,dc23fccd-d0fe-4b00-b8d2-0dedb5932db2.png');
+(22, 118, '2022-08-26,2022-08-29', 'AM 10:30,PM 03:30', '4a9bcbba-4bf4-4548-8292-6fe9b904670a.png,8529d2c2-eff0-48ac-826b-11c2ec8105e5.png,b3274eb4-fc50-46f2-8143-fcea0abc187f.png,dd2b3921-bfaa-4a44-a1d1-9b8522036095.png');
 
 -- --------------------------------------------------------
+
 --
 -- 資料表結構 `food_choice`
 --
@@ -488,14 +481,14 @@ INSERT INTO `mapapi` (`mapapi_sid`, `mapapi_key`) VALUES
 CREATE TABLE `member` (
   `member_sid` int(11) NOT NULL,
   `member_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-  `member_nickname` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_nickname` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '尚未有暱稱',
   `member_account` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `member_password` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `member_birthday` date DEFAULT NULL,
-  `member_mobile` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-  `member_address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_mobile` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `member_address` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `member_mail` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-  `member_like` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+  `member_like` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   `member_level` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0',
   `avatar` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'missing-image.jpg',
   `hash` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
@@ -512,7 +505,7 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (3, '小黑', 'black', 'black', 'black', '2022-05-12', '0912345678', '新北市', 'black@test.com', '', '0', '1539960.gif', '', '0'),
 (4, '小白', 'white', 'white', 'white', '2022-06-08', '0911123456', '台北市', 'white@test.com', '', '2000', '', '', '0'),
 (44, 'corgi', '', 'corgi', '$2a$10$WgxyZXCt5e3Vk5rPpxTeFOFikhAdgzUx77v0eQNT5vQbWp1T142k6', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
-(45, '0804', '', '0804', '$2a$10$epvcLV8lC.6n7uV.2lQOouA3JSgk1DlXf1WJvF97NZtUrOFHlWbsu', NULL, '0911222333', '福岡', '123@test123.com', '', '0', 'Kanna.jpg', '', '0'),
+(45, '0804', 'Nomad', '0804', '$2a$10$epvcLV8lC.6n7uV.2lQOouA3JSgk1DlXf1WJvF97NZtUrOFHlWbsu', '2022-08-10', '0911222333', '台北市信義區信義路五段55號', '123@test123.com', '', '0', 'Nezuko.jpg', '', '1'),
 (46, 'a0804', '', 'a0804', '$2a$10$WDQeKKeFUx8TfwYaGz46bODINYXc7vXuBh83aCMwxlrldYYC.Cy3y', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (47, 'b0804', '', 'b0804', '$2a$10$H26ZB/9ZdwWvdH49o/5bV.CKmfwNVcRqI1P1WYGX/pZqjddpQFnaK', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
 (48, 'f0804', '', 'f0804', '$2a$10$0dxaY2AiKVOIhahHswsE5e9EIfR3x/caLX0VbGv.XJTw/cZud3yIm', NULL, '', '', '', '', '0', 'missing-image.jpg', '', '0'),
@@ -526,7 +519,8 @@ INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_ac
 (999, '來亂的', '來亂的', 'li1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'missing-image.jpg', '', '1'),
 (1001, '王小明', '帥氣a小明', 'ming1', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'ming.jpg', '', '1'),
 (1005, '陳大圓', '新手大圓', 'yuan', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'qZqZo6SVk6ecq6Y.jpg', '', '1'),
-(1408, '漢克', 'Hank', 'hank1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'missing-image.jpg', '', '1');
+(1408, '漢克', 'Hank', 'hank1234', '$2a$10$smZSaWsoncwG9EUSSLZazuLWmEaiXEMbuGXhENpgFu1Z7oxknCHMa', NULL, '', '', 'test@gmail.com', '', '0', 'missing-image.jpg', '', '1'),
+(1413, 'KohiLing', '尚未有暱稱', 'cafe0818', '$2a$10$JKavfX.ZbB5g4wg5zYpTqellNAFwKe7ozqKLhVmcImFjeN4mRP7f2', NULL, NULL, NULL, 'chia87616@gmail.com', NULL, '0', 'missing-image.jpg', '713237', '0');
 
 -- --------------------------------------------------------
 
@@ -903,12 +897,12 @@ INSERT INTO `post` (`sid`, `title`, `content`, `member_nickname`, `member_sid`, 
 (159, '爛芭樂', '爛', '來亂的', 999, 0, 0, 1, '2022-06-13 00:44:17', NULL, 0),
 (160, '爛芭樂爛爛爛', '爛', '來亂的', 999, 0, 0, 1, '2022-06-13 00:44:17', NULL, 1),
 (161, '拉花好無聊', '爛', '來亂的', 999, 1, 1, 1, '2022-06-13 00:44:17', '2022-06-13 01:08:05', 0),
-(162, '貓咪狗狗拉花', '貓咪狗狗拉花', '老皮', 886, 0, 0, 1, '2022-06-13 01:10:33', NULL, 0),
-(164, '幽靈拉花課程', '幽靈拉花課程', '老皮', 886, 0, 0, 1, '2022-06-13 01:12:02', NULL, 0),
-(165, '咖發豆課程', '咖發豆課程', '老皮', 886, 0, 0, 1, '2022-06-13 01:12:49', NULL, 0),
-(166, '厲害的麵包', '厲害的麵包', '老皮', 886, 2, 0, 2, '2022-06-13 01:13:29', NULL, 0),
-(167, '分享台中店環境', '分享台中店環境', '老皮', 886, 2, 0, 3, '2022-06-13 01:14:20', NULL, 0),
-(168, '分享我家的可愛狗溝', '分享我家的可愛狗溝', '老皮', 886, 2, 0, 1, '2022-06-13 01:16:13', NULL, 0),
+(162, '貓咪狗狗拉花', '貓咪狗狗拉花', '阿明', 1, 0, 0, 1, '2022-06-13 01:10:33', NULL, 0),
+(164, '幽靈拉花課程', '幽靈拉花課程', '阿明', 1, 0, 0, 1, '2022-03-13 01:12:02', NULL, 0),
+(165, '咖發豆課程', '咖發豆課程', '阿明', 1, 0, 0, 1, '2022-07-01 01:12:49', NULL, 0),
+(166, '厲害的麵包', '厲害的麵包', '阿明', 1, 2, 0, 2, '2021-11-23 01:13:29', NULL, 0),
+(167, '分享台中店環境', '分享台中店環境', '阿明', 1, 2, 0, 3, '2022-04-13 01:14:20', NULL, 0),
+(168, '分享我家的可愛狗溝', '分享我家的可愛狗溝', '阿明', 1, 2, 0, 1, '2022-05-28 01:16:13', NULL, 0),
 (169, '你分得出咖啡豆嗎', '分不出', '帥氣a小明', 1001, 0, 0, 1, '2022-06-13 01:29:19', NULL, 0),
 (170, '拿鐵好喝的秘訣', '拿鐵好喝的秘訣', '帥氣a小明', 1001, 0, 0, 1, '2022-06-13 01:30:20', NULL, 0),
 (171, '好吃的可頌值得一吃再吃', '好吃的可頌值得一吃再吃', 'Tommy', 666, 0, 0, 2, '2022-06-13 01:33:38', NULL, 0),
@@ -917,7 +911,8 @@ INSERT INTO `post` (`sid`, `title`, `content`, `member_nickname`, `member_sid`, 
 (174, '歪國人煮咖啡', '歪國人', '帥氣a小明', 1001, 0, 0, 3, '2022-06-13 01:37:06', NULL, 0),
 (175, '我上一堂課就拉成這樣是不是天才', '我上一堂課就拉成這樣是不是天才', '帥氣a小明', 1001, 0, 0, 1, '2022-06-13 01:37:57', NULL, 0),
 (176, '濾掛咖啡分享', '濾掛咖啡分享', 'Tommy', 666, 0, 0, 1, '2022-06-13 01:40:39', NULL, 0),
-(177, 'test', 'test', '帥氣a小明', 1001, 0, 0, 1, '2022-06-13 10:09:07', NULL, 0);
+(177, 'test', 'test', '帥氣a小明', 1001, 0, 0, 1, '2022-06-13 10:09:07', NULL, 0),
+(179, '546', '12456', '', 45, 0, 0, 1, '2022-08-18 11:12:19', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -979,7 +974,8 @@ INSERT INTO `post_img` (`sid`, `img_name`, `post_sid`, `sort`) VALUES
 (745, '20220612_19_779248.jpg', 176, 1),
 (746, '20220613_04_454847.jpg', 177, 1),
 (747, '20220613_04_3abeec.jpg', 177, 2),
-(748, '20220613_04_6993d4.jpg', 177, 3);
+(748, '20220613_04_6993d4.jpg', 177, 3),
+(750, 'p20220818-9ff2b589-2911-4306-8601-4ad614101b21.png', 179, 1);
 
 -- --------------------------------------------------------
 
@@ -1881,7 +1877,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1409;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1414;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
@@ -1923,13 +1919,13 @@ ALTER TABLE `points_user`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post`
 --
 ALTER TABLE `post`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_img`
 --
 ALTER TABLE `post_img`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=749;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=751;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_tag`
