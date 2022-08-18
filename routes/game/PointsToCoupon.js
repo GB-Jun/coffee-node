@@ -57,7 +57,10 @@ router.post('/Api-Points-To-Coupon-result', upload.none(), async(req, res)=>{
     const [r2] = await db.query(sql2, [
         theLeftPoints,theAmount,output.member_sid
     ]);
-        
+    const sql3 ="INSERT INTO points_record (`member_sid`,`type`,`points_get`,`create_at`) VALUES (?, 2, -300, NOW())";
+    const [r3] = await db.query(sql3, [
+        output.member_sid
+    ]);
     res.json(output);
 });
 module.exports = router;
