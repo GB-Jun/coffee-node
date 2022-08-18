@@ -3,6 +3,7 @@ const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
 const upload = require(__dirname + "/../../modules/upload-images");
 const nodemailer = require("nodemailer");
+const moment = require("moment-timezone");
 
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
@@ -152,18 +153,26 @@ router.post('/api/user-verify', async (req, res) => {
 
     const account = req.body.member_account;
 
-    const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
-    const [accountResult] = await db.query(sqlAccount, [account]);
+    const sqlAccount = `SELECT member_account,hash FROM member WHERE member_account = "${account}" `;
+    const [accountResult] = await db.query(sqlAccount);
 
-    const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
-    const [verifyResult] = await db.query(sql);
+    // const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
+    // const [verifyResult] = await db.query(sql);
 
-    if( accountResult.length && verifyResult[0].hash === req.body.verification){
+    // if (accountResult.length>0 && +verifyResult[0].hash === req.body.verification) {
+    //     console.log(驗證);
+    //     const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
+    //     output.success = true;
+    // }
+    // if(isVerify.affectedRows > 0){
+    //     output.verify=1;
+    // }
+
+    const { member_account, verification } = req.body;
+
+    if (accountResult.length>0 && +accountResult[0].hash === +verification) {
+        const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
         output.success = true;
-    }
-    const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
-    if(isVerify.affectedRows > 0){
-        output.verify=1;
     }
     res.json(output);
 });
@@ -197,17 +206,20 @@ router.post('/api/edit-user-list', async (req, res)=>{
         success: false,
         error: '',
     };
-    
-    const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = `UPDATE member SET member_name=?,member_nickname=?,member_birthday=?,member_mobile=?,member_address=?,member_mail=? WHERE member_sid = ${sqlSid}`;
-
     if (!res.locals.loginUser){
         output.error = "沒登入";
         return;
     }
+
+    const sqlSid = `${res.locals.loginUser.sid}`;
+    const sql = `UPDATE member SET member_name=?,member_nickname=?,member_birthday=?,member_mobile=?,member_address=?,member_mail=? WHERE member_sid = ${sqlSid}`;
+
         // console.log(req.body);
         const { member_name, member_nickname, member_birthday,member_mobile,member_address, member_mail } = req.body;
-        const [result] = await db.query(sql, [member_name, member_nickname, member_birthday, member_mobile, member_address, member_mail]);
+        const birthday= moment.parseZone(member_birthday).utcOffset(8).format("YYYY/MM/DD");
+        console.log(birthday);
+
+        const [result] = await db.query(sql, [member_name, member_nickname, birthday, member_mobile, member_address, member_mail]);
 
     // UPDATE之後若成功影響rows，要把編輯完的資料 editResult 回傳給前端
     if(result.affectedRows >= 1 ){
@@ -264,17 +276,21 @@ router.post('/api/edit-password', async (req, res) => {
 
 // --------------------- 上傳頭貼 ---------------------
 router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
+    const output = {
+        success: false,
+        error: '頭貼重複',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = ` UPDATE member SET avatar= ? WHERE member_sid = ${sqlSid} `;
 
     // 有沒有重複？
     const sqlAvatar = ` SELECT avatar FROM member WHERE member_sid = ${sqlSid} `;
     const [[preAvatar]] = await db.query(sqlAvatar, [req.file.filename]);
-
-    const output = {
-        success: false,
-        error: '頭貼重複',
-    };
 
     // console.log(preAvatar.avatar !== req.file.filename);
 
@@ -297,6 +313,15 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
 
 // --------------------- 歷史訂單 ---------------------
 router.get('/api/order-history', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_list`, `order_status` FROM `order` WHERE `order_member_id` = ";
     const orderSql = `${sql}${sqlSid} ORDER BY order_time DESC`
@@ -307,6 +332,15 @@ router.get('/api/order-history', async (req, res) => {
 
 // --------------------- 歷史訂單詳細 ---------------------
 router.get('/api/order-history-detail', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     // sql 用 AS 重命名，讓欄位名稱相同，前端就能一起抓
     const Product = "SELECT `order_sid`, `order_time`, `order_member_id`, `order_price`, `order_id`, `order_discount`, `order_status`, `order_list`, `cart_sid`,`cart_price` AS cartPrice,`cart_quantity` AS quantity,`products_name` AS name,`products_price` AS price, `products_with_products_categories_sid`,`products_pic` AS pic FROM `order` JOIN `cart` ON `order_sid` = `cart_order_id` JOIN `products` ON `products_sid` = `cart_product_id` WHERE `order_member_id` = ";
@@ -330,10 +364,15 @@ router.get('/api/order-history-detail', async (req, res) => {
 // --------------------- 會員收藏 ---------------------
 router.get('/api/member-likes', async (req, res) => {
 
-    // const output = {
-    //     success: false,
-    //     error: '沒有收藏',
-    // };
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
 
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = `SELECT products_sid FROM user_like WHERE member_sid = ${sqlSid}`;
@@ -380,6 +419,15 @@ router.delete('/api/member-delete-likes', async (req, res) => {
 
 // --------------------- 分享記錄 ---------------------
 router.get('/api/posts-history', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} `;
 
@@ -389,8 +437,19 @@ router.get('/api/posts-history', async (req, res) => {
 
 // --------------------- 優惠券 ---------------------
 router.get('/api/coupons', async (req, res) => {
-    const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = `SELECT coupon.coupon_name,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=${sqlSid} AND coupon_receive.status=0 AND coupon_receive.end_time> NOW() `;
+
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
+    // const sqlSid = `${res.locals.loginUser.sid}`;
+    const {sid}=res.locals.loginUser;
+    const sql = `SELECT coupon.coupon_name,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=${sid} AND coupon_receive.status=0 AND coupon_receive.end_time> NOW() `;
 
     const [result] = await db.query(sql);
     res.json(result);
@@ -398,6 +457,15 @@ router.get('/api/coupons', async (req, res) => {
 
 // --------------------- 會員可用點數 ---------------------
 router.get('/api/canUse-points', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     const canUseSql = `SELECT total_points FROM points_user WHERE member_sid=${sqlSid}`;
 
@@ -408,6 +476,15 @@ router.get('/api/canUse-points', async (req, res) => {
 
 // --------------------- 會員累積點數 ---------------------
 router.get('/api/total-points', async (req, res) => {
+    const output = {
+        success: false,
+        error: '',
+    };
+
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
     const sqlSid = `${res.locals.loginUser.sid}`;
     const totalPointsSql = `SELECT member_sid, member_level FROM member WHERE member_sid=${sqlSid}`;
 

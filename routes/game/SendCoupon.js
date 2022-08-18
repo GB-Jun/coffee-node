@@ -67,6 +67,7 @@ router.get('/api-lottery-result', async (req, res)=>{
             output.lotteryResult.sid
         ]);
     }
+    console.log(output.lotteryResult.sid);
     res.json(output);
 });
 
