@@ -1,18 +1,24 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-18 10:48:55
+-- 產生時間： 2022-08-18 11:48:49
 -- 伺服器版本： 10.4.24-MariaDB
--- PHP 版本： 8.0.19
+-- PHP 版本： 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- 資料庫： `coffee`
+-- 資料庫: `coffee`
 --
 
 -- --------------------------------------------------------
@@ -69,7 +75,8 @@ INSERT INTO `cart` (`cart_sid`, `cart_product_id`, `cart_price`, `cart_quantity`
 (78, 13, 170, 1, 1, 18),
 (79, 17, 170, 1, 1, 18),
 (80, 22, 630, 4, 1, 18),
-(81, 86, 1990, 1, 1, 19);
+(81, 86, 1990, 1, 1, 19),
+(82, 1, 370, 4, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -117,9 +124,9 @@ INSERT INTO `coupon` (`sid`, `coupon_name`, `coupon_send_type`, `coupon_setting_
 (5, '義式摩卡75折', '3 玩遊戲時發送', '2 打折', '0.75', 9, 0, '1餐點類', '12', '1'),
 (6, '耶加雪菲75折', '3 玩遊戲時發送', '2 打折', '0.75', 17, 0, '1餐點類', '12', '1'),
 (7, '宇治奶茶8折', '3 玩遊戲時發送', '2 打折', '0.8', 20, 0, '1餐點類', '12', '1'),
-(8, '精選曼巴咖啡組8折', '3 玩遊戲時發送', '2 打折', '0.8', 0, 1, '2 商品類', '12', '1'),
-(9, '黃金曼特寧組9折', '3 玩遊戲時發送', '2 打折', '0.8', 0, 3, '2 商品類', '12', '1'),
-(10, '購物優惠券9折', '4 購物完發送', '2 打折', '0.8', 0, 0, '3 全品項', '12', '0'),
+(8, '曼巴(十包一入)8折', '3 玩遊戲時發送', '2 打折', '0.8', 0, 9, '2 商品類', '12', '1'),
+(9, '征服者(十包一入)9折', '3 玩遊戲時發送', '2 打折', '0.9', 0, 3, '2 商品類', '12', '1'),
+(10, '購物優惠券9折', '4 購物完發送', '2 打折', '0.9', 0, 0, '3 全品項', '12', '0'),
 (12, '焦糖瑪奇朵折30元', '3', '1', '30', 2, NULL, '1', '12', '1');
 
 -- --------------------------------------------------------
@@ -1817,7 +1824,7 @@ ALTER TABLE `admin`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `cart_sid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
@@ -1841,7 +1848,7 @@ ALTER TABLE `coupon_logs`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `coupon_receive`
 --
 ALTER TABLE `coupon_receive`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course`
@@ -2017,3 +2024,7 @@ ALTER TABLE `tag`
 ALTER TABLE `user_like`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
