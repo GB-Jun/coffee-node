@@ -726,7 +726,7 @@ router.get("/detail/api", async (req, res) => {
             const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
             const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
             console.log(result[0].ice);
-            console.log(result[0].ice === 0 ? "" : `(${item.ice})` );
+            console.log(result[0].ice === 0 ? "" : `(${item.ice})`);
             if (result.length >= 1) {
                 result.forEach(item => {
                     item.ice = iceTable[item.ice];
