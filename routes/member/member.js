@@ -97,7 +97,8 @@ const transporter = nodemailer.createTransport({
 router.post('/api/sign-up', async (req, res) => {
 
     // 產生隨機六位數
-    const hashRandom = Math.floor(100000 + Math.random() * 900000);
+    // const hashRandom = Math.floor(100000 + Math.random() * 900000);
+    const hashRandom = 968558;
 
     const output = {
         success: false,
@@ -246,9 +247,12 @@ router.post('/api/edit-password', async (req, res) => {
         success: false,
         error: '',
     };
+    if (!res.locals.loginUser){
+        output.error = "沒登入";
+        return;
+    }
 
     const sqlSid = `${res.locals.loginUser.sid}`;
-    console.log(res.locals.loginUser.sid);
 
     const sql = ` SELECT member_password FROM member WHERE member_sid = ${sqlSid} `;
     const [result] = await db.query(sql);
@@ -366,7 +370,7 @@ router.get('/api/member-likes', async (req, res) => {
 
     const output = {
         success: false,
-        error: '',
+        error: '沒有收藏',
     };
 
     if (!res.locals.loginUser){
