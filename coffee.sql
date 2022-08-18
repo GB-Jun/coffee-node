@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-18 10:26:17
+-- 產生時間： 2022-08-18 10:44:10
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.0.19
 
@@ -808,7 +808,8 @@ INSERT INTO `post` (`sid`, `title`, `content`, `member_nickname`, `member_sid`, 
 (180, '幽靈拉花', '幽靈拉花很適合初學者來練習，難度適中不會太難，做完很有成就感！', '阿明', 1, 0, 0, 1, '2022-08-18 14:13:11', NULL, 0),
 (181, '分享好喝的咖啡', '環境文青舒適，飲品有特色，咖啡好喝！', '阿明', 1, 0, 0, 2, '2022-08-18 16:12:01', NULL, 0),
 (182, '分享高質感咖啡廳', '應入眼簾的大落地窗與極簡的裝潢是給我的第一印象，內部偏冷灰的色調及拋光水泥地板呈現一種極簡感。入座點了一杯招牌的拿鐵歐蕾，綿密奶泡正是我喜歡的味道', '阿明', 1, 0, 0, 2, '2022-08-18 16:16:03', NULL, 0),
-(183, '輕食好吃', '路過會忍不住回頭的美感咖啡廳，落地窗採光超好，在台北居然有不用低消的咖啡廳好佛心！輕食好吃、咖啡好喝', '阿明', 1, 0, 0, 2, '2022-08-18 16:20:48', NULL, 0);
+(183, '輕食好吃', '路過會忍不住回頭的美感咖啡廳，落地窗採光超好，在台北居然有不用低消的咖啡廳好佛心！輕食好吃、咖啡好喝', '阿明', 1, 0, 0, 2, '2022-08-18 16:20:48', NULL, 0),
+(184, '厲害的咖啡', '平日下午去訪氣氛很好，適合聊天，環境空間明亮舒服，價格也不會太貴，推推！！！', '阿明', 1, 0, 0, 3, '2022-08-18 16:43:09', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -831,7 +832,8 @@ INSERT INTO `post_img` (`sid`, `img_name`, `post_sid`, `sort`) VALUES
 (751, 'p20220818-785b06e1-1861-473e-b17b-b20622927010.png', 180, 1),
 (752, 'p20220818-0dd963e4-c993-482d-a989-0ab0804ef33b.png', 181, 1),
 (753, 'p20220818-bde3b7a3-e62d-4cd4-82fd-74b704a5cb11.png', 182, 1),
-(754, 'p20220818-91c251e6-965d-4b52-b28b-903d2e7d0390.png', 183, 1);
+(754, 'p20220818-91c251e6-965d-4b52-b28b-903d2e7d0390.png', 183, 1),
+(755, 'p20220818-14e5aec3-6ee8-4432-8dc8-27b5cc107df9.png', 184, 1);
 
 -- --------------------------------------------------------
 
@@ -854,7 +856,8 @@ INSERT INTO `post_tag` (`sid`, `post_sid`, `tag_sid`) VALUES
 (80, 181, 34),
 (81, 182, 33),
 (82, 183, 33),
-(83, 183, 37);
+(83, 183, 37),
+(84, 184, 33);
 
 -- --------------------------------------------------------
 
@@ -1552,7 +1555,7 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`sid`, `name`, `times`) VALUES
-(33, '咖啡', 3),
+(33, '咖啡', 4),
 (34, '好喝', 1),
 (37, '輕食', 1);
 
@@ -1928,19 +1931,19 @@ ALTER TABLE `points_user`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post`
 --
 ALTER TABLE `post`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_img`
 --
 ALTER TABLE `post_img`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=751;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=756;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_tag`
 --
 ALTER TABLE `post_tag`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products`
@@ -2006,7 +2009,7 @@ ALTER TABLE `store`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_like`
