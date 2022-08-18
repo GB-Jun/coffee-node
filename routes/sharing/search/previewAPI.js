@@ -16,7 +16,6 @@ router.get("", async (req, res) => {
         return
     }
 
-
     if (type === "tag") {
         output.rows = [...output.rows, ...await getTagData(queryString)];
         output.totalRows = output.rows.length;
@@ -49,8 +48,12 @@ const getTitleData = async (q) => {
     ${ORDER} ${LIMIT};
     `;
 
-    const [r] = await db.query(sql);
-    return r;
+    try {
+        const [r] = await db.query(sql);
+        return r;
+    } catch (error) {
+        return;
+    }
 }
 
 const getNicknameData = async (q) => {
@@ -72,9 +75,12 @@ const getNicknameData = async (q) => {
     ORDER BY post_quantity DESC ${LIMIT};
     `;
 
-
-    const [r] = await db.query(sql);
-    return r;
+    try {
+        const [r] = await db.query(sql);
+        return r;
+    } catch (error) {
+        return;
+    }
 };
 
 
@@ -85,12 +91,13 @@ const getTagData = async (q) => {
     const sql = `
     SELECT 'tag' AS type, t.* FROM tag t WHERE ${WHERE} ORDER BY times DESC ${LIMIT};`;
 
-
-    const [r] = await db.query(sql);
-    return r;
+    try {
+        const [r] = await db.query(sql);
+        return r;
+    } catch (error) {
+        return;
+    }
 };
-
-
 
 
 

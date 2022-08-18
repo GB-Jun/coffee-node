@@ -68,7 +68,6 @@ const getListHandler = async (req, res) => {
             ${LIMIT};
         `;
         [op.rows] = await db.query(sql);
-        console.log(op.rows);
 
 
         for (let row of op.rows) {

@@ -10,9 +10,13 @@ router.get("/", async (req, res) => {
     ORDER BY times 
     DESC LIMIT ${limit || 3};`
 
-    const [r] = await db.query(sql);
+    try {
+        const [r] = await db.query(sql);
+        res.json(r)
+    } catch (error) {
+        res.json([]);
+    }
 
-    res.json(r)
 });
 
 module.exports = router;

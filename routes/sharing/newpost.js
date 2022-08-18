@@ -85,9 +85,6 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
             db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
         }
 
-
-
-
         res.json(photo_r);
 
     } catch (error) {
