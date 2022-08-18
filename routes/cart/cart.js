@@ -578,6 +578,13 @@ router.post("/check/api", async (req, res) => {
         const sqlCartFormat = sqlstring.format(sql, [orderOutput.insertId, sid]);
         queryArray.push(db.query(sqlCartFormat));
 
+        const sqlLevel = `
+            UPDATE member SET member_level = member_level + ? WHERE member_sid = ?;
+        `;
+        const sqlLevelFormat = sqlstring.format(sqlLevel, [finalPrice / 10, sid]);
+        console.log(sqlLevelFormat);
+        queryArray.push(db.query(sqlLevelFormat));
+
         /*
             寫入order後的output結構
             const orderOutput = { insertId: -1, success: false, time: "" };
@@ -725,8 +732,8 @@ router.get("/detail/api", async (req, res) => {
             sugarRaw.unshift({ id: 0, name: "" });
             const iceTable = _.chain(iceRaw).keyBy("id").mapValues("name").value();
             const sugarTable = _.chain(sugarRaw).keyBy("id").mapValues("name").value();
-            console.log(result[0].ice);
-            console.log(result[0].ice === 0 ? "" : `(${item.ice})` );
+            // console.log(result[0].ice);
+            // console.log(result[0].ice === 0 ? "" : `(${item.ice})` );
             if (result.length >= 1) {
                 result.forEach(item => {
                     item.ice = iceTable[item.ice];
