@@ -152,18 +152,26 @@ router.post('/api/user-verify', async (req, res) => {
 
     const account = req.body.member_account;
 
-    const sqlAccount = "SELECT `member_account` FROM `member` WHERE `member_account` = ? ";
-    const [accountResult] = await db.query(sqlAccount, [account]);
+    const sqlAccount = `SELECT member_account,hash FROM member WHERE member_account = "${account}" `;
+    const [accountResult] = await db.query(sqlAccount);
 
-    const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
-    const [verifyResult] = await db.query(sql);
+    // const sql = `SELECT hash FROM member WHERE member_account= "${account}"`;
+    // const [verifyResult] = await db.query(sql);
 
-    if( accountResult.length && verifyResult[0].hash === req.body.verification){
+    // if (accountResult.length>0 && +verifyResult[0].hash === req.body.verification) {
+    //     console.log(驗證);
+    //     const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
+    //     output.success = true;
+    // }
+    // if(isVerify.affectedRows > 0){
+    //     output.verify=1;
+    // }
+
+    const { member_account, verification } = req.body;
+
+    if (accountResult.length>0 && +accountResult[0].hash === +verification) {
+        const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
         output.success = true;
-    }
-    const [isVerify] = await db.query(`UPDATE member SET verify=1 WHERE member_account= "${account}"`);
-    if(isVerify.affectedRows > 0){
-        output.verify=1;
     }
     res.json(output);
 });
@@ -389,8 +397,9 @@ router.get('/api/posts-history', async (req, res) => {
 
 // --------------------- 優惠券 ---------------------
 router.get('/api/coupons', async (req, res) => {
-    const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = `SELECT coupon.coupon_name,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=${sqlSid} AND coupon_receive.status=0 AND coupon_receive.end_time> NOW() `;
+    // const sqlSid = `${res.locals.loginUser.sid}`;
+    const {sid}=res.locals.loginUser;
+    const sql = `SELECT coupon.coupon_name,coupon_receive.member_sid FROM coupon_receive JOIN coupon ON coupon_receive.coupon_sid=coupon.sid LEFT JOIN coupon_logs ON coupon_receive.sid=coupon_logs.coupon_receive_sid JOIN member ON coupon_receive.member_sid=member.member_sid WHERE coupon_receive.member_sid=${sid} AND coupon_receive.status=0 AND coupon_receive.end_time> NOW() `;
 
     const [result] = await db.query(sql);
     res.json(result);
