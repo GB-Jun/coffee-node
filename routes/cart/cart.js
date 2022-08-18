@@ -581,8 +581,8 @@ router.post("/check/api", async (req, res) => {
         const sqlLevel = `
             UPDATE member SET member_level = member_level + ? WHERE member_sid = ?;
         `;
-        const sqlLevelFormat = sqlstring.format(sqlLevel, [finalPrice / 10, sid]);
-        console.log(sqlLevelFormat);
+        const sqlLevelFormat = sqlstring.format(sqlLevel, [Math.floor(finalPrice / 10), sid]);
+        // console.log(sqlLevelFormat);
         queryArray.push(db.query(sqlLevelFormat));
 
         /*
