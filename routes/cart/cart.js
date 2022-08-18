@@ -59,6 +59,7 @@ router.get("/read_product/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -112,6 +113,7 @@ router.put("/read_product/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -156,6 +158,7 @@ router.delete("/read_product/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -239,6 +242,7 @@ router.get("/read_food/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -292,6 +296,7 @@ router.put("/read_food/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -336,6 +341,7 @@ router.delete("/read_food/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -391,6 +397,7 @@ router.get("/product_coupon/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -446,6 +453,7 @@ router.get("/food_coupon/api", async (req, res) => {
         res.json(result);
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -490,6 +498,7 @@ router.post("/check/api", async (req, res) => {
         const [[{ maxOrder }]] = await db.query(newestOrdersql)
         insertOrderId = +maxOrder + 1;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -546,6 +555,7 @@ router.post("/check/api", async (req, res) => {
             orderOutput.success = true;
         }
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -601,6 +611,7 @@ router.post("/check/api", async (req, res) => {
             res.json(orderOutput);
             return;
         } catch (error) {
+            console.log(error);
             res.status(500).send({
                 error: {
                     status: 500,
@@ -662,6 +673,7 @@ router.get("/detail/api", async (req, res) => {
         output.price = result.price;
         output.list = result.list;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -675,7 +687,7 @@ router.get("/detail/api", async (req, res) => {
         SELECT
             cart_sid AS 'id',
             cart_quantity AS 'quantity',
-            products.products_name AS 'name',
+            products.products_name AS 'name'
         FROM cart
         JOIN products ON cart_product_id = products.products_sid
         WHERE cart_member_id = ? AND cart_order_id = ?;
@@ -728,6 +740,7 @@ router.get("/detail/api", async (req, res) => {
             console.log(result);
         }
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
@@ -781,6 +794,7 @@ router.get("/cart_count/api", async (req, res) => {
         res.json({ cartTotalCount });
         return;
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,
