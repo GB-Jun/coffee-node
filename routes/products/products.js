@@ -19,6 +19,7 @@ const getListHandler = async (req, res) => {
         search: "",
         showTest: "",
         sid: 0,
+        ptag: []
     };
 
     let page = +req.query.page || 1;
@@ -66,6 +67,10 @@ const getListHandler = async (req, res) => {
         const totoalDataSql = `SELECT * FROM products AS p WHERE products_forsale > 0 ORDER BY products_with_products_categories_sid ASC, products_sid`;
         const [resultTotal] = await db.query(totoalDataSql);
         output.totalData = resultTotal;
+
+        const tagsql = `SELECT p.products_sid, p.products_name, f.products_sid, f.products_style_sid, s.products_style_filter_sid, s.products_style_filter_categories FROM products AS p JOIN products_filter AS f ON p.products_sid = f.products_sid JOIN products_style_filter AS s ON f.products_style_sid = s.products_style_filter_sid WHERE p.products_forsale > 0 ORDER BY p.products_sid ASC`;
+        const [resultTag] = await db.query(tagsql);
+        output.ptag = resultTag
     }
 
     output.code = 200;
@@ -155,13 +160,13 @@ const sendCartData = async (req, res) => {
             req.body.quantity,
             req.body.member.sid,
         ]);
-    // console.log({
-    //     sid: req.params.sid,
-    //     price: req.body.products_price,
-    //     quantity: req.body.quantity,
-    //     membersid: req.body.member.sid,
-    // });
-    output.query = insertSql;
+        // console.log({
+        //     sid: req.params.sid,
+        //     price: req.body.products_price,
+        //     quantity: req.body.quantity,
+        //     membersid: req.body.member.sid,
+        // });
+        output.query = insertSql;
     }
 
     return output;
@@ -201,6 +206,26 @@ const deleteUserLike = async (req, res) => {
 
     return output;
 };
+
+const getProductstag = async (req, res) => {
+    output = {
+        reqData: {},
+    };
+    const getTagSql = `SELECT * FROM products`;
+};
+
+// const tagprice = async (req, res) => {
+//     output = {
+//         query: {},
+//     };
+//     for (i = 3; i < 201; i++) {
+//         const tagsql = `INSERT INTO products_filter (products_filter_sid, products_sid, products_style_sid) VALUES (NULL, ?, '10')`;
+//         await db.query(tagsql, [i]);
+//         output.query += `${i}`;
+//     }
+//     console.log(output);
+//     return output;
+// };
 
 //----------------------------------------------------------------------------------
 
@@ -256,6 +281,18 @@ router.post("/api/delUserLike/:sid", async (req, res) => {
     output.payload = res.locals.payload;
     res.json(output);
 });
+
+router.get("/api/getProductstag", async (req, res) => {
+    const output = await getProductstag(req, res);
+    output.payload = res.locals.payload;
+    res.json(output);
+});
+
+// router.get("/api/secrect", async (req, res) => {
+//     const output = await tagprice(req, res);
+//     output.payload = res.locals.payload;
+//     res.json(output);
+// });
 
 //------------------------------------------------------------------------
 
