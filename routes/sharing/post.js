@@ -20,6 +20,10 @@ router.get("/", async (req, res) => {
 
 const getListHandler = async (req, res) => {
     const { title, tag, member_sid, times, auth = 0 } = req.query;
+    let likedSELECT = ""
+    if (auth) {
+        likedSELECT = " (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = 1) liked, ";
+    }
     const rowsPerPage = 20;
     const op = {
         success: false,
@@ -44,16 +48,16 @@ const getListHandler = async (req, res) => {
 
     if (totalRows) {
         //  ORDER BY like - weekDif* 0~10 DESC
-        const ORDER_BY = ` ORDER BY (p.likes-weekdiff*${randNum}) DESC,p.updated_at DESC`
+        const ORDER_BY = ` ORDER BY (p.likes - weekdiff * ${randNum}) DESC,p.updated_at DESC`
         const LIMIT = `LIMIT ${(op.query.times % totalPage) * rowsPerPage},${rowsPerPage}`;
-        
+
         let WHERE = "";
         title ? WHERE += `p.title LIKE ${'%' + db.escape(title) + '%'} AND` : WHERE += "1 AND";
         member_sid ? WHERE += ` p.member_sid = ${member_sid} AND` : WHERE += "";
 
 
         const sql = `
-            SELECT p.* ,pi.img_name ,pi.sort,m.avatar,${WEEK_DIFF}
+            SELECT ${likedSELECT} p.* ,pi.img_name ,pi.sort,m.avatar,${WEEK_DIFF}
             FROM \`post\` p 
             LEFT JOIN \`post_img\` pi 
             ON p.sid = pi.post_sid 
@@ -63,8 +67,8 @@ const getListHandler = async (req, res) => {
             ${ORDER_BY}
             ${LIMIT};
         `;
-
         [op.rows] = await db.query(sql);
+        console.log(op.rows);
 
 
         for (let row of op.rows) {
@@ -96,5 +100,9 @@ const getPostTags = async (sid) => {
 
     return tagsNameArr;
 }
+
+const didMemberLiked = async (sid) => {
+
+};
 
 module.exports = router;

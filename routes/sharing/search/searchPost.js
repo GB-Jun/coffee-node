@@ -4,7 +4,11 @@ const db = require(__dirname + "/../../../modules/mysql-connect");
 const rowsPerPage = 20;
 const ORDER_BY = "ORDER BY p.created_at DESC";
 
-
+// TODO:    let likedSELECT = ""
+    // if (auth) {
+    //     likedSELECT = " (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = 1) liked, ";
+    // }
+    
 router.get("/", async (req, res) => {
     const { type, q } = req.query;
     if (!q || q.trim().length === 0) {
@@ -28,6 +32,7 @@ router.get("/", async (req, res) => {
 
     res.json(output);
 });
+
 const getListById = async (req, res) => {
     const { q = 0, times, type } = req.query;
 
