@@ -54,42 +54,43 @@ router.post("/", upload.none(), async (req, res) => {
         return;
     }
 
+    const getOldSql = `SELECT tag_sid FROM post_tag pt WHERE post_sid = ?`;
+    const sql = "UPDATE post SET title = ?, content = ?, topic_sid = ?, updated_at = NOW() WHERE sid = ?;";
+    // delete post_tag, update tag.times --, upsert tag
+    const DELETE_SQL = "DELETE FROM post_tag WHERE post_sid = ?";
+    const UPDATE_SQL = "UPDATE tag SET times = times - 1 WHERE sid = ?";
+    const UPSERT_SQL = "INSERT INTO tag (name) VALUES (?) ON DUPLICATE KEY UPDATE times = times + 1;"
 
-
-
-
-    const sql = `
-    UPDATE post SET title = ?, content = ?, topic_sid = ? WHERE sid = ?;
-    `;
-
-    const deleteTag = `DELETE FROM post_tag WHERE post_sid = ?`;
 
     try {
         const [r] = await db.query(sql, [title.trim(), content.trim(), topic_sid, post_sid]);
+        const [old] = await db.query(getOldSql, [post_sid]);
 
-        console.log(r.changedRows);
-        if (r.changedRows < 1) {
-            res.json(r);
-        } else {
-            await db.query("UPDATE post SET updated_at = NOW() WHERE sid = ?;", [post_sid])
+        for (let i = 0; i < old.length; i++) {
+            const v = old[i].tag_sid;
+            await db.query(UPDATE_SQL, [v]);
         }
 
-        return;
-        // for (let i = 0; i < tagArray.length; i++) {
-        //     const name = tagArray[i].trim();
+        await db.query(DELETE_SQL, post_sid);
 
-        //     // UPSERT tag by tag.name
-        //     const UPSERT_SQL = `INSERT INTO tag (name) VALUES (?) ON DUPLICATE KEY UPDATE times = times + 1;`
-        //     const [r] = await db.query(UPSERT_SQL, [name]);
 
-        //     const tag_sid = r.insertId;
-        //     // INSERT post_tag by post_sid,tag insertId
-        //     db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
-        // }
+        for (let i = 0; i < tagArray.length; i++) {
+            const name = tagArray[i].trim();
+            console.log(name);
+
+            // Tag times--
+
+            // INSERT post_tag by post_sid,tag insertId
+            const [r] = await db.query(UPSERT_SQL, [name]);
+            const tag_sid = r.insertId;
+
+            db.query("INSERT INTO `post_tag` (`post_sid`, `tag_sid`) VALUES (?, ?)", [post_sid, tag_sid]);
+        }
 
         res.json(r);
 
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: {
                 status: 500,

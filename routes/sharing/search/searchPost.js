@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const db = require(__dirname + "/../../../modules/mysql-connect");
@@ -15,11 +14,6 @@ router.get("/", async (req, res) => {
 
     let output = {}
     if (type === "nickname" || type === "title" || type === "tag" || type === "member_like") {
-        if (isNaN(q)) {
-            res.json({ success: false, msg: "q is NaN" });
-            return
-        };
-
         output = { ...(await getListById(req, res)) };
 
     } else {
@@ -172,9 +166,9 @@ const getListById = async (req, res) => {
                 [op.rows] = await db.query(titleSql, [q]);
             }
         } catch (error) {
+            console.log(error);
             op.error = error;
-            res.json(op);
-            return
+            return op
         }
 
 
@@ -264,7 +258,7 @@ const getListHandler = async (req, res) => {
         WHERE p.member_nickname LIKE ${WHERE} OR p.title LIKE ${WHERE} AND pi.sort = 1 AND p.delete_state = 0
         GROUP BY p.sid 
         UNION
-        SELECT p.*, pi.img_name, pi.sort, m.avatar,
+        SELECT  ${likedSELECT} p.*, pi.img_name, pi.sort, m.avatar,
         (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid= ?) everlike
         FROM post p 
         LEFT JOIN post_tag pt 
@@ -284,7 +278,6 @@ const getListHandler = async (req, res) => {
             [op.rows] = await db.query(sql, [q, q]);
         } catch (error) {
             op.error = error;
-            res.json(op);
             return
         }
 
