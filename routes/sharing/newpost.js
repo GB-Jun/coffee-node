@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require(__dirname + "/../../modules/mysql-connect");
-const upload = require(__dirname + "/../../modules/sharing-upload")
+const upload = require(__dirname + "/../../modules/sharing-upload");
 
 
 router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, res) => {
