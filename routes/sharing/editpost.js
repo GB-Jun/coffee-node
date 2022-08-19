@@ -67,7 +67,7 @@ router.post("/", upload.none(), async (req, res) => {
     try {
         const [r] = await db.query(sql, [title.trim(), content.trim(), topic_sid, post_sid]);
 
-        console.log(r.changedRows);
+        // console.log(r.changedRows);
         if (r.changedRows < 1) {
             res.json(r);
         } else {

@@ -744,7 +744,7 @@ router.get("/detail/api", async (req, res) => {
                 })
             }
             output.rawData = result;
-            console.log(result);
+            // console.log(result);
         }
     } catch (error) {
         console.log(error);
