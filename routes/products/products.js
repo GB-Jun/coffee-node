@@ -207,12 +207,6 @@ const deleteUserLike = async (req, res) => {
     return output;
 };
 
-const getProductstag = async (req, res) => {
-    output = {
-        reqData: {},
-    };
-    const getTagSql = `SELECT * FROM products`;
-};
 
 // const tagprice = async (req, res) => {
 //     output = {
@@ -278,12 +272,6 @@ router.post("/api/userLike/:sid", async (req, res) => {
 
 router.post("/api/delUserLike/:sid", async (req, res) => {
     const output = await deleteUserLike(req, res);
-    output.payload = res.locals.payload;
-    res.json(output);
-});
-
-router.get("/api/getProductstag", async (req, res) => {
-    const output = await getProductstag(req, res);
     output.payload = res.locals.payload;
     res.json(output);
 });
