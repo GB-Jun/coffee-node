@@ -24,7 +24,7 @@ const getListHandler = async (req, res)=>{
     }
     const { sid } = res.locals.loginUser;
     output.member_sid=sid;
-    console.log(output.member_sid);
+    // console.log(output.member_sid);
     const sql=`SELECT sid,coupon_name FROM coupon WHERE coupon_status =1`;
     const [r] = await db.query(sql);
     output.rows = r;
@@ -67,7 +67,7 @@ router.get('/api-lottery-result', async (req, res)=>{
             output.lotteryResult.sid
         ]);
     }
-    console.log(output.lotteryResult.sid);
+    // console.log(output.lotteryResult.sid);
     res.json(output);
 });
 

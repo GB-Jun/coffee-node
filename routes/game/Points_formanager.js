@@ -22,7 +22,7 @@ const getListHandler = async (req, res)=>{
 
     const sql=`SELECT points_user.total_points,points_user.voucher_amount,member.member_sid,member.member_account FROM points_user JOIN member ON points_user.member_sid=member.member_sid ${where}`;
 
-    console.log(sql)
+    // console.log(sql)
 
     const [r] = await db.query(sql);
 

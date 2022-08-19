@@ -84,7 +84,7 @@ const sendCartData = async (req, res) => {
     const cartDataSql = `SELECT food_id FROM food_choice WHERE food_member_id = ${req.body.member.sid} AND food_order_id = 0`;
     const cartData = await db.query(cartDataSql);
     output.cartDataRows = cartData;
-    console.log(output.cartDataRows[0]);
+    // console.log(output.cartDataRows[0]);
 
     if (output.cartDataRows[0].map((v, i) => {
         return v.cart_product_id;

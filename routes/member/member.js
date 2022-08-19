@@ -34,7 +34,7 @@ router.post('/api/login', upload.none(), async(req, res) => {
 
     // 比對密碼
     output.success = bcrypt.compareSync(req.body.member_password,result[0].member_password);
-    console.log(bcrypt.compareSync(req.body.member_password,result[0].member_password));
+    // console.log(bcrypt.compareSync(req.body.member_password,result[0].member_password));
     
     if (!output.success) {
         // 密碼錯誤
@@ -114,7 +114,7 @@ router.post('/api/sign-up', async (req, res) => {
 
     // 比對有沒有資料庫裡的帳號
     if ( result2.length>0) {
-        console.log(result2);
+        // console.log(result2);
         output.error = "註冊失敗";
         return res.json(output);
     }
@@ -136,7 +136,7 @@ router.post('/api/sign-up', async (req, res) => {
             subject: '來拎+B註冊驗證信，歡迎您的加入！',
             html: `<h4 style="display:inline-block">您的驗證碼為：</h4><h1 style="display:inline-block">${hashRandom}</h1>`,
         }).then(() => {
-            console.log(hashRandom);
+            // console.log(hashRandom);
         }).catch();
 
         return res.json(output);
@@ -218,7 +218,7 @@ router.post('/api/edit-user-list', async (req, res)=>{
         // console.log(req.body);
         const { member_name, member_nickname, member_birthday,member_mobile,member_address, member_mail } = req.body;
         const birthday= moment.parseZone(member_birthday).utcOffset(8).format("YYYY/MM/DD");
-        console.log(birthday);
+        // console.log(birthday);
 
         const [result] = await db.query(sql, [member_name, member_nickname, birthday, member_mobile, member_address, member_mail]);
 
@@ -230,7 +230,7 @@ router.post('/api/edit-user-list', async (req, res)=>{
     
         const [[editResult]] = await db.query(getUserList);
     
-        console.log(editResult);
+        // console.log(editResult);
         output.success = "true";
         output.data = editResult;
         res.json(output);
@@ -261,7 +261,7 @@ router.post('/api/edit-password', async (req, res) => {
 
     const password = bcrypt.compareSync(req.body.member_password,result[0].member_password);
     output.success = password;
-    console.log(password);
+    // console.log(password);
 
     if( !output.success ){
         output.passError = '舊密碼錯誤';
@@ -299,17 +299,17 @@ router.post('/api/avatar-upload', upload.single('avatar'), async(req, res) => {
     // console.log(preAvatar.avatar !== req.file.filename);
 
     if( preAvatar.avatar == req.file.filename ){
-        console.log(preAvatar.avatar);
-        console.log(req.file.filename);
+        // console.log(preAvatar.avatar);
+        // console.log(req.file.filename);
         res.json(output);
-        console.log(1);
+        // console.log(1);
     }else{
         const [avatarResult] =  await db.query(sql, [req.file.filename]);
         if(avatarResult.affectedRows >= 1){
             output.success = true;
         }
         res.json(output);
-        console.log(2);
+        // console.log(2);
     }
 
     // console.log(req.file); // 存到 public的avatar資料夾裡拿到的檔名會是req.file.filename
@@ -398,7 +398,7 @@ router.get('/api/member-likes', async (req, res) => {
 
     const [results2] = await db.query(sql2);
 
-    console.log(results2);
+    // console.log(results2);
 
     res.json(results2);
 });

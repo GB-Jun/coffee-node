@@ -97,7 +97,7 @@ const editHandler = async (req, res)=>{
         coupon_status:[],
         sid:req.query.sid
     };
-    console.log(req.params.sid);
+    // console.log(req.params.sid);
     const coupon_send_type = ["生日時發送","註冊時發送","玩遊戲時發送","購物完發送"];
     const coupon_setting_type=["折扣金額","打折"];
 
@@ -149,7 +149,7 @@ router.delete("/", async (req, res) => {
     const sql = "DELETE FROM `coupon` WHERE `sid`=?";
     await db.query(sql, [req.query.sid]);
     res.json(await getListHandler(req, res));
-    console.log(req.query);
+    // console.log(req.query);
 });
 
 

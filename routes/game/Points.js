@@ -31,7 +31,7 @@ const getListHandler = async (req, res)=>{
     output.member_sid=sid;
     let page = +req.query.page || 1;
     let type = +req.query.type || 1;
-    console.log(req.query.type);
+    // console.log(req.query.type);
 
     if(page<1) {
         output.code = 410;

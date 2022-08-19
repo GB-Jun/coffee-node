@@ -71,13 +71,13 @@
 
         const dataObj = {};
         for (let i of fd.entries()) {
-            console.log(i);
+            // console.log(i);
             dataObj[i[0]] = i[1];
         }
-        console.log(dataObj);
+        // console.log(dataObj);
 
         const usp = new URLSearchParams(fd);
-        console.log(usp.toString());
+        // console.log(usp.toString());
 
         // const Joi = joi;
         // const schema = Joi.object({
@@ -125,7 +125,7 @@
         })
             .then((r) => r.json())
             .then((obj) => {
-                console.log(obj);
+                // console.log(obj);
             });
     }
 </script>

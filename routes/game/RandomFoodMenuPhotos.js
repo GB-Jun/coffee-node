@@ -21,9 +21,9 @@ const RandomFoodMenuPhotosHandler = async (req, res)=>{
     let FoodPhotosRand =Math.floor(Math.random()*FoodPhotosArray.length);
     output.RandomResult =FoodPhotosArray[FoodPhotosRand];
     output = {...output};
-    console.log(rows)
-    console.log(1234)
-    console.log(output.RandomResult);
+    // console.log(rows)
+    // console.log(1234)
+    // console.log(output.RandomResult);
     return output;
 };
 
