@@ -6,9 +6,10 @@ const uploads = require(__dirname + "/../../modules/upload-images");
 
 
 // Post
+router.use('/post/:post_sid/edit', require('./editpost.js'));
 router.use('/post/:post_sid', require('./postModified'));
-router.use('/post', require('./post'));
 router.use('/post/new', require('./newpost'));
+router.use('/post', require('./post'));
 // Search
 router.use('/search/previewAPI', require('./search/previewAPI'));
 router.use('/search/popTag', require('./search/popTag'));
