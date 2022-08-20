@@ -32,7 +32,7 @@ router.post('/send_mail', async (req, res) => {
 
     const { selectItem, people, checkedDate, mail, name } = req.body;
     transporter.sendMail({
-        from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+        from: '"來拎嘎逼" <cafemfee26@gmail.com>',
         to: `${mail}`,
         subject: '【來拎+B-訂位成功信】',
         html: ` <div style="width:400px;text-align:center;margin: 60px;">
