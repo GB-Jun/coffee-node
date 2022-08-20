@@ -131,7 +131,7 @@ router.post('/api/sign-up', async (req, res) => {
         output.success = true;
 
         transporter.sendMail({
-            from: '"來拎嘎逼" <mfee26Coffee@gmail.com>',
+            from: '"來拎嘎逼" <cafemfee26@gmail.com>',
             to: `${member_mail}`,
             subject: '來拎+B註冊驗證信，歡迎您的加入！',
             html: `<h4 style="display:inline-block">您的驗證碼為：</h4><h1 style="display:inline-block">${hashRandom}</h1>`,
