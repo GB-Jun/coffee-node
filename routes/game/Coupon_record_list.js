@@ -114,8 +114,8 @@ const editHandler = async (req, res)=>{
     const coupon_status=["不開放","開放"];
 
     editoutput={...editoutput,coupon_send_type,coupon_setting_type,t_type,coupon_validity_period,coupon_status};
-    console.log(coupon_status);
-    console.log(2223456);
+    // console.log(coupon_status);
+    // console.log(2223456);
     return editoutput;
 
     

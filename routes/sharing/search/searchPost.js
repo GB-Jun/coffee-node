@@ -25,10 +25,10 @@ router.get("/", async (req, res) => {
 });
 
 const getListById = async (req, res) => {
-    const { q = 0, times, type, auth } = req.query;
+    const { q = 0, times, type, auth = 0 } = req.query;
     let likedSELECT = "";
     if (auth) {
-        likedSELECT = " (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = 1) liked,";
+        likedSELECT = ` (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = ${auth}) liked,`;
     }
 
     const op = {

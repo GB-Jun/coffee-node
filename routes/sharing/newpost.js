@@ -18,8 +18,8 @@ router.post("/", upload.fields([{ name: "photos", maxCount: 5 }]), async (req, r
     const { sid, nickname } = res.locals.loginUser;
     const { title, content: c, topic_sid, myTag } = req.body;
 
-    const pattern = /\r\n|\r|\n/;
-    const content = c.replace(pattern, '<br />');
+    const pattern = /\r\n|\r|\n/g;
+    const content = c.replace(pattern, '<br>');
 
 
     let tagArray = [];

@@ -22,7 +22,7 @@ const getListHandler = async (req, res) => {
     const { title, tag, member_sid, times, auth = 0 } = req.query;
     let likedSELECT = ""
     if (auth) {
-        likedSELECT = " (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = 1) liked, ";
+        likedSELECT = ` (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = ${auth}) liked, `;
     }
     const rowsPerPage = 20;
     const op = {
