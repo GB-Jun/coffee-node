@@ -36,8 +36,8 @@ router.post("/", upload.none(), async (req, res) => {
         return;
     }
 
-    const pattern = /\r\n|\r|\n/;
-    const content = c.replace(pattern, '<br />');
+    const pattern = /\r\n|\r|\n/g;
+    const content = c.replace(pattern, '<br>');
 
     let tagArray = [];
     if (myTag.trim()) {
@@ -76,10 +76,8 @@ router.post("/", upload.none(), async (req, res) => {
 
         for (let i = 0; i < tagArray.length; i++) {
             const name = tagArray[i].trim();
-            console.log(name);
 
             // Tag times--
-
             // INSERT post_tag by post_sid,tag insertId
             const [r] = await db.query(UPSERT_SQL, [name]);
             const tag_sid = r.insertId;
