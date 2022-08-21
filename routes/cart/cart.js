@@ -760,6 +760,55 @@ router.get("/detail/api", async (req, res) => {
     res.json(output);
 });
 
+//表單自動填入
+router.get("/form/api", async (req, res) => {
+    // 檢查jwt token是否正確
+    if (!res.locals.loginUser) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "Wrong verify to get personal info .",
+            },
+        });
+        return;
+    }
+    const { sid } = res.locals.loginUser;
+    // 檢查sid
+    if (sid === undefined) {
+        res.status(401).send({
+            error: {
+                status: 401,
+                message: "There's no sid to get personal info .",
+            },
+        });
+        return;
+    }
+    const sql = `
+        SELECT
+            member_name AS name,
+            member_mobile AS phone,
+            member_mail AS email,
+            member_address AS address
+        FROM member WHERE member_sid = ?;
+    `;
+    const sqlFormat = sqlstring.format(sql, [sid]);
+    try {
+        const [[result]] = await db.query(sqlFormat);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: {
+                status: 500,
+                message: "Server no response . Can't operate get personal info .",
+                errorMessage: error,
+            },
+        });
+        return;
+    }
+});
+
 // 購物車數量
 
 router.get("/cart_count/api", async (req, res) => {
