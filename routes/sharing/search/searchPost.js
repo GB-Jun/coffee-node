@@ -183,10 +183,11 @@ const getListById = async (req, res) => {
 }
 
 const getListHandler = async (req, res) => {
+    // 關鍵字搜尋
     const { q = 0, times, auth } = req.query;
     let likedSELECT = "";
     if (auth) {
-        likedSELECT = " (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = 1) liked,";
+        likedSELECT = ` (SELECT COUNT(1) FROM member_likes ml WHERE ml.post_sid = p.sid AND ml.member_sid = ${auth}) liked,`;
     }
 
     const op = {
