@@ -433,7 +433,7 @@ router.get('/api/posts-history', async (req, res) => {
         return;
     }
     const sqlSid = `${res.locals.loginUser.sid}`;
-    const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} `;
+    const sql = `SELECT sid, title, content, likes, created_at FROM post WHERE member_sid = ${sqlSid} AND delete_state = 0`;
 
     const [result] = await db.query(sql);
     res.json(result);
