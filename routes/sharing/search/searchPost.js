@@ -80,7 +80,7 @@ const getListById = async (req, res) => {
             const [[{ totalRows }]] = await db.query(nicknameSql, [q]);
             op.totalRows = totalRows;
         } else if (type === "member_like") {
-            const [[{ totalRows }]] = await db.query(likeSql, [q]);
+            const [[{ totalRows }]] = await db.query(likeSql, [auth]);
             op.totalRows = totalRows;
         } else if (type === "title") {
             const [[{ totalRows }]] = await db.query(titleSql, [q]);
@@ -130,13 +130,11 @@ const getListById = async (req, res) => {
         `;
 
         const likeSql = `
-        SELECT 1 AS liked,p.*,m.avatar,pi.img_name FROM member_likes ml
-        JOIN post p
+        SELECT 1 AS liked,p.*,pi.img_name FROM member_likes ml
+        LEFT JOIN post p
         ON p.sid = ml.post_sid
-        JOIN post_img pi
+        LEFT JOIN post_img pi
         ON p.sid = pi.post_sid
-        JOIN member m
-        ON m.member_sid = p.member_sid
         WHERE ml.member_sid = ? AND pi.sort = 1 AND p.delete_state = 0
         GROUP  BY ml.post_sid
         ${ORDER_BY}
@@ -161,7 +159,7 @@ const getListById = async (req, res) => {
             } else if (type === "nickname") {
                 [op.rows] = await db.query(nicknameSql, [q]);
             } else if (type === "member_like") {
-                [op.rows] = await db.query(likeSql, [q]);
+                [op.rows] = await db.query(likeSql, [auth]);
             } else if (type === "title") {
                 [op.rows] = await db.query(titleSql, [q]);
             }

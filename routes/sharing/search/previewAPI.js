@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require(__dirname + "/../../../modules/mysql-connect");
-const LIMIT = " LIMIT 8";
+const LIMIT = " LIMIT 5";
 
 router.get("", async (req, res) => {
     const { queryString, type } = req.query;
@@ -37,7 +37,7 @@ router.get("", async (req, res) => {
 const getTitleData = async (q) => {
     const WHERE = q ? `p.title LIKE ${db.escape('%' + q + '%')} AND` : "";
     const ORDER = " ORDER BY p.likes DESC"
-    const LIMIT = " LIMIT 6";
+    const LIMIT = " LIMIT 5";
 
 
     const sql = `

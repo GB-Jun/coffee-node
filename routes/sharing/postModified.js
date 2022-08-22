@@ -25,7 +25,6 @@ router.get("/", async (req, res) => {
     };
 
     output = { ...(await getPostHandler(req, res, post_sid)), success: true };
-
     res.json(output);
 });
 
@@ -153,16 +152,16 @@ const getPostHandler = async (req, res, sid) => {
         code: 0,
         query: {},
     }
-
     const sql = `
         SELECT p.*,m.avatar FROM \`post\` p
-        JOIN \`member\` m 
+        LEFT JOIN \`member\` m 
         ON p.member_sid = m.member_sid
         WHERE \`sid\` = ?
     `;
 
 
     const [[rows]] = await db.query(sql, [sid]);
+    // console.log(rows);
 
     if (rows && rows.sid) {
         op.code = 200;
