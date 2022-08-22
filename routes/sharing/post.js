@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router(); // 建立route物件
 const db = require(__dirname + "/../../modules/mysql-connect");
-const WEEK_DIFF = "TIMESTAMPDIFF(WEEK,p.created_at,NOW()) weekdiff"
-let randNum = Math.floor(Math.random() * 5 + .3) * 2;
-// 10mins chg randNum
-setInterval(() => { randNum = Math.floor(Math.random() * 5 + .3) * 2; }, 1000 * 60 * 10);
+const WEEK_DIFF = "TIMESTAMPDIFF(WEEK,p.created_at,NOW()) weekdiff ,TIMESTAMPDIFF(HOUR,p.created_at,NOW()) hourdiff"
+let wk_weighted = 5;
+let hr_weighted = 0.15;
+// 文章排序
+// ORDER BY (p.comments * 2 + p.likes - weekdiff * ${w_weighted} - hourdiff * ${h_weighted}) DESC,p.updated_at DESC
+
 
 
 router.get("/", async (req, res) => {
@@ -47,8 +49,10 @@ const getListHandler = async (req, res) => {
 
 
     if (totalRows) {
-        //  ORDER BY like - weekDif* 0~10 DESC
-        const ORDER_BY = ` ORDER BY (p.likes - weekdiff * ${randNum}) DESC,p.updated_at DESC`
+        //  ORDER BY 留言數+likes
+        const ORDER_BY = `
+         ORDER BY (p.comments * 2 + p.likes - weekdiff * ${wk_weighted} - hourdiff * ${hr_weighted}) 
+         DESC,p.updated_at DESC`;
         const LIMIT = `LIMIT ${(op.query.times % totalPage) * rowsPerPage},${rowsPerPage}`;
 
         let WHERE = "";
@@ -68,7 +72,6 @@ const getListHandler = async (req, res) => {
             ${LIMIT};
         `;
         [op.rows] = await db.query(sql);
-
 
         for (let row of op.rows) {
             if (row.sid) {
