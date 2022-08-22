@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2022-08-19 08:59:39
+-- 產生時間： 2022-08-22 10:09:27
 -- 伺服器版本： 10.4.24-MariaDB
 -- PHP 版本： 8.1.5
 
@@ -491,8 +491,10 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`member_sid`, `member_name`, `member_nickname`, `member_account`, `member_password`, `member_birthday`, `member_mobile`, `member_address`, `member_mail`, `member_like`, `member_level`, `avatar`, `hash`, `verify`) VALUES
-(1, '王曉明', '阿明', 'ming', '$2a$10$Ne/LIsw90/DdG3EYXsH5ReI13acFHN2ZjIZTIILAGZZK7aCymxzB2', '2022-05-30', '0911222333', '台北市大安區', 'coffeereact26@gmail.com', '', '52209', 'missing-image.jpg', '', '1'),
-(2, '林董', '', 'ling', '$2a$10$QGbVSPxKlSOWxnpLknuGu.nZxXIpwnMzFL5L.Z8ICtaW0JofuuFfu', NULL, '', '', 'a0955361101@gmail.com', '', '0', 'missing-image.jpg', '129751', '1');
+(1, '王曉明', '阿明', 'ming', '$2a$10$Ne/LIsw90/DdG3EYXsH5ReI13acFHN2ZjIZTIILAGZZK7aCymxzB2', '2022-05-30', '0911222333', '臺南市安定區管寮32號', 'coffeereact26@gmail.com', '', '52209', 'missing-image.jpg', '', '1'),
+(2, '林董', '', 'ling', '$2a$10$QGbVSPxKlSOWxnpLknuGu.nZxXIpwnMzFL5L.Z8ICtaW0JofuuFfu', NULL, '', '', 'a0955361101@gmail.com', '', '0', 'missing-image.jpg', '129751', '1'),
+(11, '子揚', 'Tommy', 'tommy', '$2a$10$QGbVSPxKlSOWxnpLknuGu.nZxXIpwnMzFL5L.Z8ICtaW0JofuuFfu', NULL, '0911222333', '彰化縣埔心鄉鎮福街30號', 'tommy@gmail.com', '', '0', 'tommy.jpg', '129751', '1'),
+(12, '拉花大王', '拉花大王Tom', 'tom', '$2a$10$QGbVSPxKlSOWxnpLknuGu.nZxXIpwnMzFL5L.Z8ICtaW0JofuuFfu', NULL, '0911222333', '臺中市大里區美群路21號', 'tommy1@gmail.com', '', '0', 'tommy.jpg', '129751', '1');
 
 -- --------------------------------------------------------
 
@@ -826,7 +828,7 @@ INSERT INTO `points_user` (`sid`, `member_sid`, `total_points`, `voucher_amount`
 CREATE TABLE `post` (
   `sid` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` varchar(512) NOT NULL,
   `member_nickname` varchar(255) NOT NULL,
   `member_sid` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT 0,
@@ -846,7 +848,18 @@ INSERT INTO `post` (`sid`, `title`, `content`, `member_nickname`, `member_sid`, 
 (181, '分享好喝的咖啡', '環境文青舒適，飲品有特色，咖啡好喝！', '阿明', 1, 0, 0, 2, '2022-02-09 16:12:01', NULL, 0),
 (182, '分享高質感咖啡廳', '應入眼簾的大落地窗與極簡的裝潢是給我的第一印象，內部偏冷灰的色調及拋光水泥地板呈現一種極簡感。入座點了一杯招牌的拿鐵歐蕾，綿密奶泡正是我喜歡的味道', '阿明', 1, 0, 0, 2, '2022-06-23 16:16:03', NULL, 0),
 (183, '輕食好吃', '路過會忍不住回頭的美感咖啡廳，落地窗採光超好，在台北居然有不用低消的咖啡廳好佛心！輕食好吃、咖啡好喝', '阿明', 1, 0, 0, 2, '2022-07-08 16:20:48', NULL, 0),
-(184, '厲害的咖啡', '平日下午去訪氣氛很好，適合聊天，環境空間明亮舒服，價格也不會太貴，推推！！！', '阿明', 1, 0, 0, 3, '2022-08-18 16:43:09', NULL, 0);
+(184, '厲害的咖啡', '平日下午去訪氣氛很好，適合聊天，環境空間明亮舒服，價格也不會太貴，推推！！！', '阿明', 1, 0, 0, 3, '2022-08-18 16:43:09', NULL, 0),
+(185, '香酥吐司搭配奶油起司蛋', '香酥吐司搭配奶油起司蛋有夠讚', 'Tommy', 1414, 0, 0, 1, '2022-08-22 15:14:26', NULL, 0),
+(186, '分享光復店環境?', '分享光復店環境?', 'Tommy', 1414, 0, 0, 1, '2022-08-22 15:36:35', NULL, 0),
+(187, '盤點0+B的5款達人級「濾掛咖啡」!', '盤點0+B的5款達人級「濾掛咖啡」!', 'Tommy', 1414, 0, 0, 2, '2022-08-22 15:40:53', NULL, 0),
+(188, '新開的中山店環境超優美!', '新開的中山店環境超優美!', 'Tommy', 1414, 0, 0, 3, '2022-08-22 15:43:29', NULL, 0),
+(189, '口味濃郁的香草風味拿鐵', '口味濃郁的香草風味拿鐵', 'Tommy', 1414, 0, 0, 2, '2022-08-22 15:46:41', NULL, 0),
+(190, '新品酪梨沙拉三明治', '新品酪梨沙拉三明治', 'Tommy', 1414, 0, 0, 2, '2022-08-22 15:50:17', NULL, 0),
+(191, '\"激推\"抹茶千層蛋糕', '\"激推\"抹茶千層蛋糕', 'Tommy', 1414, 0, 0, 2, '2022-08-22 15:52:41', NULL, 0),
+(192, '我的熊熊拉花?', '我的熊熊拉花?', 'Tommy', 1414, 0, 0, 1, '2022-08-22 15:59:33', NULL, 0),
+(193, '第一次烘豆課程就上手', '第一次烘豆課程就上手', '拉花大王Tom', 12, 0, 0, 1, '2022-08-22 16:03:15', NULL, 0),
+(194, '0+B的課程真的有趣又精緻', '0+B的課程真的有趣又精緻', '拉花大王Tom', 12, 0, 0, 1, '2022-08-22 16:04:05', NULL, 0),
+(195, '第一次手沖咖啡就上手', '第一次手沖咖啡就上手', '拉花大王Tom', 12, 0, 0, 1, '2022-08-22 16:04:54', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -870,7 +883,18 @@ INSERT INTO `post_img` (`sid`, `img_name`, `post_sid`, `sort`) VALUES
 (752, 'p20220818-0dd963e4-c993-482d-a989-0ab0804ef33b.png', 181, 1),
 (753, 'p20220818-bde3b7a3-e62d-4cd4-82fd-74b704a5cb11.png', 182, 1),
 (754, 'p20220818-91c251e6-965d-4b52-b28b-903d2e7d0390.png', 183, 1),
-(755, 'p20220818-14e5aec3-6ee8-4432-8dc8-27b5cc107df9.png', 184, 1);
+(755, 'p20220818-14e5aec3-6ee8-4432-8dc8-27b5cc107df9.png', 184, 1),
+(756, 'p20220822-6c77d83c-63d4-410f-b689-0b1a1613638b.png', 185, 1),
+(757, 'p20220822-f00057b6-38bc-4fef-888c-7c413b4dc480.png', 186, 1),
+(758, 'p20220822-daaea511-f99b-4eca-8cef-6325037c79f2.png', 187, 1),
+(759, 'p20220822-5cf75819-f16c-4058-855e-48794c2ee5ff.png', 188, 1),
+(760, 'p20220822-374f5516-4b70-4177-85ac-a7f5e16e6af8.png', 189, 1),
+(761, 'p20220822-bea8d3dc-2004-41b9-8ae1-b3287327d9a8.png', 190, 1),
+(762, 'p20220822-e00f9a9f-ff16-4598-a367-7972b6fd4192.png', 191, 1),
+(763, 'p20220822-b1207b9f-c67b-477c-ad4a-906a4e0b6967.png', 192, 1),
+(764, 'p20220822-8eb90a7d-4e24-4842-985e-385f4dd8a891.png', 193, 1),
+(765, 'p20220822-1cf290ff-1286-4683-bc24-defb18cd4cd7.png', 194, 1),
+(766, 'p20220822-0a38df8d-9e3d-4870-89a3-4f9c47ace251.png', 195, 1);
 
 -- --------------------------------------------------------
 
@@ -894,7 +918,23 @@ INSERT INTO `post_tag` (`sid`, `post_sid`, `tag_sid`) VALUES
 (81, 182, 33),
 (82, 183, 33),
 (83, 183, 37),
-(84, 184, 33);
+(84, 184, 33),
+(85, 185, 39),
+(86, 185, 40),
+(87, 186, 41),
+(88, 187, 33),
+(89, 187, 43),
+(90, 187, 44),
+(91, 187, 45),
+(92, 189, 33),
+(93, 189, 47),
+(94, 190, 40),
+(95, 190, 44),
+(96, 193, 50),
+(97, 193, 51),
+(98, 194, 50),
+(99, 195, 53),
+(100, 195, 33);
 
 -- --------------------------------------------------------
 
@@ -1592,9 +1632,19 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`sid`, `name`, `times`) VALUES
-(33, '咖啡', 4),
+(33, '咖啡', 7),
 (34, '好喝', 1),
-(37, '輕食', 1);
+(37, '輕食', 1),
+(39, '超好吃', 1),
+(40, '三明治', 2),
+(41, '光復店', 1),
+(43, '濾掛咖啡', 1),
+(44, 'cp值', 2),
+(45, '瓜地馬拉花神', 1),
+(47, '拿鐵', 1),
+(50, '課程', 2),
+(51, '烘豆', 1),
+(53, '手沖咖啡', 1);
 
 -- --------------------------------------------------------
 
@@ -1884,13 +1934,13 @@ ALTER TABLE `coupon_receive`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `course_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `course_related`
 --
 ALTER TABLE `course_related`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_choice`
@@ -1926,7 +1976,7 @@ ALTER TABLE `mapapi`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1414;
+  MODIFY `member_sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1416;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member_likes`
@@ -1968,19 +2018,19 @@ ALTER TABLE `points_user`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post`
 --
 ALTER TABLE `post`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_img`
 --
 ALTER TABLE `post_img`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=756;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=767;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `post_tag`
 --
 ALTER TABLE `post_tag`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products`
@@ -2046,7 +2096,7 @@ ALTER TABLE `store`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `user_like`
